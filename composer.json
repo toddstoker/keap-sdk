@@ -1,0 +1,15 @@
+{
+    "name": "toddstoker/keap-sdk",
+    "description": "Keap SDK for accessing Keap's API endpoints",
+    "type": "library",
+    "require": {
+        "saloonphp/saloon": "^3.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Toddstoker\\KeapSdk\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

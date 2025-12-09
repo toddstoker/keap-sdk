@@ -1,0 +1,11 @@
+.DS_Store
+.AppleDouble
+.LSOverride
+
+/vendor/
+
+/.idea
+/.vscode
+/.phpunit.cache
+/.cursor
+auth.json
