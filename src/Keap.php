@@ -5,9 +5,18 @@ declare(strict_types=1);
 namespace Toddstoker\KeapSdk;
 
 use Saloon\Contracts\Authenticator;
+use Saloon\Contracts\OAuthAuthenticator;
+use Saloon\Helpers\OAuth2\OAuthConfig;
+use Saloon\Http\Auth\NullAuthenticator;
+use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
+use Saloon\Http\Request;
+use Saloon\Http\Response;
+use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
 use Saloon\Traits\Plugins\AcceptsJson;
+use Saloon\Traits\Plugins\AlwaysThrowOnErrors;
 use Toddstoker\KeapSdk\Credentials\BaseCredential;
+use Toddstoker\KeapSdk\Credentials\OAuth;
 use Toddstoker\KeapSdk\Resources\ResourceFactory;
 
 /**
@@ -24,7 +33,10 @@ use Toddstoker\KeapSdk\Resources\ResourceFactory;
  */
 class Keap extends Connector
 {
-    use AcceptsJson;
+    use AcceptsJson, AlwaysThrowOnErrors;
+    use AuthorizationCodeGrant {
+        createOAuthAuthenticatorFromResponse as parentCreateOAuthAuthenticatorFromResponse;
+    }
 
     /**
      * Resource factory instance for managing resource instantiation
@@ -40,10 +52,9 @@ class Keap extends Connector
      * @param int $apiVersion API version to use (1 or 2, defaults to 2)
      */
     public function __construct(
-        protected readonly BaseCredential $credential,
+        public BaseCredential $credential,
         public int $apiVersion = 2
-    ) {
-    }
+    ) { }
 
     /**
      * Magic method to dynamically access API resources
@@ -83,26 +94,42 @@ class Keap extends Connector
     }
 
     /**
-     * Define default headers for all requests
+     * Refresh the OAuth access token.
      *
-     * Sets standard headers for JSON communication with the Keap API.
+     * This method exchanges the current refresh token for a new access token.
+     * Because OAuth credentials are immutable (readonly), a NEW OAuth credential
+     * instance is created with the updated tokens and replaces the existing credential.
      *
-     * @return array<string, string> Array of header key-value pairs
+     * The new credential is created internally by createOAuthAuthenticatorFromResponse()
+     * when refreshAccessToken() completes successfully.
+     *
+     * @return OAuth A new OAuth credential instance with updated access and refresh tokens
+     * @throws \RuntimeException If credential is not OAuth or refresh token is missing
      */
-    protected function defaultHeaders(): array
+    public function refreshToken(): OAuth
     {
-        return [
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-            'User-Agent' => 'keap-sdk-php/1.0',
-        ];
+        if (!($this->credential instanceof OAuth)) {
+            throw new \RuntimeException('Credential object must be instance of OAuth to refresh token.');
+        }
+
+        $refreshToken = $this->credential->refreshToken;
+        if(empty($refreshToken)){
+            throw new \RuntimeException('Must have a refresh token to refresh access token.');
+        }
+
+        // This calls createOAuthAuthenticatorFromResponse() which creates
+        // a new OAuth credential and assigns it to $this->credential
+        $this->refreshAccessToken($refreshToken);
+
+        // Return the NEW OAuth credential instance created during refresh
+        return $this->credential;
     }
 
     /**
      * Define default authentication for all requests
      *
      * Delegates to the credential's getAuth() method to return the
-     * appropriate SaloonPHP authenticator (typically TokenAuthenticator).
+     * appropriate SaloonPHP authenticator.
      *
      * @return Authenticator SaloonPHP authenticator instance
      * @throws \Toddstoker\KeapSdk\Exceptions\AuthenticationException If credential is invalid or incomplete
@@ -124,5 +151,100 @@ class Keap extends Connector
     protected function whichVersion(?int $version = null): int
     {
         return $version ?? $this->apiVersion;
+    }
+
+    /**
+     * Configure OAuth2 settings for Keap
+     *
+     * Provides OAuth2 configuration for authorization code flow.
+     * Uses credentials from the OAuth credential if provided.
+     *
+     * @throws \RuntimeException If the credential is not an instance of OAuth
+     *
+     * @return OAuthConfig OAuth2 configuration
+     */
+    protected function defaultOauthConfig(): OAuthConfig
+    {
+        if (!($this->credential instanceof OAuth)) {
+            throw new \RuntimeException('Credential object must be instance of OAuth to use OAuth2 features.');
+        }
+
+        $clientId = $this->credential->clientId;
+        $clientSecret = $this->credential->clientSecret;
+        $redirectUri = $this->credential->redirectUri;
+
+        return OAuthConfig::make()
+            ->setClientId($clientId)
+            ->setClientSecret($clientSecret)
+            ->setRedirectUri($redirectUri)
+            ->setDefaultScopes(['full'])
+            ->setAuthorizeEndpoint('https://accounts.infusionsoft.com/app/oauth/authorize')
+            ->setTokenEndpoint('https://api.infusionsoft.com/token')
+            ->setUserEndpoint('https://api.infusionsoft.com/crm/rest/v1/oauth/connect/userinfo');
+    }
+
+    /**
+     * Tap into the access token request to adjust authentication to meet Keap's requirements.
+     */
+    protected function resolveAccessTokenRequest(string $code, OAuthConfig $oauthConfig): Request
+    {
+        $request = new \Saloon\Http\OAuth2\GetAccessTokenRequest($code, $oauthConfig);
+
+        // Keap doesn't like the Authorization header set during the access token request.
+        $request->authenticate(new NullAuthenticator());
+
+        return $request;
+    }
+
+    /**
+     * Tap into the refresh token request to adjust authentication to meet Keap's requirements.
+     */
+    protected function resolveRefreshTokenRequest(OAuthConfig $oauthConfig, string $refreshToken): Request
+    {
+        $authenticator = new TokenAuthenticator(
+            base64_encode($oauthConfig->getClientId().':'.$oauthConfig->getClientSecret()),
+            'Basic'
+        );
+        $request = new \Saloon\Http\OAuth2\GetRefreshTokenRequest($oauthConfig, $refreshToken);
+        $request->body()->remove('client_id');
+        $request->body()->remove('client_secret');
+        $request->authenticate($authenticator);
+
+        return $request;
+    }
+
+    /**
+     * Create OAuth authenticator from token response and update credential.
+     *
+     * This method is called after successfully obtaining or refreshing OAuth tokens.
+     * Because OAuth credentials are immutable (readonly), we create a NEW OAuth
+     * credential instance with the updated tokens and replace the existing credential.
+     *
+     * This method is invoked automatically during:
+     * - Initial authorization code exchange (via getAccessToken())
+     * - Token refresh (via refreshToken() -> refreshAccessToken())
+     *
+     * @param Response $response The OAuth token response
+     * @param string|null $fallbackRefreshToken Optional fallback refresh token
+     * @return OAuthAuthenticator The authenticator containing the new tokens
+     */
+    protected function createOAuthAuthenticatorFromResponse(Response $response, ?string $fallbackRefreshToken = null): OAuthAuthenticator
+    {
+        $authenticator = $this->parentCreateOAuthAuthenticatorFromResponse($response, $fallbackRefreshToken);
+
+        $this->authenticate($authenticator);
+
+        // Create a NEW OAuth credential instance with updated tokens
+        // (OAuth is readonly/immutable, so we cannot modify the existing instance)
+        $this->credential = new OAuth(
+            clientId: $this->credential->clientId,
+            clientSecret: $this->credential->clientSecret,
+            redirectUri: $this->credential->redirectUri,
+            accessToken: $authenticator->getAccessToken(),
+            refreshToken: $authenticator->getRefreshToken(),
+            expiresAt: $authenticator->getExpiresAt(),
+        );
+
+        return $authenticator;
     }
 }

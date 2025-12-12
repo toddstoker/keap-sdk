@@ -69,29 +69,56 @@ $keap = new Keap(new PersonalAccessToken('your-pat-token'));
 For machine-to-machine authentication. [Get your SAK here](https://keys.developer.infusionsoft.com/).
 
 ```php
-use Toddstoker\KeapSdk\Credentials\ServiceKey;
+use Toddstoker\KeapSdk\Credentials\ServiceAccountKey;
 
-$keap = new Keap(new ServiceKey('your-service-key'));
+$keap = new Keap(new ServiceAccountKey('your-service-key'));
 ```
 
 ### 3. OAuth2
 
-For user-based access when building applications.
+For user-based access when building applications. The SDK implements the full OAuth2 authorization code flow.
 
 ```php
 use Toddstoker\KeapSdk\Credentials\OAuth;
 
+// Step 1: Create OAuth credential and connector
 $oauth = new OAuth(
     clientId: 'your-client-id',
     clientSecret: 'your-client-secret',
     redirectUri: 'https://your-app.com/callback'
 );
 
-// After OAuth flow, set the access token
-$oauth->setAccessToken('user-access-token');
-$oauth->setRefreshToken('user-refresh-token');
-
 $keap = new Keap($oauth);
+
+// Step 2: Generate authorization URL
+$authorizationUrl = $keap->getAuthorizationUrl();
+$state = $keap->getState(); // Store this for verification
+
+// Redirect user to $authorizationUrl
+// User authorizes and is redirected back with code and state
+
+// Step 3: Exchange authorization code for access token
+$authenticator = $keap->getAccessToken(
+    code: $_GET['code'],
+    state: $_GET['state'],
+    expectedState: $storedState
+);
+
+// Step 4: Authenticate the connector
+$keap->authenticate($authenticator);
+
+// Now you can make API calls
+$contact = $keap->contacts()->get(123);
+
+// Step 5: Refresh token when expired
+if ($authenticator->hasExpired()) {
+    $newAuthenticator = $keap->refreshAccessToken($authenticator);
+    $keap->authenticate($newAuthenticator);
+
+    // Important: Store the new tokens (Keap rotates refresh tokens)
+    $newAccessToken = $newAuthenticator->getAccessToken();
+    $newRefreshToken = $newAuthenticator->getRefreshToken();
+}
 ```
 
 ## API Versions

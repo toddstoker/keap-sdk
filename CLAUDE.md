@@ -9,7 +9,7 @@ This is `keap-sdk`, a PHP SDK for interacting with Keap's REST API (both v1 and 
 **Project Goals:**
 - Provide a type-safe, modern PHP interface to Keap's API
 - Support both REST API v1 and v2 endpoints
-- Handle OAuth2 authentication automatically
+- Support OAuth2 authorization code flow with token refresh
 - Implement rate limiting and retry logic
 - Provide excellent IDE autocomplete support
 - Maintain comprehensive test coverage
@@ -109,6 +109,8 @@ The `Keap` class extends SaloonPHP's `Connector` and serves as the main entry po
 - Configure default headers (Content-Type, Accept, User-Agent)
 - Provide dynamic resource access via `__call()` magic method
 - Manage resource instantiation through `ResourceFactory`
+- Implement OAuth2 authorization code flow via `AuthorizationCodeGrant` trait
+- Configure OAuth2 endpoints in `defaultOauthConfig()` method
 
 **Example:**
 ```php
@@ -176,7 +178,7 @@ Credential classes encapsulate authentication methods and implement `BaseCredent
 **Interface:**
 ```php
 interface BaseCredential {
-    public function getAuth(): Authenticator;
+    public function getAuth(): ?Authenticator;
 }
 ```
 
@@ -185,22 +187,48 @@ Each credential class:
 - Stores authentication data (tokens, keys, client credentials)
 - Returns appropriate SaloonPHP authenticator via `getAuth()`
 - Handles credential-specific validation
-- Supports both readonly and mutable credentials
+- OAuth is fully immutable (readonly) - new instances are created when tokens change
+- All OAuth properties are public for direct access
 
-**Example:**
+**Examples:**
 ```php
-class PersonalAccessToken implements BaseCredential
+// Personal Access Token (immutable, readonly)
+readonly class PersonalAccessToken implements BaseCredential
 {
     public function __construct(
-        public readonly string $personalAccessToken
+        public string $personalAccessToken
     ) {}
 
-    public function getAuth(): Authenticator
+    public function getAuth(): TokenAuthenticator
     {
         return new TokenAuthenticator($this->personalAccessToken);
     }
 }
+
+// OAuth (fully immutable readonly credential)
+readonly class OAuth implements BaseCredential
+{
+    public function __construct(
+        public string $clientId,
+        public string $clientSecret,
+        public string $redirectUri,
+        public ?string $accessToken = null,
+        public ?string $refreshToken = null,
+        public ?DateTimeImmutable $expiresAt = null
+    ) {}
+
+    public function getAuth(): TokenAuthenticator
+    {
+        return new TokenAuthenticator($this->accessToken ?? '');
+    }
+}
 ```
+
+**Key Design Notes:**
+- OAuth credential is completely immutable - once created, it cannot be modified
+- When tokens are refreshed, a new OAuth instance is created
+- Access token properties directly (e.g., `$oauth->accessToken`, not getter methods)
+- The SDK manages credential replacement during OAuth flow and token refresh
 
 ### 5. Requests
 
@@ -227,10 +255,82 @@ Keap supports three authentication methods via credential classes:
 
 **OAuth2 (`OAuth`)** - For user-based access:
 - Requires clientId, clientSecret, and redirectUri
-- Access tokens must be set via `setAccessToken()`
-- Supports refresh tokens via `setRefreshToken()`
-- Uses SaloonPHP's `TokenAuthenticator` with Bearer token
+- Implements full OAuth2 authorization code flow via SaloonPHP's `AuthorizationCodeGrant` trait
+- Uses Keap's OAuth2 endpoints:
+  - Authorization: `https://accounts.infusionsoft.com/app/oauth/authorize`
+  - Token: `https://api.infusionsoft.com/token`
+  - User Info: `https://api.infusionsoft.com/crm/rest/v1/oauth/connect/userinfo`
+- Scope: `full` (currently the only supported scope)
+- OAuth credential is fully immutable (readonly class)
+- New OAuth instances are created when tokens are obtained or refreshed
+- Access tokens must be obtained through the authorization flow
+- Token refresh is handled by `refreshToken()` method which returns a new OAuth instance
+- Access token properties directly (e.g., `$oauth->accessToken`, `$oauth->refreshToken`, `$oauth->expiresAt`)
 - Store tokens securely (never commit real tokens to version control)
+
+**OAuth2 Flow Steps:**
+```php
+// 1. Create OAuth credential and connector
+$oauth = new OAuth(
+    clientId: 'your-client-id',
+    clientSecret: 'your-client-secret',
+    redirectUri: 'https://your-app.com/callback'
+);
+$keap = new Keap($oauth);
+
+// 2. Generate authorization URL
+$authUrl = $keap->getAuthorizationUrl();
+$state = $keap->getState(); // Store for verification
+
+// 3. Redirect user to $authUrl
+// User authorizes and is redirected back with code and state
+
+// 4. Exchange authorization code for access token
+$keap->getAccessToken($code, $state, $expectedState);
+// The SDK automatically creates a new OAuth credential with tokens
+
+// 5. Save tokens to your database
+// Access properties directly (OAuth is readonly)
+$accessToken = $keap->credential->accessToken;
+$refreshToken = $keap->credential->refreshToken;
+$expiresAt = $keap->credential->expiresAt;
+// saveToDatabase($accessToken, $refreshToken, $expiresAt);
+
+// 6. Make API calls
+$contact = $keap->contacts()->get(123);
+
+// 7. Restore OAuth session from stored tokens
+$oauth = new OAuth(
+    clientId: 'your-client-id',
+    clientSecret: 'your-client-secret',
+    redirectUri: 'https://your-app.com/callback',
+    accessToken: $storedAccessToken,
+    refreshToken: $storedRefreshToken,
+    expiresAt: $storedExpiresAt
+);
+$keap = new Keap($oauth);
+
+// 8. Refresh token when expired
+if ($oauth->expiresAt < new DateTimeImmutable()) {
+    // Returns a NEW OAuth credential instance with updated tokens
+    $updatedCredential = $keap->refreshToken();
+
+    // Save new tokens to database (direct property access)
+    $newAccessToken = $updatedCredential->accessToken;
+    $newRefreshToken = $updatedCredential->refreshToken;
+    $newExpiresAt = $updatedCredential->expiresAt;
+    // saveToDatabase($newAccessToken, $newRefreshToken, $newExpiresAt);
+}
+```
+
+**Important Notes:**
+- OAuth credential is completely immutable (readonly class)
+- A NEW OAuth instance is created each time tokens are obtained or refreshed
+- Keap returns a NEW refresh token with each token refresh
+- Always update stored refresh tokens after calling `refreshToken()`
+- Access token properties directly: `$oauth->accessToken`, `$oauth->refreshToken`, `$oauth->expiresAt`
+- The `refreshToken()` method returns a new OAuth credential instance
+- Consider using encrypted storage for tokens in production
 
 **Personal Access Token (`PersonalAccessToken`)** - For server-to-server access:
 - Long-lived tokens for backend integrations
@@ -238,7 +338,7 @@ Keap supports three authentication methods via credential classes:
 - Uses SaloonPHP's `TokenAuthenticator` with Bearer token
 - See: https://developer.infusionsoft.com/pat-and-sak/
 
-**Service Account Key (`ServiceKey`)** - For service-based access:
+**Service Account Key (`ServiceAccountKey`)** - For service-based access:
 - Machine-to-machine authentication
 - Uses SaloonPHP's `TokenAuthenticator` with Bearer token
 - See: https://developer.infusionsoft.com/pat-and-sak/

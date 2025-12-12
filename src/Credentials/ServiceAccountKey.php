@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Credentials;
 
-use Saloon\Contracts\Authenticator;
 use Saloon\Http\Auth\TokenAuthenticator;
 
-readonly class ServiceKey implements BaseCredential
+readonly class ServiceAccountKey implements BaseCredential
 {
     public function __construct(
         public string $serviceKey
     ) { }
 
-    public function getAuth(): Authenticator
+    public function getAuth(): TokenAuthenticator
     {
         return new TokenAuthenticator($this->serviceKey);
     }

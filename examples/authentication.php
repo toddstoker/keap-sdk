@@ -18,7 +18,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Toddstoker\KeapSdk\Keap;
 use Toddstoker\KeapSdk\Credentials\PersonalAccessToken;
-use Toddstoker\KeapSdk\Credentials\ServiceKey;
+use Toddstoker\KeapSdk\Credentials\ServiceAccountKey;
 use Toddstoker\KeapSdk\Credentials\OAuth;
 
 // ============================================================================
@@ -44,7 +44,7 @@ try {
 // Service keys are for machine-to-machine authentication
 // Get your service key from: https://keys.developer.infusionsoft.com/
 
-$serviceKey = new ServiceKey('your-service-account-key-here');
+$serviceKey = new ServiceAccountKey('your-service-account-key-here');
 $keapService = new Keap($serviceKey);
 
 try {
@@ -55,27 +55,76 @@ try {
 }
 
 // ============================================================================
-// Example 3: OAuth2 (For user-based access)
+// Example 3: OAuth2 Authorization Flow (For user-based access)
 // ============================================================================
 // OAuth2 is used when you need to access user data on their behalf
 // Register your app at: https://keys.developer.infusionsoft.com/
-
+//
+// The OAuth flow has several steps:
+//
+// STEP 1: Initialize OAuth credential and create connector
+// -------------------------------------------------------
 $oauth = new OAuth(
     clientId: 'your-client-id',
     clientSecret: 'your-client-secret',
     redirectUri: 'https://your-app.com/oauth/callback'
 );
 
-// After the OAuth flow, you'll receive an access token
-// Set it on the OAuth credential:
-$oauth->setAccessToken('user-access-token-from-oauth-flow');
-
-// Optionally set the refresh token for token renewal
-$oauth->setRefreshToken('user-refresh-token-from-oauth-flow');
-
 $keapOAuth = new Keap($oauth);
 
+// STEP 2: Generate authorization URL and redirect user
+// ----------------------------------------------------
+// This URL will prompt the user to authorize your app
+$authorizationUrl = $keapOAuth->getAuthorizationUrl();
+$state = $keapOAuth->getState(); // Store this to verify callback
+
+// In a real app, you would redirect the user to this URL:
+// header("Location: {$authorizationUrl}");
+// exit;
+
+echo "Authorization URL: {$authorizationUrl}\n";
+echo "State (store this): {$state}\n";
+
+// STEP 3: Handle the OAuth callback
+// ---------------------------------
+// After user authorizes, Keap redirects to your redirect_uri with:
+// - code: The authorization code
+// - state: The state parameter for verification
+//
+// In your callback handler (e.g., /oauth/callback route):
+// $code = $_GET['code'];
+// $returnedState = $_GET['state'];
+// $expectedState = /* retrieve stored state */;
+
+// Exchange the authorization code for access token
 try {
+    // This returns an AccessTokenAuthenticator with the access token,
+    // refresh token, and expiry information
+    $authenticator = $keapOAuth->getAccessToken(
+        code: 'authorization-code-from-callback',
+        state: 'returned-state-from-callback',
+        expectedState: 'state-you-stored-earlier'
+    );
+
+    // Store the tokens for future use
+    $accessToken = $authenticator->getAccessToken();
+    $refreshToken = $authenticator->getRefreshToken();
+    $expiresAt = $authenticator->getExpiresAt();
+
+    echo "Access Token: {$accessToken}\n";
+    echo "Refresh Token: {$refreshToken}\n";
+    echo "Expires At: {$expiresAt->format('Y-m-d H:i:s')}\n";
+
+    // You should securely store these tokens in your database
+    // For example, encrypt them using Laravel's EncryptedOAuthAuthenticatorCast
+    // or serialize them: $serialized = $authenticator->serialize();
+
+    // STEP 4: Use the access token for API calls
+    // ------------------------------------------
+    // Set the authenticator on the connector
+    $keapOAuth->authenticate($authenticator);
+
+    // Now you can make authenticated API calls
     $newContact = $keapOAuth->contacts()->create([
         'given_name' => 'John',
         'family_name' => 'Doe',
@@ -87,8 +136,66 @@ try {
         ],
     ]);
     echo "Created contact with ID: {$newContact->id}\n";
+
+    // STEP 5: Refresh the access token when it expires
+    // ------------------------------------------------
+    if ($authenticator->hasExpired()) {
+        // Refresh the token to get a new access token
+        $newAuthenticator = $keapOAuth->refreshAccessToken($authenticator);
+
+        // Update your stored tokens with the new ones
+        $newAccessToken = $newAuthenticator->getAccessToken();
+        $newRefreshToken = $newAuthenticator->getRefreshToken();
+        $newExpiresAt = $newAuthenticator->getExpiresAt();
+
+        // Important: Keap returns a NEW refresh token with each refresh
+        // You must update your stored refresh token
+        echo "Refreshed! New access token: {$newAccessToken}\n";
+
+        // Use the new authenticator for subsequent requests
+        $keapOAuth->authenticate($newAuthenticator);
+    }
+
 } catch (\Exception $e) {
-    echo "Error: " . $e->getMessage() . "\n";
+    echo "OAuth Error: " . $e->getMessage() . "\n";
+}
+
+// STEP 6: Restore a previous OAuth session
+// ----------------------------------------
+// When you have stored tokens, restore them by passing to the constructor:
+$storedAccessToken = 'previously-stored-access-token';
+$storedRefreshToken = 'previously-stored-refresh-token';
+$storedExpiresAt = new DateTimeImmutable('2025-12-31 23:59:59');
+
+// Create OAuth credential with stored tokens
+$oauthRestored = new OAuth(
+    clientId: 'your-client-id',
+    clientSecret: 'your-client-secret',
+    redirectUri: 'https://your-app.com/oauth/callback',
+    accessToken: $storedAccessToken,
+    refreshToken: $storedRefreshToken,
+    expiresAt: $storedExpiresAt
+);
+
+$keapRestored = new Keap($oauthRestored);
+
+// Now you can make API calls with the restored credential
+// The SDK will use the access token automatically
+$contacts = $keapRestored->contacts()->list();
+
+// When the token expires, refresh it using the refreshToken() method
+if ($oauthRestored->expiresAt < new DateTimeImmutable()) {
+    // This returns a new OAuth credential instance with updated tokens
+    $updatedCredential = $keapRestored->refreshToken();
+
+    // Save the new tokens to your database
+    // Note: OAuth is readonly, so access properties directly
+    $newAccessToken = $updatedCredential->accessToken;
+    $newRefreshToken = $updatedCredential->refreshToken;
+    $newExpiresAt = $updatedCredential->expiresAt;
+
+    // Store these in your database for next time
+    // saveToDatabase($newAccessToken, $newRefreshToken, $newExpiresAt);
 }
 
 // ============================================================================
@@ -130,12 +237,14 @@ try {
         redirectUri: 'https://example.com/callback'
     );
 
-    // The error occurs when getAuth() is called during authentication
     $keapNoToken = new Keap($oauthNoToken);
+
+    // This will fail because no access token is set
+    // The request will be unauthorized (empty token)
     $contacts = $keapNoToken->contacts()->list();
-} catch (AuthenticationException $e) {
-    echo "Authentication error: " . $e->getMessage() . "\n";
-    // Output: OAuth access token is not set.
+} catch (\Saloon\Exceptions\Request\Statuses\UnauthorizedException $e) {
+    echo "Authentication error: Request is not authorized\n";
+    echo "Make sure to complete the OAuth flow and set the access token\n";
 }
 
 try {

@@ -7,7 +7,10 @@
         "saloonphp/saloon": "^3.0"
     },
     "require-dev": {
-      "psy/psysh": "@stable"
+      "psy/psysh": "@stable",
+        "laravel/pint": "dev-main",
+        "spatie/ray": "^1.0@dev",
+        "symfony/var-dumper": "8.1.x-dev"
     },
     "license": "MIT",
     "autoload": {
