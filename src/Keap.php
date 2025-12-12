@@ -10,13 +10,14 @@ use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Auth\NullAuthenticator;
 use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
+use Saloon\Http\PendingRequest;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
 use Saloon\Traits\Plugins\AcceptsJson;
-use Saloon\Traits\Plugins\AlwaysThrowOnErrors;
 use Toddstoker\KeapSdk\Credentials\BaseCredential;
 use Toddstoker\KeapSdk\Credentials\OAuth;
+use Toddstoker\KeapSdk\Middleware\RequestExceptionHandler;
 use Toddstoker\KeapSdk\Resources\ResourceFactory;
 
 /**
@@ -33,7 +34,7 @@ use Toddstoker\KeapSdk\Resources\ResourceFactory;
  */
 class Keap extends Connector
 {
-    use AcceptsJson, AlwaysThrowOnErrors;
+    use AcceptsJson;
     use AuthorizationCodeGrant {
         createOAuthAuthenticatorFromResponse as parentCreateOAuthAuthenticatorFromResponse;
     }
@@ -44,6 +45,23 @@ class Keap extends Connector
      * @var \Toddstoker\KeapSdk\Resources\ResourceFactory
      */
     protected ResourceFactory $resourceFactory;
+
+    /**
+     * The last response received from the API.
+     *
+     * This is populated automatically by the boot() middleware and is useful
+     * for debugging and accessing response data, even when exceptions are thrown.
+     *
+     * Note: In concurrent request scenarios, this will contain the most recent
+     * response from any request on this connector instance.
+     *
+     * @var Response|null
+     */
+    protected ?Response $lastResponse = null {
+        get {
+            return $this->lastResponse;
+        }
+    }
 
     /**
      * Initialize the Keap SDK
@@ -125,6 +143,13 @@ class Keap extends Connector
         return $this->credential;
     }
 
+    public function boot(PendingRequest $pendingRequest): void
+    {
+        $pendingRequest->middleware()
+            ->onResponse(fn (Response $response) => $this->lastResponse = $response)
+            ->onResponse(new RequestExceptionHandler);
+    }
+
     /**
      * Define default authentication for all requests
      *
@@ -132,7 +157,6 @@ class Keap extends Connector
      * appropriate SaloonPHP authenticator.
      *
      * @return Authenticator SaloonPHP authenticator instance
-     * @throws \Toddstoker\KeapSdk\Exceptions\AuthenticationException If credential is invalid or incomplete
      */
     protected function defaultAuth(): Authenticator
     {

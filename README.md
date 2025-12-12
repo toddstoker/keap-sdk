@@ -221,18 +221,13 @@ See `examples/adding-resources.php` for a detailed guide.
 The SDK provides specific exception classes:
 
 ```php
-use Toddstoker\KeapSdk\Exceptions\{
-    AuthenticationException,
-    RateLimitException,
-    NotFoundException,
-    ValidationException
-};
+use Toddstoker\KeapSdk\Exceptions\{ClientException\NotFoundException,ClientException\TooManyRequestsException,ValidationException};
 
 try {
     $contact = $keap->contacts()->get(999999);
 } catch (NotFoundException $e) {
     echo "Contact not found: " . $e->getMessage();
-} catch (RateLimitException $e) {
+} catch (TooManyRequestsException $e) {
     echo "Rate limit exceeded. Retry after: " . $e->retryAfter . " seconds";
 } catch (ValidationException $e) {
     echo "Validation failed: " . $e->getMessage();

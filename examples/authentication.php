@@ -16,10 +16,15 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Toddstoker\KeapSdk\Keap;
+use Toddstoker\KeapSdk\Credentials\OAuth;
 use Toddstoker\KeapSdk\Credentials\PersonalAccessToken;
 use Toddstoker\KeapSdk\Credentials\ServiceAccountKey;
-use Toddstoker\KeapSdk\Credentials\OAuth;
+use Toddstoker\KeapSdk\Exceptions\ClientException\NotFoundException;
+use Toddstoker\KeapSdk\Exceptions\ClientException\TooManyRequestsException;
+use Toddstoker\KeapSdk\Exceptions\ClientException\UnauthorizedException;
+use Toddstoker\KeapSdk\Exceptions\KeapException;
+use Toddstoker\KeapSdk\Exceptions\ValidationException;
+use Toddstoker\KeapSdk\Keap;
 
 // ============================================================================
 // Example 1: Personal Access Token (Recommended for most use cases)
@@ -223,12 +228,10 @@ $contact2 = $keap->contacts(1)->get(456);  // Reuses cached v1 instance
 // ============================================================================
 // Example 5: Error Handling
 // ============================================================================
+// The SDK provides domain-specific exceptions with helpful context
 
-use Toddstoker\KeapSdk\Exceptions\AuthenticationException;
-use Toddstoker\KeapSdk\Exceptions\RateLimitException;
-use Toddstoker\KeapSdk\Exceptions\NotFoundException;
-use Toddstoker\KeapSdk\Exceptions\ValidationException;
-
+// Example 5.1: Handling 401 Unauthorized
+// ----------------------------------------
 try {
     // Create OAuth without setting access token
     $oauthNoToken = new OAuth(
@@ -240,33 +243,92 @@ try {
     $keapNoToken = new Keap($oauthNoToken);
 
     // This will fail because no access token is set
-    // The request will be unauthorized (empty token)
     $contacts = $keapNoToken->contacts()->list();
-} catch (\Saloon\Exceptions\Request\Statuses\UnauthorizedException $e) {
-    echo "Authentication error: Request is not authorized\n";
-    echo "Make sure to complete the OAuth flow and set the access token\n";
+
+} catch (UnauthorizedException $e) {
+    echo "Authentication failed: {$e->getMessage()}\n";
+
+    // Access the HTTP response for debugging
+    $response = $e->getResponse();
+    echo "Status: {$response->status()}\n";
+    echo "Headers: " . json_encode($response->headers()) . "\n";
 }
 
+// Example 5.2: Handling 404 Not Found
+// ------------------------------------
 try {
     $contact = $keap->contacts()->get(999999);
 } catch (NotFoundException $e) {
-    echo "Not found: " . $e->getMessage() . "\n";
+    echo "Not found: {$e->getMessage()}\n";
+
+    // You can also access the last response from the connector
+    $response = $keap->lastResponse;
+    echo "Attempted to access: {$response->getEffectiveUri()}\n";
 }
 
+// Example 5.3: Handling 422 Validation Errors
+// --------------------------------------------
+try {
+    $contact = $keap->contacts()->create([
+        'given_name' => '', // Invalid: empty name
+        'email_addresses' => [
+            ['email' => 'invalid-email'], // Invalid: bad email format
+        ],
+    ]);
+} catch (ValidationException $e) {
+    echo "Validation failed: {$e->getMessage()}\n";
+
+    // Access field-specific errors
+    foreach ($e->errors as $field => $messages) {
+        echo "  {$field}: " . implode(', ', (array) $messages) . "\n";
+    }
+
+    // Access response for more context
+    $response = $e->getResponse();
+    echo "Full error details: " . $response->body() . "\n";
+}
+
+// Example 5.4: Handling 429 Rate Limit
+// -------------------------------------
 try {
     // Making too many requests
     for ($i = 0; $i < 200; $i++) {
         $keap->contacts()->list(limit: 1);
     }
-} catch (RateLimitException $e) {
-    echo "Rate limit exceeded. Retry after: " . $e->retryAfter . " seconds\n";
+} catch (TooManyRequestsException $e) {
+    echo "Rate limit exceeded!\n";
+
+    // Use the retryAfter property to know when to retry
+    if ($e->retryAfter) {
+        echo "Retry after {$e->retryAfter} seconds\n";
+        sleep($e->retryAfter);
+        // Now safe to retry
+    }
+
+    // Inspect rate limit headers
+    $response = $e->getResponse();
+    $remaining = $response->header('X-Rate-Limit-Remaining');
+    echo "Requests remaining before limit: {$remaining}\n";
 }
 
+// Example 5.5: Catch-all Error Handling
+// --------------------------------------
 try {
-    $contact = $keap->contacts()->create([
-        'given_name' => '', // Invalid: empty name
-    ]);
-} catch (ValidationException $e) {
-    echo "Validation failed: " . $e->getMessage() . "\n";
-    print_r($e->errors);
+    $contact = $keap->contacts()->get(123);
+} catch (KeapException $e) {
+    // This catches ALL Keap SDK exceptions
+    echo "API Error: {$e->getMessage()}\n";
+    echo "HTTP Status: {$e->getCode()}\n";
+
+    // Access response for debugging
+    $response = $e->getResponse();
+    echo "Response Body: {$response->body()}\n";
+
+    // Log for debugging
+    error_log("Keap API Error: " . json_encode([
+        'message' => $e->getMessage(),
+        'status' => $response->status(),
+        'body' => $response->json(),
+        'headers' => $response->headers(),
+    ]));
 }

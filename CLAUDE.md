@@ -347,12 +347,83 @@ All credential classes implement the `BaseCredential` interface and use Bearer t
 
 ### 8. Error Handling
 
-Implement comprehensive error handling:
-- Catch and transform Saloon exceptions into domain-specific exceptions
-- Handle common HTTP status codes (401, 403, 404, 422, 429, 500)
-- Provide meaningful error messages
-- Include API error details when available
-- Implement retry logic for transient failures (429, 500, 503)
+The SDK implements comprehensive error handling through the `RequestExceptionHandler` middleware:
+
+**Exception Hierarchy:**
+```php
+RequestException (base, extends Saloon\Exceptions\Request\RequestException)
+├── ClientException (4xx errors)
+│   ├── UnauthorizedException (401)
+│   ├── ForbiddenException (403)
+│   ├── NotFoundException (404)
+│   └── TooManyRequestsException (429)
+└── ServerException (5xx errors)
+    └── InternalServerErrorException (500)
+```
+
+**Features:**
+- All exceptions extend `RequestException` which extends SaloonPHP's `RequestException`
+- Automatic status code to exception mapping via middleware
+- Access to HTTP response via `$exception->getResponse()` method
+- Extract API error messages via `$exception->getApiMessage()` method
+- Rate limit exceptions include `retryAfter` property extracted from headers
+- Unmapped status codes fall back to appropriate base exception (ClientException, ServerException, or RequestException)
+
+**Implementation Pattern:**
+
+```php
+use Toddstoker\KeapSdk\Exceptions\ClientException\ClientException;
+use Toddstoker\KeapSdk\Exceptions\ClientException\NotFoundException;
+use Toddstoker\KeapSdk\Exceptions\ClientException\TooManyRequestsException;
+use Toddstoker\KeapSdk\Exceptions\ClientException\UnauthorizedException;
+
+try {
+    $contact = $keap->contacts()->get(123);
+
+} catch (UnauthorizedException $e) {
+    // Authentication failed - check credentials
+    $message = $e->getApiMessage(); // Get error message from API
+    $response = $e->getResponse();
+
+} catch (NotFoundException $e) {
+    // Resource not found - check ID
+    $response = $e->getResponse();
+    $statusCode = $response->status(); // 404
+
+} catch (TooManyRequestsException $e) {
+    // Rate limit exceeded - wait and retry
+    if ($e->retryAfter) {
+        sleep($e->retryAfter);
+        // Retry the request
+    }
+
+} catch (ClientException $e) {
+    // Other client errors (4xx)
+    $message = $e->getApiMessage();
+    $statusCode = $e->getResponse()->status();
+}
+```
+
+**Accessing Last Response:**
+The SDK stores the last HTTP response (even when exceptions are thrown) for debugging:
+
+```php
+use Toddstoker\KeapSdk\Exceptions\RequestException;
+
+try {
+    $contact = $keap->contacts()->get(123);
+} catch (RequestException $e) {
+    // Access response from exception
+    $response = $e->getResponse();
+
+    // Or access from connector (same response)
+    $response = $keap->lastResponse;
+
+    // Inspect headers, body, etc.
+    $headers = $response->headers();
+    $body = $response->json();
+}
+```
 
 ### 9. Rate Limiting
 
