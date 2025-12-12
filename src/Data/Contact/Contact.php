@@ -70,7 +70,6 @@ readonly class Contact
      */
     public static function fromArray(array $data): self
     {
-        ray($data);
         return new self(
             id: Utility::stringToInteger($data['id'] ?? null),
             givenName: $data['given_name'] ?? null,
