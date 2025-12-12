@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Resources\V2;
 
-use Toddstoker\KeapSdk\Data\Contact;
+use Toddstoker\KeapSdk\Data\Contact\Contact;
 use Toddstoker\KeapSdk\Keap;
 use Toddstoker\KeapSdk\Requests\V2\Contacts\CreateContact;
 use Toddstoker\KeapSdk\Requests\V2\Contacts\DeleteContact;
@@ -12,6 +12,8 @@ use Toddstoker\KeapSdk\Requests\V2\Contacts\GetContact;
 use Toddstoker\KeapSdk\Requests\V2\Contacts\ListContacts;
 use Toddstoker\KeapSdk\Requests\V2\Contacts\UpdateContact;
 use Toddstoker\KeapSdk\Resources\Resource;
+use Toddstoker\KeapSdk\Support\V2\ContactQuery;
+use Toddstoker\KeapSdk\Support\V2\Paginator;
 
 /**
  * Contacts Resource (v2) - Recommended
@@ -33,37 +35,21 @@ readonly class ContactsResource implements Resource
     ) { }
 
     /**
-     * List contacts with optional filtering
+     * List contacts with filtering, sorting, and pagination
      *
-     * @param int $limit Maximum number of contacts to return
-     * @param int $offset Number of contacts to skip
-     * @param string|null $email Filter by email address
-     * @param string|null $givenName Filter by first name
-     * @param string|null $familyName Filter by last name
-     * @param string|null $order Field to order results by
-     * @return array{contacts: array<Contact>, count: int, next: ?string, previous: ?string}
+     * Returns a single page of results. Use paginate() to automatically
+     * iterate through all pages.
+     *
+     * @param ContactQuery|null $query Query builder with filters and pagination options
+     * @return array{contacts: array<Contact>, next_page_token: ?string}
      * @throws \Saloon\Exceptions\Request\FatalRequestException
-     * @throws \Saloon\Exceptions\Request\RequestException
+     * @throws \Saloon\Exceptions\Request\RequestException|\JsonException|\DateMalformedStringException
      */
-    public function list(
-        int $limit = 100,
-        int $offset = 0,
-        ?string $email = null,
-        ?string $givenName = null,
-        ?string $familyName = null,
-        ?string $order = null,
-    ): array {
-        $response = $this->connector->send(
-            new ListContacts(
-                limit: $limit,
-                offset: $offset,
-                email: $email,
-                givenName: $givenName,
-                familyName: $familyName,
-                order: $order,
-            )
-        );
+    public function list(?ContactQuery $query = null): array
+    {
+        $query = $query ?? ContactQuery::make();
 
+        $response = $this->connector->send(new ListContacts($query));
         $data = $response->json();
 
         return [
@@ -71,10 +57,26 @@ readonly class ContactsResource implements Resource
                 fn (array $contactData) => Contact::fromArray($contactData),
                 $data['contacts'] ?? []
             ),
-            'count' => $data['count'] ?? 0,
-            'next' => $data['next'] ?? null,
-            'previous' => $data['previous'] ?? null,
+            'next_page_token' => $data['next_page_token'] ?? null,
         ];
+    }
+
+    /**
+     * Create a paginator for iterating through all contacts
+     *
+     * Automatically fetches subsequent pages using cursor-based pagination.
+     *
+     * @param ContactQuery|null $query Query builder with filters and pagination options
+     * @return Paginator
+     */
+    public function paginate(?ContactQuery $query = null): Paginator
+    {
+        $query = $query ?? ContactQuery::make();
+
+        return new Paginator(
+            fn(ContactQuery $q) => $this->list($q),
+            $query
+        );
     }
 
     /**

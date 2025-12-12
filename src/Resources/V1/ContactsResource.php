@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Resources\V1;
 
-use Toddstoker\KeapSdk\Data\Contact;
+use Toddstoker\KeapSdk\Data\Contact\Contact;
 use Toddstoker\KeapSdk\Keap;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\ApplyTagToContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\CreateContact;

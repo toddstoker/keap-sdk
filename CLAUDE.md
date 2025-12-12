@@ -249,6 +249,120 @@ DTOs provide type-safe representations of API data:
 - Consider using `toArray()` for serialization
 - Document all properties with PHPDoc types
 
+### 6a. Enums
+
+The SDK uses **PHP 8.1+ backed enums** for API field values that have a fixed set of possible values.
+
+**Organization Structure:**
+```
+src/Enums/
+├── Contact/              # Contact-specific enums
+│   ├── EmailOptStatus.php
+│   ├── SourceType.php
+│   ├── SocialAccountType.php
+│   ├── EmailField.php
+│   ├── PhoneField.php
+│   └── AddressField.php
+├── Company/              # Company-specific enums
+├── Opportunity/          # Opportunity-specific enums
+└── Shared/              # Enums used across multiple resources
+```
+
+**Enum Pattern:**
+- Use **string-backed enums** (not int-backed) to match API values
+- Add helper methods for common operations (`isMarketable()`, `hasBounced()`)
+- Always include a `label()` method for human-readable display
+- Document with API reference link
+- Group related enums by resource
+
+**Example Enum:**
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Toddstoker\KeapSdk\Enums\Contact;
+
+/**
+ * Email opt-in status for contact email addresses
+ *
+ * @see https://developer.keap.com/docs/restv2/
+ */
+enum EmailOptStatus: string
+{
+    case SINGLE_OPT_IN = 'SINGLE_OPT_IN';
+    case DOUBLE_OPT_IN = 'DOUBLE_OPT_IN';
+    case CONFIRMED = 'CONFIRMED';
+    case NON_MARKETABLE = 'NON_MARKETABLE';
+    // ... other cases
+
+    /**
+     * Check if the email address is marketable
+     */
+    public function isMarketable(): bool
+    {
+        return match ($this) {
+            self::SINGLE_OPT_IN,
+            self::DOUBLE_OPT_IN,
+            self::CONFIRMED => true,
+            default => false,
+        };
+    }
+
+    /**
+     * Get a human-readable label
+     */
+    public function label(): string
+    {
+        return match ($this) {
+            self::SINGLE_OPT_IN => 'Single Opt-In',
+            self::DOUBLE_OPT_IN => 'Double Opt-In',
+            self::CONFIRMED => 'Confirmed',
+            self::NON_MARKETABLE => 'Non-Marketable',
+            // ... other labels
+        };
+    }
+}
+```
+
+**Usage in DTOs:**
+```php
+readonly class EmailAddress
+{
+    public function __construct(
+        public string $email,
+        public EmailOptStatus $emailOptStatus,
+        public EmailField $field,
+        public bool $isOptIn,
+    ) {}
+
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            email: $data['email'],
+            emailOptStatus: EmailOptStatus::from($data['email_opt_status']),
+            field: EmailField::from($data['field']),
+            isOptIn: $data['is_opt_in'] ?? false,
+        );
+    }
+}
+```
+
+**Benefits:**
+- ✅ Type safety - Invalid values cause exceptions
+- ✅ IDE autocomplete for enum cases
+- ✅ Refactoring safety - find all usages easily
+- ✅ Helper methods for business logic
+- ✅ Self-documenting code
+
+**When Extracting Enums from API Spec:**
+1. Look for `enum` arrays in OpenAPI spec field definitions
+2. Create enum in appropriate namespace (Contact, Company, etc.)
+3. Use exact API values as case values (preserve SCREAMING_SNAKE_CASE)
+4. Add `label()` method for human-readable names
+5. Add helper methods for common boolean checks
+6. Update DTOs to use enum types instead of strings
+
 ### 7. Authentication
 
 Keap supports three authentication methods via credential classes:
@@ -433,13 +547,176 @@ Keap enforces rate limits:
 - Implement exponential backoff for 429 responses
 - Consider using SaloonPHP's rate limit plugin
 
-### 10. Pagination
+### 10. V2 Query Builder and Pagination
 
-Many Keap endpoints return paginated results:
-- v1 typically uses `limit` and `offset` parameters
-- Implement cursor-based pagination where supported
-- Provide helper methods for iterating through all pages
-- Return collection objects that support pagination metadata
+The SDK provides a powerful query builder for v2 endpoints with integrated filtering, sorting, pagination, and field selection.
+
+**Architecture:**
+- **Base `Query` class** - Abstract base with dynamic method handling via `__call()`
+- **Resource-specific queries** - `ContactQuery`, `CompanyQuery`, etc. extend `Query`
+- **`Paginator` class** - Handles cursor-based pagination automatically
+
+**Key Features:**
+- Fluent, chainable API for building complex queries
+- Dynamic method generation: `by{FieldName}()` for filters, `orderBy{FieldName}()` for sorting
+- Validation against allowed filters and orderBy fields per resource
+- Automatic conversion of camelCase method names to snake_case API field names
+- Support for cursor-based pagination (v2) via `Paginator`
+
+#### Query Builder Usage
+
+**Basic Filtering:**
+```php
+use Toddstoker\KeapSdk\Support\V2\ContactQuery;
+
+$query = ContactQuery::make()
+    ->byEmail('john@example.com')
+    ->byCompanyId('123')
+    ->pageSize(100);
+
+$result = $keap->contacts()->list($query);
+```
+
+**Complex Queries:**
+```php
+$query = ContactQuery::make()
+    ->byCompanyId('123')
+    ->updatedBetween('2025-01-01', '2025-12-31')  // Convenience method
+    ->orderByCreateTime('desc')
+    ->fields(['id', 'email_addresses', 'given_name', 'family_name', 'update_time'])
+    ->pageSize(50);
+
+$result = $keap->contacts()->list($query);
+```
+
+**Direct Methods (Alternative Syntax):**
+```php
+$query = ContactQuery::make()
+    ->where('email', 'john@example.com')
+    ->where('company_id', '123')
+    ->orderBy('create_time', 'desc')
+    ->fields(['id', 'email_addresses'])
+    ->pageSize(100);
+```
+
+**Dynamic Methods:**
+```php
+// These methods are generated dynamically via __call()
+$query->byEmail('test@example.com');          // Calls where('email', 'test@example.com')
+$query->byGivenName('John');                   // Calls where('given_name', 'John')
+$query->byContactIds([1, 2, 3]);              // Handles arrays automatically
+$query->orderByCreateTime('desc');             // Calls orderBy('create_time', 'desc')
+```
+
+#### Pagination
+
+**Single Page:**
+```php
+$result = $keap->contacts()->list(
+    ContactQuery::make()->pageSize(100)
+);
+
+// Access results
+$contacts = $result['contacts'];           // Array of Contact DTOs
+$nextToken = $result['next_page_token'];   // Token for next page (if available)
+
+// Fetch next page
+if ($nextToken) {
+    $result = $keap->contacts()->list(
+        ContactQuery::make()
+            ->pageSize(100)
+            ->pageToken($nextToken)
+    );
+}
+```
+
+**Automatic Pagination with Paginator:**
+```php
+// Iterate through all contacts automatically
+$paginator = $keap->contacts()->paginate(
+    ContactQuery::make()
+        ->byCompanyId('123')
+        ->pageSize(100)
+);
+
+foreach ($paginator->items('contacts') as $contactData) {
+    $contact = Contact::fromArray($contactData);
+    echo $contact->email;
+}
+```
+
+**Paginator Methods:**
+```php
+// Iterate through items across all pages
+foreach ($paginator->items('contacts') as $item) { }
+
+// Iterate through pages (not individual items)
+foreach ($paginator->pages() as $page) { }
+
+// Manual page control
+$page1 = $paginator->getPage();
+$page2 = $paginator->nextPage();
+$hasMore = $paginator->hasMorePages();
+
+// Get all items as array (WARNING: loads everything into memory)
+$allContacts = $paginator->all('contacts');
+```
+
+#### Creating Resource-Specific Query Classes
+
+When adding a new v2 resource, extend the `Query` base class:
+
+```php
+namespace Toddstoker\KeapSdk\Support\V2;
+
+class CompanyQuery extends Query
+{
+    // Define allowed filters from API spec
+    protected array $allowedFilters = [
+        'company_name',
+        'email',
+        'since_create_time',
+        'until_create_time',
+    ];
+
+    // Define allowed orderBy fields from API spec
+    protected array $allowedOrderBy = [
+        'id',
+        'create_time',
+        'name',
+    ];
+
+    // Define allowed fields for field selection from API spec
+    protected array $allowedFields = [
+        'id',
+        'company_name',
+        'email_addresses',
+        'phone_numbers',
+        'create_time',
+        'update_time',
+        // ... other fields from API spec
+    ];
+
+    // Optionally add convenience methods
+    public function createdBetween(string $start, string $end): static
+    {
+        return $this->bySinceCreateTime($start)
+            ->byUntilCreateTime($end);
+    }
+}
+```
+
+Now you automatically get:
+- **Dynamic filter methods:** `byCompanyName($value)`, `byEmail($value)`, etc.
+- **Dynamic orderBy methods:** `orderById($direction)`, `orderByCreateTime($direction)`, etc.
+- **Validation against allowed fields:** Filter, orderBy, and field selection are all validated
+- **All base methods:** `where()`, `orderBy()`, `fields()`, `pageSize()`, `pageToken()`
+
+**Note on API Versions:**
+- **v1 API:** Uses offset-based pagination (`limit`, `offset`)
+- **v2 API:** Uses cursor-based pagination (`page_size`, `page_token`)
+- The Query builder is designed for v2 endpoints
+- v1 resources should use traditional parameter passing
 
 ## Keap API Details
 
@@ -605,10 +882,7 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Resources\V1;
 
-use Toddstoker\KeapSdk\Data\Contact;
-use Toddstoker\KeapSdk\Keap;
-use Toddstoker\KeapSdk\Requests\V1\Contacts\GetContact;
-use Toddstoker\KeapSdk\Requests\V1\Contacts\ListContacts;
+use Toddstoker\KeapSdk\Data\Contact\Contact;use Toddstoker\KeapSdk\Keap;use Toddstoker\KeapSdk\Requests\V1\Contacts\GetContact;use Toddstoker\KeapSdk\Requests\V1\Contacts\ListContacts;
 
 class ContactsResource
 {

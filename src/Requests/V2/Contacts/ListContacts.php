@@ -6,11 +6,15 @@ namespace Toddstoker\KeapSdk\Requests\V2\Contacts;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Toddstoker\KeapSdk\Support\V2\ContactQuery;
 
 /**
  * List Contacts (v2)
  *
- * Retrieves a list of all contacts with optional filtering and pagination.
+ * Retrieves a list of contacts with filtering, sorting, and pagination.
+ *
+ * Supports cursor-based pagination using page_token and page_size.
+ * Use ContactQuery for building complex queries with filters and sorting.
  *
  * @see https://developer.keap.com/docs/restv2/
  */
@@ -19,20 +23,10 @@ class ListContacts extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param int $limit Sets a total of items to return
-     * @param int $offset Sets a beginning range of items to return
-     * @param string|null $email Optional email to query on
-     * @param string|null $givenName Optional first name to query on
-     * @param string|null $familyName Optional last name to query on
-     * @param string|null $order Attribute to order items by
+     * @param ContactQuery $query The query builder with filters, sorting, and pagination
      */
     public function __construct(
-        protected readonly int $limit = 100,
-        protected readonly int $offset = 0,
-        protected readonly ?string $email = null,
-        protected readonly ?string $givenName = null,
-        protected readonly ?string $familyName = null,
-        protected readonly ?string $order = null,
+        protected readonly ContactQuery $queryBuilder
     ) {
     }
 
@@ -46,13 +40,6 @@ class ListContacts extends Request
      */
     protected function defaultQuery(): array
     {
-        return array_filter([
-            'limit' => $this->limit,
-            'offset' => $this->offset,
-            'email' => $this->email,
-            'given_name' => $this->givenName,
-            'family_name' => $this->familyName,
-            'order' => $this->order,
-        ], fn ($value) => $value !== null);
+        return $this->queryBuilder->toArray();
     }
 }
