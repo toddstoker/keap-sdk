@@ -11,6 +11,7 @@ use Toddstoker\KeapSdk\Requests\V2\Contacts\DeleteContact;
 use Toddstoker\KeapSdk\Requests\V2\Contacts\GetContact;
 use Toddstoker\KeapSdk\Requests\V2\Contacts\ListContacts;
 use Toddstoker\KeapSdk\Requests\V2\Contacts\UpdateContact;
+use Toddstoker\KeapSdk\Resources\Resource;
 
 /**
  * Contacts Resource (v2) - Recommended
@@ -25,12 +26,11 @@ use Toddstoker\KeapSdk\Requests\V2\Contacts\UpdateContact;
  * @see https://developer.keap.com/docs/restv2/
  *
  */
-class ContactsResource
+readonly class ContactsResource implements Resource
 {
     public function __construct(
-        protected readonly Keap $connector
-    ) {
-    }
+        protected Keap $connector
+    ) { }
 
     /**
      * List contacts with optional filtering

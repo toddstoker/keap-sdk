@@ -13,6 +13,7 @@ use Toddstoker\KeapSdk\Requests\V1\Contacts\GetContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\ListContacts;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\RemoveTagFromContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\UpdateContact;
+use Toddstoker\KeapSdk\Resources\Resource;
 
 /**
  * Contacts Resource (v1)
@@ -23,10 +24,10 @@ use Toddstoker\KeapSdk\Requests\V1\Contacts\UpdateContact;
  * @see https://developer.infusionsoft.com/docs/rest/
  *
  */
-class ContactsResource
+readonly class ContactsResource implements Resource
 {
     public function __construct(
-        protected readonly Keap $connector
+        protected Keap $connector
     ) {
     }
 
