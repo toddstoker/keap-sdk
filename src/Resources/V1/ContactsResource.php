@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Resources\V1;
 
-use Toddstoker\KeapSdk\Data\Contact\Contact;
 use Toddstoker\KeapSdk\Keap;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\ApplyTagToContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\CreateContact;
@@ -43,7 +42,7 @@ readonly class ContactsResource implements Resource
      * @param string|null $orderDirection Sort direction (ASCENDING or DESCENDING)
      * @param string|null $since Filter contacts created/updated since this date
      * @param string|null $until Filter contacts created/updated until this date
-     * @return array{contacts: array<Contact>, count: int, next: ?string, previous: ?string}
+     * @return array{contacts: array<array<string, mixed>>, count: int, next: ?string, previous: ?string}
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -75,10 +74,7 @@ readonly class ContactsResource implements Resource
         $data = $response->json();
 
         return [
-            'contacts' => array_map(
-                fn (array $contactData) => Contact::fromArray($contactData),
-                $data['contacts'] ?? []
-            ),
+            'contacts' => $data['contacts'] ?? [],
             'count' => $data['count'] ?? 0,
             'next' => $data['next'] ?? null,
             'previous' => $data['previous'] ?? null,
@@ -90,30 +86,32 @@ readonly class ContactsResource implements Resource
      *
      * @param int $contactId The contact ID
      * @param array<string>|null $optionalProperties Optional properties to include
+     * @return array<string, mixed>
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function get(int $contactId, ?array $optionalProperties = null): Contact
+    public function get(int $contactId, ?array $optionalProperties = null): array
     {
         $response = $this->connector->send(
             new GetContact($contactId, $optionalProperties)
         );
 
-        return Contact::fromArray($response->json());
+        return $response->json();
     }
 
     /**
      * Create a new contact
      *
      * @param array<string, mixed> $data Contact data
+     * @return array<string, mixed>
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function create(array $data): Contact
+    public function create(array $data): array
     {
         $response = $this->connector->send(new CreateContact($data));
 
-        return Contact::fromArray($response->json());
+        return $response->json();
     }
 
     /**
@@ -121,16 +119,17 @@ readonly class ContactsResource implements Resource
      *
      * @param int $contactId The contact ID to update
      * @param array<string, mixed> $data Contact data to update
+     * @return array<string, mixed>
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function update(int $contactId, array $data): Contact
+    public function update(int $contactId, array $data): array
     {
         $response = $this->connector->send(
             new UpdateContact($contactId, $data)
         );
 
-        return Contact::fromArray($response->json());
+        return $response->json();
     }
 
     /**

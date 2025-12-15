@@ -65,11 +65,6 @@ src/
 ├── Responses/
 │   ├── KeapResponse.php             # Base response class
 │   └── ...
-├── Data/                             # DTOs (Data Transfer Objects)
-│   ├── Contact.php
-│   ├── Company.php
-│   ├── Tag.php
-│   └── ...
 ├── Exceptions/
 │   ├── KeapException.php            # Base exception
 │   ├── AuthenticationException.php
@@ -153,7 +148,7 @@ Resource classes group related requests and provide a fluent API:
 **Structure:**
 - Accept `Keap` connector in constructor
 - Provide methods for CRUD operations
-- Return DTOs or structured arrays
+- Return structured arrays from API responses
 - Use descriptive method names
 
 **Example:**
@@ -238,132 +233,8 @@ Request classes represent individual API operations. Each request should:
 - Declare query parameters, body data, and headers
 - Implement `resolveEndpoint()` for the URL path
 - Use typed properties for parameters
-- Return appropriate DTO instances via custom response handling
 
-### 6. Data Transfer Objects (DTOs)
-
-DTOs provide type-safe representations of API data:
-- Use readonly classes for immutability
-- Leverage constructor property promotion
-- Implement `fromArray()` static factory methods
-- Consider using `toArray()` for serialization
-- Document all properties with PHPDoc types
-
-### 6a. Enums
-
-The SDK uses **PHP 8.1+ backed enums** for API field values that have a fixed set of possible values.
-
-**Organization Structure:**
-```
-src/Enums/
-├── Contact/              # Contact-specific enums
-│   ├── EmailOptStatus.php
-│   ├── SourceType.php
-│   ├── SocialAccountType.php
-│   ├── EmailField.php
-│   ├── PhoneField.php
-│   └── AddressField.php
-├── Company/              # Company-specific enums
-├── Opportunity/          # Opportunity-specific enums
-└── Shared/              # Enums used across multiple resources
-```
-
-**Enum Pattern:**
-- Use **string-backed enums** (not int-backed) to match API values
-- Add helper methods for common operations (`isMarketable()`, `hasBounced()`)
-- Always include a `label()` method for human-readable display
-- Document with API reference link
-- Group related enums by resource
-
-**Example Enum:**
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace Toddstoker\KeapSdk\Enums\Contact;
-
-/**
- * Email opt-in status for contact email addresses
- *
- * @see https://developer.keap.com/docs/restv2/
- */
-enum EmailOptStatus: string
-{
-    case SINGLE_OPT_IN = 'SINGLE_OPT_IN';
-    case DOUBLE_OPT_IN = 'DOUBLE_OPT_IN';
-    case CONFIRMED = 'CONFIRMED';
-    case NON_MARKETABLE = 'NON_MARKETABLE';
-    // ... other cases
-
-    /**
-     * Check if the email address is marketable
-     */
-    public function isMarketable(): bool
-    {
-        return match ($this) {
-            self::SINGLE_OPT_IN,
-            self::DOUBLE_OPT_IN,
-            self::CONFIRMED => true,
-            default => false,
-        };
-    }
-
-    /**
-     * Get a human-readable label
-     */
-    public function label(): string
-    {
-        return match ($this) {
-            self::SINGLE_OPT_IN => 'Single Opt-In',
-            self::DOUBLE_OPT_IN => 'Double Opt-In',
-            self::CONFIRMED => 'Confirmed',
-            self::NON_MARKETABLE => 'Non-Marketable',
-            // ... other labels
-        };
-    }
-}
-```
-
-**Usage in DTOs:**
-```php
-readonly class EmailAddress
-{
-    public function __construct(
-        public string $email,
-        public EmailOptStatus $emailOptStatus,
-        public EmailField $field,
-        public bool $isOptIn,
-    ) {}
-
-    public static function fromArray(array $data): self
-    {
-        return new self(
-            email: $data['email'],
-            emailOptStatus: EmailOptStatus::from($data['email_opt_status']),
-            field: EmailField::from($data['field']),
-            isOptIn: $data['is_opt_in'] ?? false,
-        );
-    }
-}
-```
-
-**Benefits:**
-- ✅ Type safety - Invalid values cause exceptions
-- ✅ IDE autocomplete for enum cases
-- ✅ Refactoring safety - find all usages easily
-- ✅ Helper methods for business logic
-- ✅ Self-documenting code
-
-**When Extracting Enums from API Spec:**
-1. Look for `enum` arrays in OpenAPI spec field definitions
-2. Create enum in appropriate namespace (Contact, Company, etc.)
-3. Use exact API values as case values (preserve SCREAMING_SNAKE_CASE)
-4. Add `label()` method for human-readable names
-5. Add helper methods for common boolean checks
-6. Update DTOs to use enum types instead of strings
-
-### 7. Authentication
+### 6. Authentication
 
 Keap supports three authentication methods via credential classes:
 
@@ -459,7 +330,7 @@ if ($oauth->expiresAt < new DateTimeImmutable()) {
 
 All credential classes implement the `BaseCredential` interface and use Bearer token authentication via the `Authorization` header.
 
-### 8. Error Handling
+### 7. Error Handling
 
 The SDK implements comprehensive error handling through the `RequestExceptionHandler` middleware:
 
@@ -539,7 +410,7 @@ try {
 }
 ```
 
-### 9. Rate Limiting
+### 8. Rate Limiting
 
 Keap enforces rate limits:
 - Default: 125 requests per second
@@ -547,7 +418,7 @@ Keap enforces rate limits:
 - Implement exponential backoff for 429 responses
 - Consider using SaloonPHP's rate limit plugin
 
-### 10. V2 Query Builder and Pagination
+### 9. V2 Query Builder and Pagination
 
 The SDK provides a powerful query builder for v2 endpoints with integrated filtering, sorting, pagination, and field selection.
 
@@ -617,7 +488,7 @@ $result = $keap->contacts()->list(
 );
 
 // Access results
-$contacts = $result['contacts'];           // Array of Contact DTOs
+$contacts = $result['contacts'];           // Array of contact data arrays
 $nextToken = $result['next_page_token'];   // Token for next page (if available)
 
 // Fetch next page
@@ -640,8 +511,8 @@ $paginator = $keap->contacts()->paginate(
 );
 
 foreach ($paginator->items('contacts') as $contactData) {
-    $contact = Contact::fromArray($contactData);
-    echo $contact->email;
+    // $contactData is an array with contact data
+    echo $contactData['email_addresses'][0]['email'] ?? 'No email';
 }
 ```
 
@@ -780,7 +651,7 @@ v2 endpoints may offer:
 - Avoid mixed types when possible
 - Use union types for nullable values (e.g., `?string` or `string|null`)
 - Validate input data and throw `InvalidArgumentException` for invalid parameters
-- Return DTOs instead of raw arrays
+- Return structured arrays from API responses
 
 ## Testing Strategy
 
@@ -789,7 +660,7 @@ v2 endpoints may offer:
 - Test individual request classes
 - Mock connector responses
 - Validate request construction (method, endpoint, headers, body)
-- Test DTO creation from API responses
+- Test array response structure from API responses
 - Test error handling and exception throwing
 
 ### Feature Tests
@@ -820,9 +691,8 @@ v2 endpoints may offer:
    ],
    ```
 3. Create request classes in appropriate subdirectory (`src/Requests/V1/Companies/`)
-4. Create DTOs for responses (e.g., `src/Data/Company.php`)
-5. Write tests with mock responses
-6. The resource is now accessible via `$keap->companies()`
+4. Write tests with mock responses
+5. The resource is now accessible via `$keap->companies()`
 
 ### Adding a New Request
 
@@ -831,8 +701,7 @@ v2 endpoints may offer:
 3. Implement `resolveEndpoint()` method
 4. Add constructor parameters for required data
 5. Override `defaultQuery()`, `defaultBody()`, or `defaultHeaders()` as needed
-6. Create corresponding DTO for response
-7. Add tests
+6. Add tests
 
 ### Example Request Class
 
@@ -882,7 +751,9 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Resources\V1;
 
-use Toddstoker\KeapSdk\Data\Contact\Contact;use Toddstoker\KeapSdk\Keap;use Toddstoker\KeapSdk\Requests\V1\Contacts\GetContact;use Toddstoker\KeapSdk\Requests\V1\Contacts\ListContacts;
+use Toddstoker\KeapSdk\Keap;
+use Toddstoker\KeapSdk\Requests\V1\Contacts\GetContact;
+use Toddstoker\KeapSdk\Requests\V1\Contacts\ListContacts;
 
 class ContactsResource
 {
@@ -890,21 +761,24 @@ class ContactsResource
         protected readonly Keap $connector
     ) {}
 
-    public function get(int $contactId, ?array $optionalProperties = null): Contact
+    public function get(int $contactId, ?array $optionalProperties = null): array
     {
         $response = $this->connector->send(new GetContact($contactId, $optionalProperties));
 
-        return Contact::fromArray($response->json());
+        return $response->json();
     }
 
     public function list(int $limit = 100, int $offset = 0): array
     {
         $response = $this->connector->send(new ListContacts($limit, $offset));
+        $data = $response->json();
 
-        return array_map(
-            fn (array $data) => Contact::fromArray($data),
-            $response->json('contacts')
-        );
+        return [
+            'contacts' => $data['contacts'] ?? [],
+            'count' => $data['count'] ?? 0,
+            'next' => $data['next'] ?? null,
+            'previous' => $data['previous'] ?? null,
+        ];
     }
 }
 ```
@@ -915,12 +789,11 @@ class ContactsResource
    - Review relevant Keap API documentation
    - Check if endpoint exists in v1, v2, or both
    - Determine which version to implement (prefer v2 if available and feature-complete)
-   - Design the DTO structure based on API response format
+   - Review the API response format
 
 2. **When implementing:**
    - Start with the request class
-   - Create the DTO
-   - Add resource method
+   - Add resource method that returns arrays
    - Write tests with fixtures
    - Update documentation
 
@@ -971,7 +844,7 @@ class ContactsResource
 5. **What error responses can occur?**
 6. **Are there required vs optional parameters?**
 7. **What is the expected response structure?**
-8. **Should this return a DTO, collection, or boolean?**
+8. **Should this return an array, collection, or boolean?**
 9. **Does this operation have side effects that need logging?**
 10. **How should we handle partial failures in batch operations?**
 

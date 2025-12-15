@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Resources\V2;
 
-use Toddstoker\KeapSdk\Data\Contact\Contact;
 use Toddstoker\KeapSdk\Keap;
 use Toddstoker\KeapSdk\Requests\V2\Contacts\CreateContact;
 use Toddstoker\KeapSdk\Requests\V2\Contacts\DeleteContact;
@@ -41,7 +40,7 @@ readonly class ContactsResource implements Resource
      * iterate through all pages.
      *
      * @param ContactQuery|null $query Query builder with filters and pagination options
-     * @return array{contacts: array<Contact>, next_page_token: ?string}
+     * @return array{contacts: array<array<string, mixed>>, next_page_token: ?string}
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException|\JsonException|\DateMalformedStringException
      */
@@ -53,10 +52,7 @@ readonly class ContactsResource implements Resource
         $data = $response->json();
 
         return [
-            'contacts' => array_map(
-                fn (array $contactData) => Contact::fromArray($contactData),
-                $data['contacts'] ?? []
-            ),
+            'contacts' => $data['contacts'] ?? [],
             'next_page_token' => $data['next_page_token'] ?? null,
         ];
     }
@@ -83,28 +79,30 @@ readonly class ContactsResource implements Resource
      * Get a specific contact by ID
      *
      * @param int $contactId The contact ID
+     * @return array<string, mixed>
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function get(int $contactId): Contact
+    public function get(int $contactId): array
     {
         $response = $this->connector->send(new GetContact($contactId));
 
-        return Contact::fromArray($response->json());
+        return $response->json();
     }
 
     /**
      * Create a new contact
      *
      * @param array<string, mixed> $data Contact data
+     * @return array<string, mixed>
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function create(array $data): Contact
+    public function create(array $data): array
     {
         $response = $this->connector->send(new CreateContact($data));
 
-        return Contact::fromArray($response->json());
+        return $response->json();
     }
 
     /**
@@ -112,16 +110,17 @@ readonly class ContactsResource implements Resource
      *
      * @param int $contactId The contact ID to update
      * @param array<string, mixed> $data Contact data to update
+     * @return array<string, mixed>
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function update(int $contactId, array $data): Contact
+    public function update(int $contactId, array $data): array
     {
         $response = $this->connector->send(
             new UpdateContact($contactId, $data)
         );
 
-        return Contact::fromArray($response->json());
+        return $response->json();
     }
 
     /**
