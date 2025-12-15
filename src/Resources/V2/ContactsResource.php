@@ -58,14 +58,14 @@ readonly class ContactsResource implements Resource
     }
 
     /**
-     * Create a paginator for iterating through all contacts
+     * Create a paginator for iterating through the list contacts endpoint.
      *
      * Automatically fetches subsequent pages using cursor-based pagination.
      *
      * @param ContactQuery|null $query Query builder with filters and pagination options
      * @return Paginator
      */
-    public function paginate(?ContactQuery $query = null): Paginator
+    public function newListPaginator(?ContactQuery $query = null): Paginator
     {
         $query = $query ?? ContactQuery::make();
 
