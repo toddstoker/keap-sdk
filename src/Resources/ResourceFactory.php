@@ -41,6 +41,9 @@ class ResourceFactory
         'emailAddresses' => [
             2 => \Toddstoker\KeapSdk\Resources\V2\EmailAddressesResource::class,
         ],
+        'tags' => [
+            2 => \Toddstoker\KeapSdk\Resources\V2\TagsResource::class,
+        ],
     ];
 
     /**
