@@ -38,6 +38,9 @@ class ResourceFactory
             1 => \Toddstoker\KeapSdk\Resources\V1\ContactsResource::class,
             2 => \Toddstoker\KeapSdk\Resources\V2\ContactsResource::class,
         ],
+        'emailAddresses' => [
+            2 => \Toddstoker\KeapSdk\Resources\V2\EmailAddressesResource::class,
+        ],
     ];
 
     /**
