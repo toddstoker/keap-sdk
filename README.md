@@ -184,7 +184,6 @@ The SDK uses a clean, modern architecture:
 - **Credentials** - Encapsulate authentication methods
 - **Resources** - Group related API operations (Contacts, Companies, etc.)
 - **Requests** - Individual API request classes
-- **DTOs** - Type-safe data transfer objects
 
 ### How It Works
 
@@ -197,7 +196,6 @@ $keap->contacts()->get(123);
 // 4. ContactsResource is created/retrieved from cache
 // 5. get() method is called on the resource
 // 6. Request is sent via SaloonPHP
-// 7. Response is transformed to Contact DTO
 ```
 
 ## Adding New Resources
@@ -233,25 +231,6 @@ try {
     echo "Validation failed: " . $e->getMessage();
     print_r($e->errors);
 }
-```
-
-## Data Transfer Objects
-
-All API responses are transformed into type-safe DTOs:
-
-```php
-$contact = $keap->contacts()->get(123);
-
-// Type-safe property access
-echo $contact->id;           // int
-echo $contact->givenName;    // string|null
-echo $contact->email;        // string|null
-
-// Helper methods
-echo $contact->getFullName();
-
-// Convert to array
-$data = $contact->toArray();
 ```
 
 ## Examples
