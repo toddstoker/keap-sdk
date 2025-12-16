@@ -41,10 +41,17 @@ class ResourceFactory
         'emailAddresses' => [
             2 => \Toddstoker\KeapSdk\Resources\V2\EmailAddressesResource::class,
         ],
+        'hooks' => [
+            1 => \Toddstoker\KeapSdk\Resources\V1\HooksResource::class,
+        ],
+        'opportunities' => [
+            1 => \Toddstoker\KeapSdk\Resources\V1\OpportunitiesResource::class,
+        ],
         'reporting' => [
             2 => \Toddstoker\KeapSdk\Resources\V2\ReportingResource::class,
         ],
         'tags' => [
+            1 => \Toddstoker\KeapSdk\Resources\V1\TagsResource::class,
             2 => \Toddstoker\KeapSdk\Resources\V2\TagsResource::class,
         ],
     ];

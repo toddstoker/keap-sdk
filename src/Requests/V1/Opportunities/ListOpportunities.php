@@ -2,37 +2,37 @@
 
 declare(strict_types=1);
 
-namespace Toddstoker\KeapSdk\Requests\V1\Contacts;
+namespace Toddstoker\KeapSdk\Requests\V1\Opportunities;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use Toddstoker\KeapSdk\Support\V1\ContactQuery;
+use Toddstoker\KeapSdk\Support\V1\OpportunityQuery;
 
 /**
- * List Contacts (v1)
+ * List Opportunities (v1)
  *
- * Retrieves a list of contacts with filtering, sorting, and pagination.
+ * Retrieves a list of all opportunities with filtering, sorting, and pagination.
  *
  * Supports offset-based pagination using limit and offset.
- * Use ContactQuery for building complex queries with filters and sorting.
+ * Use OpportunityQuery for building queries with filters and sorting.
  *
  * @see https://developer.infusionsoft.com/docs/rest/
  */
-class ListContacts extends Request
+class ListOpportunities extends Request
 {
     protected Method $method = Method::GET;
 
     /**
-     * @param ContactQuery $query The query builder with filters, sorting, and pagination
+     * @param OpportunityQuery $query The query builder with filters, sorting, and pagination
      */
     public function __construct(
-        protected readonly ContactQuery $queryBuilder
+        protected readonly OpportunityQuery $queryBuilder
     ) {
     }
 
     public function resolveEndpoint(): string
     {
-        return '/contacts';
+        return "/opportunities";
     }
 
     /**
