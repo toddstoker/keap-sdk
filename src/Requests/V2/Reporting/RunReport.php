@@ -6,11 +6,15 @@ namespace Toddstoker\KeapSdk\Requests\V2\Reporting;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Toddstoker\KeapSdk\Support\V2\RunReportQuery;
 
 /**
  * Run Report (v2)
  *
  * Runs a report as defined in the application (identified as Saved Search).
+ *
+ * Supports cursor-based pagination using page_size and page_token.
+ * Use RunReportQuery for building queries with field selection, sorting, and pagination.
  *
  * Note: Deprecated as of v2 but still functional.
  *
@@ -20,12 +24,13 @@ class RunReport extends Request
 {
     protected Method $method = Method::POST;
 
+    /**
+     * @param string $reportId The report ID to run
+     * @param RunReportQuery $query The query builder with fields, sorting, and pagination
+     */
     public function __construct(
         protected readonly string $reportId,
-        protected readonly ?string $fields = null,
-        protected readonly ?string $orderBy = null,
-        protected readonly ?int $pageSize = null,
-        protected readonly ?string $pageToken = null
+        protected readonly RunReportQuery $queryBuilder
     ) {
     }
 
@@ -34,26 +39,11 @@ class RunReport extends Request
         return "/reporting/reports/{$this->reportId}:run";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultQuery(): array
     {
-        $query = [];
-
-        if ($this->fields !== null) {
-            $query['fields'] = $this->fields;
-        }
-
-        if ($this->orderBy !== null) {
-            $query['order_by'] = $this->orderBy;
-        }
-
-        if ($this->pageSize !== null) {
-            $query['page_size'] = $this->pageSize;
-        }
-
-        if ($this->pageToken !== null) {
-            $query['page_token'] = $this->pageToken;
-        }
-
-        return $query;
+        return $this->queryBuilder->toArray();
     }
 }

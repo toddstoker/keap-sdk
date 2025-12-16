@@ -9,6 +9,9 @@ use Toddstoker\KeapSdk\Requests\V2\Reporting\GetReport;
 use Toddstoker\KeapSdk\Requests\V2\Reporting\ListReports;
 use Toddstoker\KeapSdk\Requests\V2\Reporting\RunReport;
 use Toddstoker\KeapSdk\Resources\Resource;
+use Toddstoker\KeapSdk\Support\V2\Paginator;
+use Toddstoker\KeapSdk\Support\V2\ReportQuery;
+use Toddstoker\KeapSdk\Support\V2\RunReportQuery;
 
 /**
  * Reporting Resource (v2)
@@ -27,29 +30,41 @@ readonly class ReportingResource implements Resource
     }
 
     /**
-     * List reports
+     * List reports with filtering, sorting, and pagination
      *
-     * Retrieves a list of Reports as defined in the application (identified as Saved Search).
+     * Returns a single page of results. Use newListPaginator() to automatically
+     * iterate through all pages.
      *
-     * @param string|null $filter Filter to apply (e.g., "name==my-report")
-     * @param string|null $orderBy Field and direction to order by (e.g., "name asc")
-     * @param int|null $pageSize Total number of items to return per page
-     * @param string|null $pageToken Page token for pagination
+     * @param ReportQuery|null $query Query builder with filters, sorting, and pagination options
      * @return array{reports: array<array<string, mixed>>, next_page_token: ?string}
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function list(
-        ?string $filter = null,
-        ?string $orderBy = null,
-        ?int $pageSize = null,
-        ?string $pageToken = null
-    ): array {
-        $response = $this->connector->send(
-            new ListReports($filter, $orderBy, $pageSize, $pageToken)
-        );
+    public function list(?ReportQuery $query = null): array
+    {
+        $query = $query ?? ReportQuery::make();
+
+        $response = $this->connector->send(new ListReports($query));
 
         return $response->json();
+    }
+
+    /**
+     * Create a paginator for iterating through the list reports endpoint.
+     *
+     * Automatically fetches subsequent pages using cursor-based pagination.
+     *
+     * @param ReportQuery|null $query Query builder with filters, sorting, and pagination options
+     * @return Paginator
+     */
+    public function newListPaginator(?ReportQuery $query = null): Paginator
+    {
+        $query = $query ?? ReportQuery::make();
+
+        return new Paginator(
+            fn(ReportQuery $q) => $this->list($q),
+            $query
+        );
     }
 
     /**
@@ -70,30 +85,42 @@ readonly class ReportingResource implements Resource
     }
 
     /**
-     * Run a report
+     * Run a report with field selection, sorting, and pagination
      *
-     * Runs a report as defined in the application (identified as Saved Search).
+     * Returns a single page of results. Use newRunPaginator() to automatically
+     * iterate through all pages.
      *
      * @param string $reportId The report ID
-     * @param string|null $fields Comma-separated list of fields to return
-     * @param string|null $orderBy Attribute and direction to order items by (e.g., "given_name desc")
-     * @param int|null $pageSize Total number of items to return per page (max 1000, default 1000)
-     * @param string|null $pageToken Page token for pagination
+     * @param RunReportQuery|null $query Query builder with field selection, sorting, and pagination
      * @return array{results: array<array<string, mixed>>, page_token: ?string}
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function run(
-        string $reportId,
-        ?string $fields = null,
-        ?string $orderBy = null,
-        ?int $pageSize = null,
-        ?string $pageToken = null
-    ): array {
-        $response = $this->connector->send(
-            new RunReport($reportId, $fields, $orderBy, $pageSize, $pageToken)
-        );
+    public function run(string $reportId, ?RunReportQuery $query = null): array
+    {
+        $query = $query ?? RunReportQuery::make();
+
+        $response = $this->connector->send(new RunReport($reportId, $query));
 
         return $response->json();
+    }
+
+    /**
+     * Create a paginator for iterating through report results.
+     *
+     * Automatically fetches subsequent pages using cursor-based pagination.
+     *
+     * @param string $reportId The report ID
+     * @param RunReportQuery|null $query Query builder with field selection, sorting, and pagination
+     * @return Paginator
+     */
+    public function newRunPaginator(string $reportId, ?RunReportQuery $query = null): Paginator
+    {
+        $query = $query ?? RunReportQuery::make();
+
+        return new Paginator(
+            fn(RunReportQuery $q) => $this->run($reportId, $q),
+            $query
+        );
     }
 }

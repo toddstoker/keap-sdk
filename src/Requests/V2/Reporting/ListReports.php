@@ -6,11 +6,15 @@ namespace Toddstoker\KeapSdk\Requests\V2\Reporting;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Toddstoker\KeapSdk\Support\V2\ReportQuery;
 
 /**
  * List Reports (v2)
  *
  * Retrieves a list of Reports as defined in the application (identified as Saved Search).
+ *
+ * Supports cursor-based pagination using page_size and page_token.
+ * Use ReportQuery for building complex queries with filters and sorting.
  *
  * Note: Deprecated as of v2 but still functional.
  *
@@ -20,11 +24,11 @@ class ListReports extends Request
 {
     protected Method $method = Method::GET;
 
+    /**
+     * @param ReportQuery $query The query builder with filters, sorting, and pagination
+     */
     public function __construct(
-        protected readonly ?string $filter = null,
-        protected readonly ?string $orderBy = null,
-        protected readonly ?int $pageSize = null,
-        protected readonly ?string $pageToken = null
+        protected readonly ReportQuery $queryBuilder
     ) {
     }
 
@@ -33,26 +37,11 @@ class ListReports extends Request
         return "/reporting/reports";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultQuery(): array
     {
-        $query = [];
-
-        if ($this->filter !== null) {
-            $query['filter'] = $this->filter;
-        }
-
-        if ($this->orderBy !== null) {
-            $query['order_by'] = $this->orderBy;
-        }
-
-        if ($this->pageSize !== null) {
-            $query['page_size'] = $this->pageSize;
-        }
-
-        if ($this->pageToken !== null) {
-            $query['page_token'] = $this->pageToken;
-        }
-
-        return $query;
+        return $this->queryBuilder->toArray();
     }
 }

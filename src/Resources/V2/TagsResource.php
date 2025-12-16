@@ -20,6 +20,8 @@ use Toddstoker\KeapSdk\Requests\V2\Tags\RemoveTagFromContacts;
 use Toddstoker\KeapSdk\Requests\V2\Tags\UpdateTag;
 use Toddstoker\KeapSdk\Requests\V2\Tags\UpdateTagCategory;
 use Toddstoker\KeapSdk\Resources\Resource;
+use Toddstoker\KeapSdk\Support\V2\Paginator;
+use Toddstoker\KeapSdk\Support\V2\TagQuery;
 
 /**
  * Tags Resource (v2)
@@ -36,29 +38,41 @@ readonly class TagsResource implements Resource
     }
 
     /**
-     * List tags
+     * List tags with filtering, sorting, and pagination
      *
-     * Retrieves a list of tags with filtering and pagination.
+     * Returns a single page of results. Use newListPaginator() to automatically
+     * iterate through all pages.
      *
-     * @param string|null $filter Filter to apply (e.g., "name==my-tag")
-     * @param string|null $orderBy Field and direction to order by (e.g., "name asc")
-     * @param int|null $pageSize Total number of items to return per page
-     * @param string|null $pageToken Page token for pagination
+     * @param TagQuery|null $query Query builder with filters, sorting, and pagination options
      * @return array{tags: array<array<string, mixed>>, next_page_token: ?string}
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function list(
-        ?string $filter = null,
-        ?string $orderBy = null,
-        ?int $pageSize = null,
-        ?string $pageToken = null
-    ): array {
-        $response = $this->connector->send(
-            new ListTags($filter, $orderBy, $pageSize, $pageToken)
-        );
+    public function list(?TagQuery $query = null): array
+    {
+        $query = $query ?? TagQuery::make();
+
+        $response = $this->connector->send(new ListTags($query));
 
         return $response->json();
+    }
+
+    /**
+     * Create a paginator for iterating through the list tags endpoint.
+     *
+     * Automatically fetches subsequent pages using cursor-based pagination.
+     *
+     * @param TagQuery|null $query Query builder with filters, sorting, and pagination options
+     * @return Paginator
+     */
+    public function newListPaginator(?TagQuery $query = null): Paginator
+    {
+        $query = $query ?? TagQuery::make();
+
+        return new Paginator(
+            fn(TagQuery $q) => $this->list($q),
+            $query
+        );
     }
 
     /**
