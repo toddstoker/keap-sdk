@@ -254,20 +254,6 @@ Check out the `examples/` directory for detailed examples:
 composer test
 ```
 
-### Code Style
-
-This project follows PSR-12 coding standards:
-
-```bash
-composer cs:fix
-```
-
-### Static Analysis
-
-```bash
-composer analyse
-```
-
 ## Documentation
 
 - [Keap REST API v1 Documentation](https://developer.infusionsoft.com/docs/rest/)
