@@ -20,8 +20,8 @@ use Toddstoker\KeapSdk\Requests\V1\Contacts\GetCreditCards;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\ListContacts;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\RemoveAllTagsFromContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\RemoveTagFromContact;
-use Toddstoker\KeapSdk\Requests\V1\Contacts\UpdateOrCreateContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\UpdateContact;
+use Toddstoker\KeapSdk\Requests\V1\Contacts\UpdateOrCreateContact;
 use Toddstoker\KeapSdk\Resources\Resource;
 use Toddstoker\KeapSdk\Support\V1\ContactQuery;
 use Toddstoker\KeapSdk\Support\V1\Paginator;
@@ -33,14 +33,12 @@ use Toddstoker\KeapSdk\Support\V1\Paginator;
  * This resource is accessed via the Keap connector's magic __call() method.
  *
  * @see https://developer.infusionsoft.com/docs/rest/
- *
  */
 readonly class ContactsResource implements Resource
 {
     public function __construct(
         protected Keap $connector
-    ) {
-    }
+    ) {}
 
     /**
      * List contacts with filtering, sorting, and pagination
@@ -48,8 +46,9 @@ readonly class ContactsResource implements Resource
      * Returns a single page of results. Use newListPaginator() to automatically
      * iterate through all pages.
      *
-     * @param ContactQuery|null $query Query builder with filters and pagination options
+     * @param  ContactQuery|null  $query  Query builder with filters and pagination options
      * @return array{contacts: array<array<string, mixed>>, count: int, next: ?string, previous: ?string}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException|\JsonException|\DateMalformedStringException
      */
@@ -73,15 +72,14 @@ readonly class ContactsResource implements Resource
      *
      * Automatically fetches subsequent pages using offset-based pagination.
      *
-     * @param ContactQuery|null $query Query builder with filters and pagination options
-     * @return Paginator
+     * @param  ContactQuery|null  $query  Query builder with filters and pagination options
      */
     public function newListPaginator(?ContactQuery $query = null): Paginator
     {
         $query = $query ?? ContactQuery::make()->limit(100);
 
         return new Paginator(
-            fn(ContactQuery $q) => $this->list($q),
+            fn (ContactQuery $q) => $this->list($q),
             $query
         );
     }
@@ -89,9 +87,10 @@ readonly class ContactsResource implements Resource
     /**
      * Get a specific contact by ID
      *
-     * @param int $contactId The contact ID
-     * @param array<string>|null $optionalProperties Optional properties to include
+     * @param  int  $contactId  The contact ID
+     * @param  array<string>|null  $optionalProperties  Optional properties to include
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -107,8 +106,9 @@ readonly class ContactsResource implements Resource
     /**
      * Create a new contact
      *
-     * @param array<string, mixed> $data Contact data
+     * @param  array<string, mixed>  $data  Contact data
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -122,9 +122,10 @@ readonly class ContactsResource implements Resource
     /**
      * Update an existing contact
      *
-     * @param int $contactId The contact ID to update
-     * @param array<string, mixed> $data Contact data to update
+     * @param  int  $contactId  The contact ID to update
+     * @param  array<string, mixed>  $data  Contact data to update
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -140,7 +141,8 @@ readonly class ContactsResource implements Resource
     /**
      * Delete a contact
      *
-     * @param int $contactId The contact ID to delete
+     * @param  int  $contactId  The contact ID to delete
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -154,8 +156,9 @@ readonly class ContactsResource implements Resource
     /**
      * Apply a tag to a contact
      *
-     * @param int $contactId The contact ID
-     * @param int $tagId The tag ID to apply
+     * @param  int  $contactId  The contact ID
+     * @param  int  $tagId  The tag ID to apply
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -171,8 +174,9 @@ readonly class ContactsResource implements Resource
     /**
      * Remove a tag from a contact
      *
-     * @param int $contactId The contact ID
-     * @param int $tagId The tag ID to remove
+     * @param  int  $contactId  The contact ID
+     * @param  int  $tagId  The tag ID to remove
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -191,12 +195,13 @@ readonly class ContactsResource implements Resource
      * Retrieves the custom fields for the Contact object.
      *
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
     public function getModel(): array
     {
-        return $this->connector->send(new GetContactModel())->json();
+        return $this->connector->send(new GetContactModel)->json();
     }
 
     /**
@@ -204,10 +209,11 @@ readonly class ContactsResource implements Resource
      *
      * Retrieves a list of tags applied to a contact.
      *
-     * @param int $contactId The contact ID
-     * @param int|null $limit Max number of results
-     * @param int|null $offset Starting offset
+     * @param  int  $contactId  The contact ID
+     * @param  int|null  $limit  Max number of results
+     * @param  int|null  $offset  Starting offset
      * @return array{tags: array<array<string, mixed>>, count: int}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -221,8 +227,9 @@ readonly class ContactsResource implements Resource
      *
      * Retrieves a list of emails sent to a contact.
      *
-     * @param int $contactId The contact ID
+     * @param  int  $contactId  The contact ID
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -236,8 +243,9 @@ readonly class ContactsResource implements Resource
      *
      * Updates or creates a contact.
      *
-     * @param array<string, mixed> $data Contact data
+     * @param  array<string, mixed>  $data  Contact data
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -251,8 +259,9 @@ readonly class ContactsResource implements Resource
      *
      * Creates a new custom field for contacts.
      *
-     * @param array<string, mixed> $data Custom field data
+     * @param  array<string, mixed>  $data  Custom field data
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -266,8 +275,9 @@ readonly class ContactsResource implements Resource
      *
      * Retrieves all credit cards for a contact.
      *
-     * @param int $contactId The contact ID
+     * @param  int  $contactId  The contact ID
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -281,9 +291,10 @@ readonly class ContactsResource implements Resource
      *
      * Creates a credit card for a contact.
      *
-     * @param int $contactId The contact ID
-     * @param array<string, mixed> $data Credit card data
+     * @param  int  $contactId  The contact ID
+     * @param  array<string, mixed>  $data  Credit card data
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -297,9 +308,10 @@ readonly class ContactsResource implements Resource
      *
      * Creates a record of an email sent to a contact.
      *
-     * @param int $contactId The contact ID
-     * @param array<string, mixed> $data Email data
+     * @param  int  $contactId  The contact ID
+     * @param  array<string, mixed>  $data  Email data
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -313,7 +325,8 @@ readonly class ContactsResource implements Resource
      *
      * Removes all tags from a contact.
      *
-     * @param int $contactId The contact ID
+     * @param  int  $contactId  The contact ID
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -327,9 +340,10 @@ readonly class ContactsResource implements Resource
      *
      * Adds UTM parameters to a contact.
      *
-     * @param int $contactId The contact ID
-     * @param array<string, mixed> $data UTM data
+     * @param  int  $contactId  The contact ID
+     * @param  array<string, mixed>  $data  UTM data
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */

@@ -19,8 +19,6 @@ class TooManyRequestsException extends ClientException
      * Number of seconds to wait before retrying the request
      *
      * Extracted from the Retry-After response header, if present.
-     *
-     * @var int|null
      */
     public readonly ?int $retryAfter;
 

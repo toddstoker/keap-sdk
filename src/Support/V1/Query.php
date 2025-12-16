@@ -69,26 +69,27 @@ abstract class Query
      */
     public static function make(): static
     {
-        return new static();
+        return new static;
     }
 
     /**
      * Add a filter condition
      *
-     * @param string $field Field name to filter on
-     * @param mixed $value Value to match
+     * @param  string  $field  Field name to filter on
+     * @param  mixed  $value  Value to match
      * @return $this
      */
     public function where(string $field, mixed $value): static
     {
         $this->filters[$field] = $value;
+
         return $this;
     }
 
     /**
      * Add multiple filter conditions at once
      *
-     * @param array<string, mixed> $conditions Array of field => value pairs
+     * @param  array<string, mixed>  $conditions  Array of field => value pairs
      * @return $this
      */
     public function whereMany(array $conditions): static
@@ -96,14 +97,15 @@ abstract class Query
         foreach ($conditions as $field => $value) {
             $this->where($field, $value);
         }
+
         return $this;
     }
 
     /**
      * Set the order by clause
      *
-     * @param string $field Field to order by
-     * @param string $direction Sort direction ('ASCENDING' or 'DESCENDING', default 'ASCENDING')
+     * @param  string  $field  Field to order by
+     * @param  string  $direction  Sort direction ('ASCENDING' or 'DESCENDING', default 'ASCENDING')
      * @return $this
      */
     public function orderBy(string $field, string $direction = 'ASCENDING'): static
@@ -121,30 +123,33 @@ abstract class Query
 
         $this->order = $field;
         $this->orderDirection = $direction;
+
         return $this;
     }
 
     /**
      * Set the number of items to return
      *
-     * @param int $limit Number of items (1-1000)
+     * @param  int  $limit  Number of items (1-1000)
      * @return $this
      */
     public function limit(int $limit): static
     {
         $this->limit = $limit;
+
         return $this;
     }
 
     /**
      * Set the number of items to skip
      *
-     * @param int $offset Number of items to skip
+     * @param  int  $offset  Number of items to skip
      * @return $this
      */
     public function offset(int $offset): static
     {
         $this->offset = $offset;
+
         return $this;
     }
 
@@ -174,9 +179,10 @@ abstract class Query
      * Validates against $allowedFilters and $allowedOrderBy arrays
      * defined in child classes.
      *
-     * @param string $method Method name
-     * @param array<mixed> $args Method arguments
+     * @param  string  $method  Method name
+     * @param  array<mixed>  $args  Method arguments
      * @return $this
+     *
      * @throws BadMethodCallException If method pattern is invalid or field not allowed
      */
     public function __call(string $method, array $args): static
@@ -185,14 +191,14 @@ abstract class Query
         if (str_starts_with($method, 'by')) {
             $field = $this->methodNameToFieldName($method, 'by');
 
-            if (!empty($this->allowedFilters) && !in_array($field, $this->allowedFilters, true)) {
+            if (! empty($this->allowedFilters) && ! in_array($field, $this->allowedFilters, true)) {
                 throw new BadMethodCallException(
-                    "Filter field '{$field}' is not allowed. " .
-                    "Allowed filters: " . implode(', ', $this->allowedFilters)
+                    "Filter field '{$field}' is not allowed. ".
+                    'Allowed filters: '.implode(', ', $this->allowedFilters)
                 );
             }
 
-            if (!isset($args[0])) {
+            if (! isset($args[0])) {
                 throw new BadMethodCallException(
                     "Method {$method}() requires a value argument"
                 );
@@ -205,10 +211,10 @@ abstract class Query
         if (str_starts_with($method, 'orderBy')) {
             $field = $this->methodNameToFieldName($method, 'orderBy');
 
-            if (!empty($this->allowedOrderBy) && !in_array($field, $this->allowedOrderBy, true)) {
+            if (! empty($this->allowedOrderBy) && ! in_array($field, $this->allowedOrderBy, true)) {
                 throw new BadMethodCallException(
-                    "OrderBy field '{$field}' is not allowed. " .
-                    "Allowed orderBy fields: " . implode(', ', $this->allowedOrderBy)
+                    "OrderBy field '{$field}' is not allowed. ".
+                    'Allowed orderBy fields: '.implode(', ', $this->allowedOrderBy)
                 );
             }
 
@@ -218,7 +224,7 @@ abstract class Query
         }
 
         throw new BadMethodCallException(
-            "Method {$method}() does not exist on " . static::class
+            "Method {$method}() does not exist on ".static::class
         );
     }
 
@@ -230,8 +236,8 @@ abstract class Query
      * - byGivenName -> given_name
      * - orderByDateCreated -> date_created
      *
-     * @param string $methodName Method name (e.g., 'byGivenName')
-     * @param string $prefix Prefix to remove (e.g., 'by')
+     * @param  string  $methodName  Method name (e.g., 'byGivenName')
+     * @param  string  $prefix  Prefix to remove (e.g., 'by')
      * @return string Snake-case field name (e.g., 'given_name')
      */
     protected function methodNameToFieldName(string $methodName, string $prefix): string

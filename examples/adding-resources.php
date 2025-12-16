@@ -9,10 +9,10 @@ declare(strict_types=1);
  * using the ResourceFactory pattern.
  */
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
-use Toddstoker\KeapSdk\Keap;
 use Toddstoker\KeapSdk\Credentials\PersonalAccessToken;
+use Toddstoker\KeapSdk\Keap;
 
 // ============================================================================
 // Step 1: Add to ResourceFactory::$classMap
@@ -96,7 +96,7 @@ try {
 
     echo "Successfully accessed companies resource!\n";
 } catch (\InvalidArgumentException $e) {
-    echo "Error: " . $e->getMessage() . "\n";
+    echo 'Error: '.$e->getMessage()."\n";
     // This will show available resources if the resource doesn't exist
 }
 

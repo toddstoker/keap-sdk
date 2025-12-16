@@ -23,12 +23,11 @@ class CreateContact extends Request implements HasBody
     protected Method $method = Method::POST;
 
     /**
-     * @param array<string, mixed> $data Contact data
+     * @param  array<string, mixed>  $data  Contact data
      */
     public function __construct(
         protected readonly array $data
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

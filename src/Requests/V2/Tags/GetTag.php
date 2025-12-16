@@ -20,8 +20,7 @@ class GetTag extends Request
 
     public function __construct(
         protected readonly int $tagId
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

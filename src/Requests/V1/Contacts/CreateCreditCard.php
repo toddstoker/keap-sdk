@@ -25,8 +25,7 @@ class CreateCreditCard extends Request implements HasBody
     public function __construct(
         protected readonly int $contactId,
         protected readonly array $data
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

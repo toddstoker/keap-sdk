@@ -26,8 +26,7 @@ readonly class ReportingResource implements Resource
 {
     public function __construct(
         protected Keap $connector
-    ) {
-    }
+    ) {}
 
     /**
      * List reports with filtering, sorting, and pagination
@@ -35,8 +34,9 @@ readonly class ReportingResource implements Resource
      * Returns a single page of results. Use newListPaginator() to automatically
      * iterate through all pages.
      *
-     * @param ReportQuery|null $query Query builder with filters, sorting, and pagination options
+     * @param  ReportQuery|null  $query  Query builder with filters, sorting, and pagination options
      * @return array{reports: array<array<string, mixed>>, next_page_token: ?string}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -54,15 +54,14 @@ readonly class ReportingResource implements Resource
      *
      * Automatically fetches subsequent pages using cursor-based pagination.
      *
-     * @param ReportQuery|null $query Query builder with filters, sorting, and pagination options
-     * @return Paginator
+     * @param  ReportQuery|null  $query  Query builder with filters, sorting, and pagination options
      */
     public function newListPaginator(?ReportQuery $query = null): Paginator
     {
         $query = $query ?? ReportQuery::make();
 
         return new Paginator(
-            fn(ReportQuery $q) => $this->list($q),
+            fn (ReportQuery $q) => $this->list($q),
             $query
         );
     }
@@ -72,8 +71,9 @@ readonly class ReportingResource implements Resource
      *
      * Retrieves information about a Report as defined in the application (identified as Saved Search).
      *
-     * @param string $reportId The report ID
+     * @param  string  $reportId  The report ID
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -90,9 +90,10 @@ readonly class ReportingResource implements Resource
      * Returns a single page of results. Use newRunPaginator() to automatically
      * iterate through all pages.
      *
-     * @param string $reportId The report ID
-     * @param RunReportQuery|null $query Query builder with field selection, sorting, and pagination
+     * @param  string  $reportId  The report ID
+     * @param  RunReportQuery|null  $query  Query builder with field selection, sorting, and pagination
      * @return array{results: array<array<string, mixed>>, page_token: ?string}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -110,16 +111,15 @@ readonly class ReportingResource implements Resource
      *
      * Automatically fetches subsequent pages using cursor-based pagination.
      *
-     * @param string $reportId The report ID
-     * @param RunReportQuery|null $query Query builder with field selection, sorting, and pagination
-     * @return Paginator
+     * @param  string  $reportId  The report ID
+     * @param  RunReportQuery|null  $query  Query builder with field selection, sorting, and pagination
      */
     public function newRunPaginator(string $reportId, ?RunReportQuery $query = null): Paginator
     {
         $query = $query ?? RunReportQuery::make();
 
         return new Paginator(
-            fn(RunReportQuery $q) => $this->run($reportId, $q),
+            fn (RunReportQuery $q) => $this->run($reportId, $q),
             $query
         );
     }

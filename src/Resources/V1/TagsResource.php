@@ -29,8 +29,7 @@ readonly class TagsResource implements Resource
 {
     public function __construct(
         protected Keap $connector
-    ) {
-    }
+    ) {}
 
     /**
      * List tags with filtering and pagination
@@ -38,8 +37,9 @@ readonly class TagsResource implements Resource
      * Returns a single page of results. Use newListPaginator() to automatically
      * iterate through all pages.
      *
-     * @param TagQuery|null $query Query builder with filters and pagination options
+     * @param  TagQuery|null  $query  Query builder with filters and pagination options
      * @return array{tags: array<array<string, mixed>>, count: int}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -57,15 +57,14 @@ readonly class TagsResource implements Resource
      *
      * Automatically fetches subsequent pages using offset-based pagination.
      *
-     * @param TagQuery|null $query Query builder with filters and pagination options
-     * @return Paginator
+     * @param  TagQuery|null  $query  Query builder with filters and pagination options
      */
     public function newListPaginator(?TagQuery $query = null): Paginator
     {
         $query = $query ?? TagQuery::make()->limit(1000);
 
         return new Paginator(
-            fn(TagQuery $q) => $this->list($q),
+            fn (TagQuery $q) => $this->list($q),
             $query
         );
     }
@@ -75,8 +74,9 @@ readonly class TagsResource implements Resource
      *
      * Retrieves a single tag.
      *
-     * @param int $tagId The tag ID
+     * @param  int  $tagId  The tag ID
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -92,8 +92,9 @@ readonly class TagsResource implements Resource
      *
      * Creates a new tag.
      *
-     * @param array<string, mixed> $data Tag data
+     * @param  array<string, mixed>  $data  Tag data
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -109,8 +110,9 @@ readonly class TagsResource implements Resource
      *
      * Creates a new tag category.
      *
-     * @param array<string, mixed> $data Tag category data
+     * @param  array<string, mixed>  $data  Tag category data
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -126,10 +128,11 @@ readonly class TagsResource implements Resource
      *
      * Retrieves a list of companies that have the given tag applied.
      *
-     * @param int $tagId The tag ID
-     * @param int|null $limit Max number of results (default 1000)
-     * @param int|null $offset Starting offset
+     * @param  int  $tagId  The tag ID
+     * @param  int|null  $limit  Max number of results (default 1000)
+     * @param  int|null  $offset  Starting offset
      * @return array{companies: array<array<string, mixed>>, count: int}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -145,10 +148,11 @@ readonly class TagsResource implements Resource
      *
      * Retrieves a list of contacts that have the given tag applied.
      *
-     * @param int $tagId The tag ID
-     * @param int|null $limit Max number of results (default 1000)
-     * @param int|null $offset Starting offset
+     * @param  int  $tagId  The tag ID
+     * @param  int|null  $limit  Max number of results (default 1000)
+     * @param  int|null  $offset  Starting offset
      * @return array{contacts: array<array<string, mixed>>, count: int}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -164,9 +168,10 @@ readonly class TagsResource implements Resource
      *
      * Applies a tag to a list of contacts.
      *
-     * @param int $tagId The tag ID
-     * @param array<int> $contactIds Array of contact IDs
+     * @param  int  $tagId  The tag ID
+     * @param  array<int>  $contactIds  Array of contact IDs
      * @return array<array<string, mixed>>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -182,8 +187,9 @@ readonly class TagsResource implements Resource
      *
      * Removes a tag from a list of contacts.
      *
-     * @param int $tagId The tag ID
-     * @param array<int> $contactIds Array of contact IDs
+     * @param  int  $tagId  The tag ID
+     * @param  array<int>  $contactIds  Array of contact IDs
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -199,8 +205,9 @@ readonly class TagsResource implements Resource
      *
      * Removes a tag from a single contact.
      *
-     * @param int $tagId The tag ID
-     * @param int $contactId The contact ID
+     * @param  int  $tagId  The tag ID
+     * @param  int  $contactId  The contact ID
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */

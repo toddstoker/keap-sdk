@@ -25,8 +25,7 @@ class ApplyTagToContacts extends Request implements HasBody
     public function __construct(
         protected readonly int $tagId,
         protected readonly array $contactIds
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

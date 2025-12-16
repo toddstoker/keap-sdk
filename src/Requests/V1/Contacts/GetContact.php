@@ -19,14 +19,13 @@ class GetContact extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param int $contactId The contact ID
-     * @param array<string>|null $optionalProperties Comma-delimited list of Contact properties to include in the response
+     * @param  int  $contactId  The contact ID
+     * @param  array<string>|null  $optionalProperties  Comma-delimited list of Contact properties to include in the response
      */
     public function __construct(
         protected readonly int $contactId,
         protected readonly ?array $optionalProperties = null,
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

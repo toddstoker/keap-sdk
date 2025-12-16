@@ -20,8 +20,7 @@ class GetEmailAddressStatus extends Request
 
     public function __construct(
         protected readonly string $email
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

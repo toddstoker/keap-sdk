@@ -25,16 +25,15 @@ class ListReports extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param ReportQuery $query The query builder with filters, sorting, and pagination
+     * @param  ReportQuery  $query  The query builder with filters, sorting, and pagination
      */
     public function __construct(
         protected readonly ReportQuery $queryBuilder
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
-        return "/reporting/reports";
+        return '/reporting/reports';
     }
 
     /**

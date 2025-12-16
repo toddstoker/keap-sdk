@@ -20,8 +20,7 @@ class GetCreditCards extends Request
 
     public function __construct(
         protected readonly int $contactId
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

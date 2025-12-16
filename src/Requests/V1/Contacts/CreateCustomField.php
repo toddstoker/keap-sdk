@@ -24,12 +24,11 @@ class CreateCustomField extends Request implements HasBody
 
     public function __construct(
         protected readonly array $data
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/model/customFields";
+        return '/contacts/model/customFields';
     }
 
     protected function defaultBody(): array

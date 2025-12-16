@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Support\V2;
 
-use Generator;
 use Closure;
+use Generator;
 
 /**
  * Paginator for Keap v2 API list endpoints
@@ -39,8 +39,6 @@ class Paginator
 
     /**
      * The fetch callback that executes the API request
-     *
-     * @var Closure
      */
     protected Closure $fetchCallback;
 
@@ -59,8 +57,8 @@ class Paginator
     /**
      * Create a new Paginator instance
      *
-     * @param Closure $fetchCallback Callback that accepts a Query and returns the API response
-     * @param Query $query The query builder instance
+     * @param  Closure  $fetchCallback  Callback that accepts a Query and returns the API response
+     * @param  Query  $query  The query builder instance
      */
     public function __construct(Closure $fetchCallback, Query $query)
     {
@@ -71,8 +69,8 @@ class Paginator
     /**
      * Create a new Paginator instance
      *
-     * @param Closure $fetchCallback Callback that accepts a Query and returns the API response
-     * @param Query $query The query builder instance
+     * @param  Closure  $fetchCallback  Callback that accepts a Query and returns the API response
+     * @param  Query  $query  The query builder instance
      */
     public static function make(Closure $fetchCallback, Query $query): static
     {
@@ -88,7 +86,7 @@ class Paginator
      */
     public function getPage(): array
     {
-        if (!$this->initialized) {
+        if (! $this->initialized) {
             $this->currentPage = ($this->fetchCallback)($this->query);
             $this->initialized = true;
         }
@@ -121,12 +119,11 @@ class Paginator
 
     /**
      * Check if there are more pages available
-     *
-     * @return bool
      */
     public function hasMorePages(): bool
     {
         $currentPage = $this->getPage();
+
         return isset($currentPage['next_page_token']);
     }
 
@@ -135,8 +132,7 @@ class Paginator
      *
      * This generator will automatically fetch subsequent pages as needed.
      *
-     * @param string $key The key in the response containing the items array (e.g., 'contacts', 'companies')
-     * @return Generator
+     * @param  string  $key  The key in the response containing the items array (e.g., 'contacts', 'companies')
      */
     public function items(string $key): Generator
     {
@@ -150,7 +146,7 @@ class Paginator
             }
 
             // Fetch next page if available
-            if (!$this->hasMorePages()) {
+            if (! $this->hasMorePages()) {
                 break;
             }
 
@@ -160,8 +156,6 @@ class Paginator
 
     /**
      * Iterate through all pages (not individual items)
-     *
-     * @return Generator
      */
     public function pages(): Generator
     {
@@ -170,7 +164,7 @@ class Paginator
         while ($page) {
             yield $page;
 
-            if (!$this->hasMorePages()) {
+            if (! $this->hasMorePages()) {
                 break;
             }
 
@@ -184,7 +178,7 @@ class Paginator
      * WARNING: This will fetch all pages and load all results into memory.
      * Use with caution for large result sets.
      *
-     * @param string $key The key in the response containing the items array
+     * @param  string  $key  The key in the response containing the items array
      * @return array<mixed>
      */
     public function all(string $key): array

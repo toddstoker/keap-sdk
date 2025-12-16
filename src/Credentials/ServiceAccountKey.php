@@ -10,7 +10,7 @@ readonly class ServiceAccountKey implements BaseCredential
 {
     public function __construct(
         public string $serviceKey
-    ) { }
+    ) {}
 
     public function getAuth(): TokenAuthenticator
     {

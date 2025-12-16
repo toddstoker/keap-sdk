@@ -20,16 +20,16 @@ readonly class EmailAddressesResource implements Resource
 {
     public function __construct(
         protected Keap $connector
-    ) {
-    }
+    ) {}
 
     /**
      * Get email address status
      *
      * Retrieves the opt-in status for a given Email Address.
      *
-     * @param string $email The email address
+     * @param  string  $email  The email address
      * @return array{email: string, opted_in: bool, status: string}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -52,10 +52,11 @@ readonly class EmailAddressesResource implements Resource
      * currently in: Unengaged Marketable, Unengaged Non-Marketable, Non-Marketable, or Opt-Out: Manual.
      * All other statuses will remain non-marketable.
      *
-     * @param string $email The email address
-     * @param bool $optedIn Whether the email is opted in
-     * @param string $reason Reason for the opt-in/opt-out change (required for compliance)
+     * @param  string  $email  The email address
+     * @param  bool  $optedIn  Whether the email is opted in
+     * @param  string  $reason  Reason for the opt-in/opt-out change (required for compliance)
      * @return array{email: string, opted_in: bool, status: string}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */

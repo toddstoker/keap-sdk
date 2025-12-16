@@ -10,7 +10,4 @@ namespace Toddstoker\KeapSdk\Exceptions\ClientException;
  * This typically indicates invalid or expired credentials.
  * Check your access token, refresh token, or API credentials.
  */
-class UnauthorizedException extends ClientException
-{
-
-}
+class UnauthorizedException extends ClientException {}

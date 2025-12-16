@@ -10,7 +10,4 @@ namespace Toddstoker\KeapSdk\Exceptions\ClientException;
  * This indicates you don't have permission to access the requested resource,
  * even though you are authenticated. Check authenticated user permissions.
  */
-class ForbiddenException extends ClientException
-{
-
-}
+class ForbiddenException extends ClientException {}

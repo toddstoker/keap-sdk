@@ -10,7 +10,7 @@ readonly class PersonalAccessToken implements BaseCredential
 {
     public function __construct(
         public string $personalAccessToken
-    ) { }
+    ) {}
 
     public function getAuth(): TokenAuthenticator
     {

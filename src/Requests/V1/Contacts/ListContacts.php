@@ -23,12 +23,11 @@ class ListContacts extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param ContactQuery $query The query builder with filters, sorting, and pagination
+     * @param  ContactQuery  $query  The query builder with filters, sorting, and pagination
      */
     public function __construct(
         protected readonly ContactQuery $queryBuilder
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

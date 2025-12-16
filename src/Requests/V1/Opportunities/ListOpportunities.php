@@ -23,16 +23,15 @@ class ListOpportunities extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param OpportunityQuery $query The query builder with filters, sorting, and pagination
+     * @param  OpportunityQuery  $query  The query builder with filters, sorting, and pagination
      */
     public function __construct(
         protected readonly OpportunityQuery $queryBuilder
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
-        return "/opportunities";
+        return '/opportunities';
     }
 
     /**

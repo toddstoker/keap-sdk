@@ -28,7 +28,7 @@ readonly class HooksResource implements Resource
 
     public function list(): array
     {
-        return $this->connector->send(new ListHooks())->json();
+        return $this->connector->send(new ListHooks)->json();
     }
 
     public function get(string $key): array
@@ -53,7 +53,7 @@ readonly class HooksResource implements Resource
 
     public function listEventKeys(): array
     {
-        return $this->connector->send(new ListEventKeys())->json();
+        return $this->connector->send(new ListEventKeys)->json();
     }
 
     public function verify(string $key): bool

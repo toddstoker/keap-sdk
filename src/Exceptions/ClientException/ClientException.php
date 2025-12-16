@@ -6,7 +6,4 @@ namespace Toddstoker\KeapSdk\Exceptions\ClientException;
 
 use Toddstoker\KeapSdk\Exceptions\RequestException;
 
-class ClientException extends RequestException
-{
-
-}
+class ClientException extends RequestException {}

@@ -55,8 +55,8 @@ class ContactQuery extends Query
     /**
      * Convenience method: Filter by contacts updated between two dates
      *
-     * @param string $startDatetime Start datetime (ISO 8601 format)
-     * @param string $endDatetime End datetime (ISO 8601 format)
+     * @param  string  $startDatetime  Start datetime (ISO 8601 format)
+     * @param  string  $endDatetime  End datetime (ISO 8601 format)
      * @return $this
      */
     public function updatedBetween(string $startDatetime, string $endDatetime): static
@@ -68,7 +68,7 @@ class ContactQuery extends Query
     /**
      * Set optional properties to include in response
      *
-     * @param array<string> $properties Array of property names
+     * @param  array<string>  $properties  Array of property names
      * @return $this
      */
     public function optionalProperties(array $properties): static

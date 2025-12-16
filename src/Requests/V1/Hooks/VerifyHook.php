@@ -20,8 +20,7 @@ class VerifyHook extends Request
 
     public function __construct(
         protected readonly string $key
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

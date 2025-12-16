@@ -19,14 +19,13 @@ class RemoveTagFromContact extends Request
     protected Method $method = Method::DELETE;
 
     /**
-     * @param int $contactId The contact ID
-     * @param int $tagId The tag ID to remove
+     * @param  int  $contactId  The contact ID
+     * @param  int  $tagId  The tag ID to remove
      */
     public function __construct(
         protected readonly int $contactId,
         protected readonly int $tagId
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

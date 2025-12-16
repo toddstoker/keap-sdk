@@ -30,7 +30,6 @@ use Toddstoker\KeapSdk\Resources\ResourceFactory;
  * to provide dynamic resource access via ResourceFactory.
  *
  * @method \Toddstoker\KeapSdk\Resources\V1\ContactsResource|\Toddstoker\KeapSdk\Resources\V2\ContactsResource contacts(?int $version = null) Access the Contacts resource
- *
  */
 class Keap extends Connector
 {
@@ -41,8 +40,6 @@ class Keap extends Connector
 
     /**
      * Resource factory instance for managing resource instantiation
-     *
-     * @var \Toddstoker\KeapSdk\Resources\ResourceFactory
      */
     protected ResourceFactory $resourceFactory;
 
@@ -54,8 +51,6 @@ class Keap extends Connector
      *
      * Note: In concurrent request scenarios, this will contain the most recent
      * response from any request on this connector instance.
-     *
-     * @var Response|null
      */
     protected ?Response $lastResponse = null {
         get {
@@ -66,13 +61,13 @@ class Keap extends Connector
     /**
      * Initialize the Keap SDK
      *
-     * @param BaseCredential $credential Authentication credential (OAuth, PersonalAccessToken, or ServiceKey)
-     * @param int $apiVersion API version to use (1 or 2, defaults to 2)
+     * @param  BaseCredential  $credential  Authentication credential (OAuth, PersonalAccessToken, or ServiceKey)
+     * @param  int  $apiVersion  API version to use (1 or 2, defaults to 2)
      */
     public function __construct(
         public BaseCredential $credential,
         public int $apiVersion = 2
-    ) { }
+    ) {}
 
     /**
      * Magic method to dynamically access API resources
@@ -80,15 +75,15 @@ class Keap extends Connector
      * Provides fluent access to resources like contacts(), companies(), etc.
      * Resources are created and cached by the ResourceFactory.
      *
-     * @param string $name Resource name (e.g., 'contacts', 'companies', 'tags')
-     * @param array{0?: int} $arguments Optional array with API version as first element
+     * @param  string  $name  Resource name (e.g., 'contacts', 'companies', 'tags')
+     * @param  array{0?: int}  $arguments  Optional array with API version as first element
      * @return object The requested resource instance
-     * @throws \InvalidArgumentException If resource doesn't exist for the specified version
      *
+     * @throws \InvalidArgumentException If resource doesn't exist for the specified version
      */
     public function __call(string $name, array $arguments)
     {
-        if(!isset($this->resourceFactory)){
+        if (! isset($this->resourceFactory)) {
             $this->resourceFactory = new ResourceFactory($this);
         }
 
@@ -122,16 +117,17 @@ class Keap extends Connector
      * when refreshAccessToken() completes successfully.
      *
      * @return OAuth A new OAuth credential instance with updated access and refresh tokens
+     *
      * @throws \RuntimeException If credential is not OAuth or refresh token is missing
      */
     public function refreshToken(): OAuth
     {
-        if (!($this->credential instanceof OAuth)) {
+        if (! ($this->credential instanceof OAuth)) {
             throw new \RuntimeException('Credential object must be instance of OAuth to refresh token.');
         }
 
         $refreshToken = $this->credential->refreshToken;
-        if(empty($refreshToken)){
+        if (empty($refreshToken)) {
             throw new \RuntimeException('Must have a refresh token to refresh access token.');
         }
 
@@ -169,7 +165,7 @@ class Keap extends Connector
      * Returns the specified version parameter if provided, otherwise
      * falls back to the default apiVersion set in the constructor.
      *
-     * @param int|null $version Optional version override
+     * @param  int|null  $version  Optional version override
      * @return int The API version to use (1 or 2)
      */
     protected function whichVersion(?int $version = null): int
@@ -183,13 +179,14 @@ class Keap extends Connector
      * Provides OAuth2 configuration for authorization code flow.
      * Uses credentials from the OAuth credential if provided.
      *
-     * @throws \RuntimeException If the credential is not an instance of OAuth
      *
      * @return OAuthConfig OAuth2 configuration
+     *
+     * @throws \RuntimeException If the credential is not an instance of OAuth
      */
     protected function defaultOauthConfig(): OAuthConfig
     {
-        if (!($this->credential instanceof OAuth)) {
+        if (! ($this->credential instanceof OAuth)) {
             throw new \RuntimeException('Credential object must be instance of OAuth to use OAuth2 features.');
         }
 
@@ -215,7 +212,7 @@ class Keap extends Connector
         $request = new \Saloon\Http\OAuth2\GetAccessTokenRequest($code, $oauthConfig);
 
         // Keap doesn't like the Authorization header set during the access token request.
-        $request->authenticate(new NullAuthenticator());
+        $request->authenticate(new NullAuthenticator);
 
         return $request;
     }
@@ -248,8 +245,8 @@ class Keap extends Connector
      * - Initial authorization code exchange (via getAccessToken())
      * - Token refresh (via refreshToken() -> refreshAccessToken())
      *
-     * @param Response $response The OAuth token response
-     * @param string|null $fallbackRefreshToken Optional fallback refresh token
+     * @param  Response  $response  The OAuth token response
+     * @param  string|null  $fallbackRefreshToken  Optional fallback refresh token
      * @return OAuthAuthenticator The authenticator containing the new tokens
      */
     protected function createOAuthAuthenticatorFromResponse(Response $response, ?string $fallbackRefreshToken = null): OAuthAuthenticator

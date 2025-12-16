@@ -16,8 +16,6 @@ class RequestException extends SaloonRequestException
 {
     /**
      * Get the HTTP response that caused this exception
-     *
-     * @return Response
      */
     public function getResponse(): Response
     {
@@ -28,8 +26,6 @@ class RequestException extends SaloonRequestException
      * Get the error message from the API response
      *
      * Attempts to extract a meaningful error message from common API response formats.
-     *
-     * @return string|null
      */
     public function getApiMessage(): ?string
     {

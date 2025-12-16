@@ -24,12 +24,11 @@ class CreateTag extends Request implements HasBody
 
     public function __construct(
         protected readonly array $data
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
-        return "/tags";
+        return '/tags';
     }
 
     protected function defaultBody(): array

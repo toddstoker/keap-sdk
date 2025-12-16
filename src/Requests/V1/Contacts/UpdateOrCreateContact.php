@@ -24,12 +24,11 @@ class UpdateOrCreateContact extends Request implements HasBody
 
     public function __construct(
         protected readonly array $data
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
-        return "/contacts";
+        return '/contacts';
     }
 
     protected function defaultBody(): array

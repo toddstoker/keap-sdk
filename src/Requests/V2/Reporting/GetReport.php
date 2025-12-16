@@ -22,8 +22,7 @@ class GetReport extends Request
 
     public function __construct(
         protected readonly string $reportId
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

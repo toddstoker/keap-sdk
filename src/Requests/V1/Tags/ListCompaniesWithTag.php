@@ -22,8 +22,7 @@ class ListCompaniesWithTag extends Request
         protected readonly int $tagId,
         protected readonly ?int $limit = null,
         protected readonly ?int $offset = null
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

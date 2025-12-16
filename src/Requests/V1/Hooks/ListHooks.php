@@ -20,6 +20,6 @@ class ListHooks extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/hooks";
+        return '/hooks';
     }
 }

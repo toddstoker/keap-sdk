@@ -26,12 +26,11 @@ class LinkContacts extends Request implements HasBody
         protected readonly int $contact1Id,
         protected readonly int $contact2Id,
         protected readonly int $linkTypeId
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
-        return "/contacts:link";
+        return '/contacts:link';
     }
 
     protected function defaultBody(): array

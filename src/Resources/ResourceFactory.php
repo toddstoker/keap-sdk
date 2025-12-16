@@ -15,7 +15,6 @@ use Toddstoker\KeapSdk\Keap;
  *
  * The factory uses a class map to associate resource names with their
  * implementation classes for each API version.
- *
  */
 class ResourceFactory
 {
@@ -68,11 +67,11 @@ class ResourceFactory
     /**
      * Initialize the resource factory
      *
-     * @param Keap $connector The Keap connector instance to pass to resources
+     * @param  Keap  $connector  The Keap connector instance to pass to resources
      */
     public function __construct(
         protected readonly Keap $connector
-    ) { }
+    ) {}
 
     /**
      * Get or create a resource instance
@@ -80,18 +79,18 @@ class ResourceFactory
      * Returns a cached instance if available, otherwise creates a new one.
      * Each combination of resource name and version gets its own cached instance.
      *
-     * @param string $name Resource name (e.g., 'contacts', 'companies')
-     * @param int $version API version (1 or 2)
+     * @param  string  $name  Resource name (e.g., 'contacts', 'companies')
+     * @param  int  $version  API version (1 or 2)
      * @return object The resource instance
-     * @throws \InvalidArgumentException If the resource doesn't exist for the specified version
      *
+     * @throws \InvalidArgumentException If the resource doesn't exist for the specified version
      */
     public function get(string $name, int $version): object
     {
         $key = "{$name}_v{$version}";
 
-        if (!isset($this->instances[$key])) {
-            if (!isset(self::$classMap[$name][$version])) {
+        if (! isset($this->instances[$key])) {
+            if (! isset(self::$classMap[$name][$version])) {
                 throw new \InvalidArgumentException("Resource '{$name}' version {$version} does not exist.");
             }
 

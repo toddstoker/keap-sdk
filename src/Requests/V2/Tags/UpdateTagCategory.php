@@ -25,8 +25,7 @@ class UpdateTagCategory extends Request implements HasBody
     public function __construct(
         protected readonly int $tagCategoryId,
         protected readonly array $data
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

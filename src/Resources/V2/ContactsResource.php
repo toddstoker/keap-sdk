@@ -31,13 +31,12 @@ use Toddstoker\KeapSdk\Support\V2\Paginator;
  * specifying a version.
  *
  * @see https://developer.keap.com/docs/restv2/
- *
  */
 readonly class ContactsResource implements Resource
 {
     public function __construct(
         protected Keap $connector
-    ) { }
+    ) {}
 
     /**
      * List contacts with filtering, sorting, and pagination
@@ -45,8 +44,9 @@ readonly class ContactsResource implements Resource
      * Returns a single page of results. Use paginate() to automatically
      * iterate through all pages.
      *
-     * @param ContactQuery|null $query Query builder with filters and pagination options
+     * @param  ContactQuery|null  $query  Query builder with filters and pagination options
      * @return array{contacts: array<array<string, mixed>>, next_page_token: ?string}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException|\JsonException|\DateMalformedStringException
      */
@@ -68,15 +68,14 @@ readonly class ContactsResource implements Resource
      *
      * Automatically fetches subsequent pages using cursor-based pagination.
      *
-     * @param ContactQuery|null $query Query builder with filters and pagination options
-     * @return Paginator
+     * @param  ContactQuery|null  $query  Query builder with filters and pagination options
      */
     public function newListPaginator(?ContactQuery $query = null): Paginator
     {
         $query = $query ?? ContactQuery::make();
 
         return new Paginator(
-            fn(ContactQuery $q) => $this->list($q),
+            fn (ContactQuery $q) => $this->list($q),
             $query
         );
     }
@@ -84,8 +83,9 @@ readonly class ContactsResource implements Resource
     /**
      * Get a specific contact by ID
      *
-     * @param int $contactId The contact ID
+     * @param  int  $contactId  The contact ID
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -99,8 +99,9 @@ readonly class ContactsResource implements Resource
     /**
      * Create a new contact
      *
-     * @param array<string, mixed> $data Contact data
+     * @param  array<string, mixed>  $data  Contact data
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -114,9 +115,10 @@ readonly class ContactsResource implements Resource
     /**
      * Update an existing contact
      *
-     * @param int $contactId The contact ID to update
-     * @param array<string, mixed> $data Contact data to update
+     * @param  int  $contactId  The contact ID to update
+     * @param  array<string, mixed>  $data  Contact data to update
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -132,7 +134,8 @@ readonly class ContactsResource implements Resource
     /**
      * Delete a contact
      *
-     * @param int $contactId The contact ID to delete
+     * @param  int  $contactId  The contact ID to delete
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -148,8 +151,9 @@ readonly class ContactsResource implements Resource
      *
      * Retrieves information about the Lead Score of a Contact.
      *
-     * @param int $contactId The contact ID
+     * @param  int  $contactId  The contact ID
      * @return array{last_updated: string, score: string}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -165,8 +169,9 @@ readonly class ContactsResource implements Resource
      *
      * Retrieves a list of Linked Contacts for a given Contact.
      *
-     * @param int $contactId The contact ID
+     * @param  int  $contactId  The contact ID
      * @return array{links: array<array<string, mixed>>, next_page_token: ?string}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -182,10 +187,11 @@ readonly class ContactsResource implements Resource
      *
      * Links two Contacts together using the provided Link type.
      *
-     * @param int $contact1Id The first contact ID
-     * @param int $contact2Id The second contact ID
-     * @param int $linkTypeId The link type ID
+     * @param  int  $contact1Id  The first contact ID
+     * @param  int  $contact2Id  The second contact ID
+     * @param  int  $linkTypeId  The link type ID
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -203,9 +209,10 @@ readonly class ContactsResource implements Resource
      *
      * Deletes Link between two Contacts.
      *
-     * @param int $contact1Id The first contact ID
-     * @param int $contact2Id The second contact ID
-     * @param int $linkTypeId The link type ID
+     * @param  int  $contact1Id  The first contact ID
+     * @param  int  $contact2Id  The second contact ID
+     * @param  int  $linkTypeId  The link type ID
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -223,11 +230,12 @@ readonly class ContactsResource implements Resource
      *
      * Retrieves a list of Contact Link types.
      *
-     * @param string|null $filter Filter to apply (e.g., "name==expectedValue")
-     * @param string|null $orderBy Field and direction to order by (e.g., "name asc")
-     * @param int|null $pageSize Total number of items to return per page
-     * @param string|null $pageToken Page token for pagination
+     * @param  string|null  $filter  Filter to apply (e.g., "name==expectedValue")
+     * @param  string|null  $orderBy  Field and direction to order by (e.g., "name asc")
+     * @param  int|null  $pageSize  Total number of items to return per page
+     * @param  string|null  $pageToken  Page token for pagination
      * @return array{contact_link_types: array<array<string, mixed>>, next_page_token: ?string}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -250,12 +258,13 @@ readonly class ContactsResource implements Resource
      * Get the custom fields and optional properties for the Contact object.
      *
      * @return array{custom_fields: array<array<string, mixed>>, optional_properties: array<string>}
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
     public function getModel(): array
     {
-        $response = $this->connector->send(new GetContactModel());
+        $response = $this->connector->send(new GetContactModel);
 
         return $response->json();
     }

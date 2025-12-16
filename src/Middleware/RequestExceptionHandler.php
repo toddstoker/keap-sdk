@@ -25,7 +25,7 @@ class RequestExceptionHandler
     public function __invoke(Response $response): void
     {
         // Don't throw on successful responses
-        if (!$response->failed()) {
+        if (! $response->failed()) {
             return;
         }
 

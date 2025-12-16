@@ -20,6 +20,6 @@ class ListEventKeys extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/hooks/event_keys";
+        return '/hooks/event_keys';
     }
 }

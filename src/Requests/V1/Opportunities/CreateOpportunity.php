@@ -24,12 +24,11 @@ class CreateOpportunity extends Request implements HasBody
 
     public function __construct(
         protected readonly array $data
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
-        return "/opportunities";
+        return '/opportunities';
     }
 
     protected function defaultBody(): array

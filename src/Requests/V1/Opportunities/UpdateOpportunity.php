@@ -25,8 +25,7 @@ class UpdateOpportunity extends Request implements HasBody
     public function __construct(
         protected readonly int $opportunityId,
         protected readonly array $data
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

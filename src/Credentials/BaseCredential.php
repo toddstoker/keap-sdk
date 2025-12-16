@@ -13,8 +13,6 @@ interface BaseCredential
      *
      * Returns null if credential is not yet ready for authentication
      * (e.g., OAuth credential before access token is obtained).
-     *
-     * @return Authenticator
      */
     public function getAuth(): Authenticator;
 }

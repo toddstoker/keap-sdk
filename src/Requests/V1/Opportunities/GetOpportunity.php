@@ -20,8 +20,7 @@ class GetOpportunity extends Request
 
     public function __construct(
         protected readonly int $opportunityId
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

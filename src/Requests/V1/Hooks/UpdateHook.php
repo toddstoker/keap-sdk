@@ -25,8 +25,7 @@ class UpdateHook extends Request implements HasBody
     public function __construct(
         protected readonly string $key,
         protected readonly array $data
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

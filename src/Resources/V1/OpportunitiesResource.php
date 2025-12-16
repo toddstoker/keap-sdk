@@ -31,8 +31,9 @@ readonly class OpportunitiesResource implements Resource
      * Returns a single page of results. Use newListPaginator() to automatically
      * iterate through all pages.
      *
-     * @param OpportunityQuery|null $query Query builder with filters, sorting, and pagination options
+     * @param  OpportunityQuery|null  $query  Query builder with filters, sorting, and pagination options
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -48,15 +49,14 @@ readonly class OpportunitiesResource implements Resource
      *
      * Automatically fetches subsequent pages using offset-based pagination.
      *
-     * @param OpportunityQuery|null $query Query builder with filters, sorting, and pagination options
-     * @return Paginator
+     * @param  OpportunityQuery|null  $query  Query builder with filters, sorting, and pagination options
      */
     public function newListPaginator(?OpportunityQuery $query = null): Paginator
     {
         $query = $query ?? OpportunityQuery::make()->limit(100);
 
         return new Paginator(
-            fn(OpportunityQuery $q) => $this->list($q),
+            fn (OpportunityQuery $q) => $this->list($q),
             $query
         );
     }
@@ -64,8 +64,9 @@ readonly class OpportunitiesResource implements Resource
     /**
      * Get a specific opportunity by ID
      *
-     * @param int $opportunityId The opportunity ID
+     * @param  int  $opportunityId  The opportunity ID
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -77,8 +78,9 @@ readonly class OpportunitiesResource implements Resource
     /**
      * Create a new opportunity
      *
-     * @param array<string, mixed> $data Opportunity data
+     * @param  array<string, mixed>  $data  Opportunity data
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -90,9 +92,10 @@ readonly class OpportunitiesResource implements Resource
     /**
      * Update an existing opportunity
      *
-     * @param int $opportunityId The opportunity ID to update
-     * @param array<string, mixed> $data Opportunity data to update
+     * @param  int  $opportunityId  The opportunity ID to update
+     * @param  array<string, mixed>  $data  Opportunity data to update
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -107,11 +110,12 @@ readonly class OpportunitiesResource implements Resource
      * Retrieves the custom fields for the Opportunity object.
      *
      * @return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
     public function getModel(): array
     {
-        return $this->connector->send(new GetOpportunityModel())->json();
+        return $this->connector->send(new GetOpportunityModel)->json();
     }
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
  * Resources are instantiated via the ResourceFactory pattern using magic __call() method.
  */
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 use Toddstoker\KeapSdk\Credentials\OAuth;
 use Toddstoker\KeapSdk\Credentials\PersonalAccessToken;
@@ -40,7 +40,7 @@ try {
     $contacts = $keap->contacts()->list(limit: 10);
     echo "Found {$contacts['count']} contacts\n";
 } catch (\Exception $e) {
-    echo "Error: " . $e->getMessage() . "\n";
+    echo 'Error: '.$e->getMessage()."\n";
 }
 
 // ============================================================================
@@ -54,9 +54,9 @@ $keapService = new Keap($serviceKey);
 
 try {
     $contact = $keapService->contacts()->get(123);
-    echo "Contact: " . $contact->getFullName() . "\n";
+    echo 'Contact: '.$contact->getFullName()."\n";
 } catch (\Exception $e) {
-    echo "Error: " . $e->getMessage() . "\n";
+    echo 'Error: '.$e->getMessage()."\n";
 }
 
 // ============================================================================
@@ -162,7 +162,7 @@ try {
     }
 
 } catch (\Exception $e) {
-    echo "OAuth Error: " . $e->getMessage() . "\n";
+    echo 'OAuth Error: '.$e->getMessage()."\n";
 }
 
 // STEP 6: Restore a previous OAuth session
@@ -189,7 +189,7 @@ $keapRestored = new Keap($oauthRestored);
 $contacts = $keapRestored->contacts()->list();
 
 // When the token expires, refresh it using the refreshToken() method
-if ($oauthRestored->expiresAt < new DateTimeImmutable()) {
+if ($oauthRestored->expiresAt < new DateTimeImmutable) {
     // This returns a new OAuth credential instance with updated tokens
     $updatedCredential = $keapRestored->refreshToken();
 
@@ -251,7 +251,7 @@ try {
     // Access the HTTP response for debugging
     $response = $e->getResponse();
     echo "Status: {$response->status()}\n";
-    echo "Headers: " . json_encode($response->headers()) . "\n";
+    echo 'Headers: '.json_encode($response->headers())."\n";
 }
 
 // Example 5.2: Handling 404 Not Found
@@ -280,12 +280,12 @@ try {
 
     // Access field-specific errors
     foreach ($e->errors as $field => $messages) {
-        echo "  {$field}: " . implode(', ', (array) $messages) . "\n";
+        echo "  {$field}: ".implode(', ', (array) $messages)."\n";
     }
 
     // Access response for more context
     $response = $e->getResponse();
-    echo "Full error details: " . $response->body() . "\n";
+    echo 'Full error details: '.$response->body()."\n";
 }
 
 // Example 5.4: Handling 429 Rate Limit
@@ -325,7 +325,7 @@ try {
     echo "Response Body: {$response->body()}\n";
 
     // Log for debugging
-    error_log("Keap API Error: " . json_encode([
+    error_log('Keap API Error: '.json_encode([
         'message' => $e->getMessage(),
         'status' => $response->status(),
         'body' => $response->json(),

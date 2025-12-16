@@ -20,6 +20,6 @@ class ListTagCategories extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/tags/categories";
+        return '/tags/categories';
     }
 }

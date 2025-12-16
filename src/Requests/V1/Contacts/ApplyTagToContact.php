@@ -23,14 +23,13 @@ class ApplyTagToContact extends Request implements HasBody
     protected Method $method = Method::POST;
 
     /**
-     * @param int $contactId The contact ID
-     * @param int $tagId The tag ID to apply
+     * @param  int  $contactId  The contact ID
+     * @param  int  $tagId  The tag ID to apply
      */
     public function __construct(
         protected readonly int $contactId,
         protected readonly int $tagId
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

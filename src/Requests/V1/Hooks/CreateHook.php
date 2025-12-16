@@ -24,12 +24,11 @@ class CreateHook extends Request implements HasBody
 
     public function __construct(
         protected readonly array $data
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
-        return "/hooks";
+        return '/hooks';
     }
 
     protected function defaultBody(): array

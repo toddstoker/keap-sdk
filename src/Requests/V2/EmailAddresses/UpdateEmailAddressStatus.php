@@ -33,8 +33,7 @@ class UpdateEmailAddressStatus extends Request implements HasBody
         protected readonly string $email,
         protected readonly bool $optedIn,
         protected readonly string $reason
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

@@ -23,12 +23,11 @@ class ListContactLinkTypes extends Request
         protected readonly ?string $orderBy = null,
         protected readonly ?int $pageSize = null,
         protected readonly ?string $pageToken = null
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/links/types";
+        return '/contacts/links/types';
     }
 
     protected function defaultQuery(): array

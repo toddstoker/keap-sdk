@@ -23,16 +23,15 @@ class ListTags extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param TagQuery $query The query builder with filters, sorting, and pagination
+     * @param  TagQuery  $query  The query builder with filters, sorting, and pagination
      */
     public function __construct(
         protected readonly TagQuery $queryBuilder
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
-        return "/tags";
+        return '/tags';
     }
 
     /**

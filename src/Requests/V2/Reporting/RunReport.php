@@ -25,14 +25,13 @@ class RunReport extends Request
     protected Method $method = Method::POST;
 
     /**
-     * @param string $reportId The report ID to run
-     * @param RunReportQuery $query The query builder with fields, sorting, and pagination
+     * @param  string  $reportId  The report ID to run
+     * @param  RunReportQuery  $query  The query builder with fields, sorting, and pagination
      */
     public function __construct(
         protected readonly string $reportId,
         protected readonly RunReportQuery $queryBuilder
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

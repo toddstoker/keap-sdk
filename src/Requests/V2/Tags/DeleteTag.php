@@ -20,8 +20,7 @@ class DeleteTag extends Request
 
     public function __construct(
         protected readonly int $tagId
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

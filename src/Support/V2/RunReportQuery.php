@@ -42,55 +42,59 @@ class RunReportQuery
      */
     public static function make(): static
     {
-        return new static();
+        return new static;
     }
 
     /**
      * Set the order by clause
      *
-     * @param string $field Field to order by
-     * @param string $direction Sort direction ('asc' or 'desc')
+     * @param  string  $field  Field to order by
+     * @param  string  $direction  Sort direction ('asc' or 'desc')
      * @return $this
      */
     public function orderBy(string $field, string $direction = 'asc'): static
     {
         $this->orderBy = "{$field} {$direction}";
+
         return $this;
     }
 
     /**
      * Set the number of items to return per page
      *
-     * @param int $size Number of items (1-1000, default 1000)
+     * @param  int  $size  Number of items (1-1000, default 1000)
      * @return $this
      */
     public function pageSize(int $size): static
     {
         $this->pageSize = $size;
+
         return $this;
     }
 
     /**
      * Set the page token for cursor-based pagination
      *
-     * @param string $token Page token from previous response
+     * @param  string  $token  Page token from previous response
      * @return $this
      */
     public function pageToken(string $token): static
     {
         $this->pageToken = $token;
+
         return $this;
     }
 
     /**
      * Set which fields to include in the response
      *
-     * @param array<string> $fields Array of field names (or empty for all fields)
+     * @param  array<string>  $fields  Array of field names (or empty for all fields)
      * @return $this
      */
     public function fields(array $fields): static
     {
         $this->fields = $fields;
+
         return $this;
     }
 
@@ -131,7 +135,7 @@ class RunReportQuery
             $params['page_token'] = $this->pageToken;
         }
 
-        if ($this->fields !== null && !empty($this->fields)) {
+        if ($this->fields !== null && ! empty($this->fields)) {
             $params['fields'] = implode(',', $this->fields);
         }
 

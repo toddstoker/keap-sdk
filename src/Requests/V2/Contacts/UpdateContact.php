@@ -23,14 +23,13 @@ class UpdateContact extends Request implements HasBody
     protected Method $method = Method::PATCH;
 
     /**
-     * @param int $contactId The contact ID to update
-     * @param array<string, mixed> $data Contact data to update
+     * @param  int  $contactId  The contact ID to update
+     * @param  array<string, mixed>  $data  Contact data to update
      */
     public function __construct(
         protected readonly int $contactId,
         protected readonly array $data
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

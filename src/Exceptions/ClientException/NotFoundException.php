@@ -10,7 +10,4 @@ namespace Toddstoker\KeapSdk\Exceptions\ClientException;
  * This indicates the requested resource (contact, company, etc.) does not exist
  * or you don't have permission to access it.
  */
-class NotFoundException extends ClientException
-{
-
-}
+class NotFoundException extends ClientException {}

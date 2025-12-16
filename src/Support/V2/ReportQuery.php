@@ -42,8 +42,8 @@ class ReportQuery extends Query
     /**
      * Convenience method: Filter by reports created between two dates
      *
-     * @param string $startDatetime Start datetime (ISO 8601 format)
-     * @param string $endDatetime End datetime (ISO 8601 format)
+     * @param  string  $startDatetime  Start datetime (ISO 8601 format)
+     * @param  string  $endDatetime  End datetime (ISO 8601 format)
      * @return $this
      */
     public function createdBetween(string $startDatetime, string $endDatetime): static

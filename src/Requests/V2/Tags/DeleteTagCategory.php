@@ -20,8 +20,7 @@ class DeleteTagCategory extends Request
 
     public function __construct(
         protected readonly int $tagCategoryId
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
