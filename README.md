@@ -248,12 +248,6 @@ Check out the `examples/` directory for detailed examples:
 
 ## Development
 
-### Running Tests
-
-```bash
-composer test
-```
-
 ## Documentation
 
 - [Keap REST API v1 Documentation](https://developer.infusionsoft.com/docs/rest/)
