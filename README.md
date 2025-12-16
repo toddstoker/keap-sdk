@@ -283,7 +283,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - Built with [SaloonPHP](https://docs.saloon.dev/)
-- Inspired by the Keap API ecosystem
 - Developed with ☕ and Claude Code
 
 ---
