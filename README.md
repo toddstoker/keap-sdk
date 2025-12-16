@@ -259,7 +259,6 @@ composer test
 - [Keap REST API v1 Documentation](https://developer.infusionsoft.com/docs/rest/)
 - [Keap REST API v2 Documentation](https://developer.keap.com/docs/restv2/)
 - [SaloonPHP Documentation](https://docs.saloon.dev/)
-- [Project Documentation](CLAUDE.md)
 
 ## Contributing
 
