@@ -35,7 +35,6 @@ class ContactQuery extends Query
         'family_name',
         'since',
         'until',
-        'optional_properties',
     ];
 
     /**
@@ -53,6 +52,54 @@ class ContactQuery extends Query
     ];
 
     /**
+     * Allowed fields for field selection
+     *
+     * These are the optional properties that can be included in the response
+     * via the fields() method (V1 API uses 'optional_properties' parameter).
+     *
+     * @var array<string>
+     */
+    protected array $allowedFields = [
+        'addresses',
+//        'anniversary', // Not in v1
+//        'birthday', // Not in v1
+        'company',
+//        'company_name', // Not in v1
+        'contact_type',
+        'custom_fields',
+//        'date_created', // Not in v1
+        'email_addresses',
+//        'email_opted_in', // Not in v1
+//        'email_status', // Not in v1
+        'family_name',
+        'fax_numbers',
+        'given_name',
+        'id',
+        'job_title',
+//        'last_updated', // Not in v1
+//        'lead_source_id', // Not in v1
+        'middle_name',
+//        'opt_in_reason', // Not in v1
+        'origin',
+        'owner_id',
+        'phone_numbers',
+        'preferred_locale',
+        'preferred_name',
+        'prefix',
+//        'referral_code', // Not in v1
+//        'relationships', // Not in v1
+//        'score_value', // Not in v1
+        'social_accounts',
+        'source_type',
+        'spouse_name',
+        'suffix',
+        'tag_ids',
+        'time_zone',
+//        'utm_parameters', // Not in v1
+        'website',
+    ];
+
+    /**
      * Convenience method: Filter by contacts updated between two dates
      *
      * @param  string  $startDatetime  Start datetime (ISO 8601 format)
@@ -63,16 +110,5 @@ class ContactQuery extends Query
     {
         return $this->bySince($startDatetime)
             ->byUntil($endDatetime);
-    }
-
-    /**
-     * Set optional properties to include in response
-     *
-     * @param  array<string>  $properties  Array of property names
-     * @return $this
-     */
-    public function optionalProperties(array $properties): static
-    {
-        return $this->where('optional_properties', implode(',', $properties));
     }
 }

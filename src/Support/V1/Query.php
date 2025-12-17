@@ -51,6 +51,13 @@ abstract class Query
     protected ?int $offset = null;
 
     /**
+     * Fields to include in response (V1 uses optional_properties parameter)
+     *
+     * @var array<string>|null
+     */
+    protected ?array $fields = null;
+
+    /**
      * Allowed filter fields (defined by child classes)
      *
      * @var array<string>
@@ -63,6 +70,13 @@ abstract class Query
      * @var array<string>
      */
     protected array $allowedOrderBy = [];
+
+    /**
+     * Allowed fields for field selection (defined by child classes)
+     *
+     * @var array<string>
+     */
+    protected array $allowedFields = [];
 
     /**
      * Create a new Query instance
@@ -149,6 +163,48 @@ abstract class Query
     public function offset(int $offset): static
     {
         $this->offset = $offset;
+
+        return $this;
+    }
+
+    /**
+     * Set which fields to include in the response
+     *
+     * Validates fields against the allowedFields array if defined.
+     * V1 API uses 'optional_properties' parameter name.
+     *
+     * @param  array<string>  $fields  Array of field names
+     * @return $this
+     *
+     * @throws \InvalidArgumentException If any field is not allowed
+     */
+    public function fields(array $fields): static
+    {
+        // Validate fields if allowedFields is defined
+        if (! empty($this->allowedFields)) {
+            $invalidFields = array_diff($fields, $this->allowedFields);
+
+            if (! empty($invalidFields)) {
+                throw new \InvalidArgumentException(
+                    'Invalid field(s): '.implode(', ', $invalidFields).'. '.
+                    'Allowed fields: '.implode(', ', $this->allowedFields)
+                );
+            }
+        }
+
+        $this->fields = $fields;
+
+        return $this;
+    }
+
+    /**
+     * Select all available fields
+     *
+     * @return $this
+     */
+    public function allFields(): static
+    {
+        $this->fields = $this->allowedFields;
 
         return $this;
     }
@@ -281,6 +337,11 @@ abstract class Query
 
         if ($this->offset !== null) {
             $params['offset'] = $this->offset;
+        }
+
+        // Add field selection (V1 uses 'optional_properties' parameter)
+        if ($this->fields !== null) {
+            $params['optional_properties'] = implode(',', $this->fields);
         }
 
         return $params;
