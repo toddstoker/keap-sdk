@@ -32,12 +32,12 @@ $keap = new Keap(new PersonalAccessToken('your-token-here'));
 
 // Get a contact
 $contact = $keap->contacts()->get(123);
-echo $contact->getFullName();
+echo $contact['given_name'] . ' ' . $contact['family_name'];
 
 // List contacts
 $result = $keap->contacts()->list(limit: 50);
-foreach ($result['contacts'] as $contact) {
-    echo $contact->email . "\n";
+foreach ($result['contacts'] as $contactData) {
+    echo $contactData['email_addresses'][0]['email'] ?? 'No email' . "\n";
 }
 
 // Create a contact
@@ -48,6 +48,7 @@ $newContact = $keap->contacts()->create([
         ['email' => 'john@example.com', 'field' => 'EMAIL1']
     ]
 ]);
+echo "Created contact: {$newContact['id']}";
 ```
 
 ## Authentication
@@ -107,17 +108,37 @@ $authenticator = $keap->getAccessToken(
 // Step 4: Authenticate the connector
 $keap->authenticate($authenticator);
 
+// Step 5: Save tokens to your database
+// Access properties directly (OAuth is readonly)
+$accessToken = $keap->credential->accessToken;
+$refreshToken = $keap->credential->refreshToken;
+$expiresAt = $keap->credential->expiresAt;
+// saveToDatabase($accessToken, $refreshToken, $expiresAt);
+
 // Now you can make API calls
 $contact = $keap->contacts()->get(123);
 
-// Step 5: Refresh token when expired
-if ($authenticator->hasExpired()) {
-    $newAuthenticator = $keap->refreshAccessToken($authenticator);
-    $keap->authenticate($newAuthenticator);
+// Step 6: Restore OAuth session from stored tokens
+$oauth = new OAuth(
+    clientId: 'your-client-id',
+    clientSecret: 'your-client-secret',
+    redirectUri: 'https://your-app.com/callback',
+    accessToken: $storedAccessToken,
+    refreshToken: $storedRefreshToken,
+    expiresAt: $storedExpiresAt
+);
+$keap = new Keap($oauth);
 
-    // Important: Store the new tokens (Keap rotates refresh tokens)
-    $newAccessToken = $newAuthenticator->getAccessToken();
-    $newRefreshToken = $newAuthenticator->getRefreshToken();
+// Step 7: Refresh token when expired
+if ($oauth->expiresAt < new DateTimeImmutable()) {
+    // Returns a NEW OAuth credential instance with updated tokens
+    $updatedCredential = $keap->refreshToken();
+
+    // Important: Save the new tokens (Keap rotates refresh tokens)
+    $newAccessToken = $updatedCredential->accessToken;
+    $newRefreshToken = $updatedCredential->refreshToken;
+    $newExpiresAt = $updatedCredential->expiresAt;
+    // saveToDatabase($newAccessToken, $newRefreshToken, $newExpiresAt);
 }
 ```
 

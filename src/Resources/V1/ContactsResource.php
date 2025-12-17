@@ -47,10 +47,24 @@ readonly class ContactsResource implements Resource
      * iterate through all pages.
      *
      * @param  ContactQuery|null  $query  Query builder with filters and pagination options
-     * @return array{contacts: array<array<string, mixed>>, count: int, next: ?string, previous: ?string}
+     * @return array{
+     *     contacts: array<int, array{
+     *         id: int,
+     *         given_name?: string,
+     *         family_name?: string,
+     *         email?: string,
+     *         email_addresses?: array<int, array{email: string, field: string}>,
+     *         phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
+     *         company?: array{id: int, company_name?: string},
+     *         ...
+     *     }>,
+     *     count: int,
+     *     next: ?string,
+     *     previous: ?string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
-     * @throws \Saloon\Exceptions\Request\RequestException|\JsonException|\DateMalformedStringException
+     * @throws \Saloon\Exceptions\Request\RequestException
      */
     public function list(?ContactQuery $query = null): array
     {
@@ -88,8 +102,41 @@ readonly class ContactsResource implements Resource
      * Get a specific contact by ID
      *
      * @param  int  $contactId  The contact ID
-     * @param  array<string>|null  $optionalProperties  Optional properties to include
-     * @return array<string, mixed>
+     * @param  array<string>|null  $optionalProperties  Optional properties to include (e.g., ['custom_fields', 'preferred_locale'])
+     * @return array{
+     *     id: int,
+     *     given_name?: string,
+     *     family_name?: string,
+     *     middle_name?: string,
+     *     preferred_name?: string,
+     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     phone_numbers?: array<int, array{number: string, field: string, type?: string, extension?: string}>,
+     *     addresses?: array<int, array{
+     *         country_code?: string,
+     *         line1?: string,
+     *         line2?: string,
+     *         locality?: string,
+     *         postal_code?: string,
+     *         region?: string,
+     *         zip_code?: string,
+     *         field: string
+     *     }>,
+     *     company?: array{id: int, company_name?: string},
+     *     job_title?: string,
+     *     website?: string,
+     *     birthday?: string,
+     *     anniversary?: string,
+     *     spouse_name?: string,
+     *     time_zone?: string,
+     *     tag_ids?: array<int>,
+     *     date_created?: string,
+     *     last_updated?: string,
+     *     owner_id?: int,
+     *     opt_in_reason?: string,
+     *     source_type?: string,
+     *     custom_fields?: array<int, array{id: int, content: mixed}>,
+     *     ...
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -106,8 +153,24 @@ readonly class ContactsResource implements Resource
     /**
      * Create a new contact
      *
-     * @param  array<string, mixed>  $data  Contact data
-     * @return array<string, mixed>
+     * @param  array{
+     *     given_name?: string,
+     *     family_name?: string,
+     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
+     *     addresses?: array<int, array{line1?: string, line2?: string, locality?: string, region?: string, postal_code?: string, country_code?: string, field: string}>,
+     *     company?: array{id?: int, company_name?: string},
+     *     job_title?: string,
+     *     ...
+     * }  $data  Contact data
+     * @return array{
+     *     id: int,
+     *     given_name?: string,
+     *     family_name?: string,
+     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     date_created?: string,
+     *     ...
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -123,8 +186,21 @@ readonly class ContactsResource implements Resource
      * Update an existing contact
      *
      * @param  int  $contactId  The contact ID to update
-     * @param  array<string, mixed>  $data  Contact data to update
-     * @return array<string, mixed>
+     * @param  array{
+     *     given_name?: string,
+     *     family_name?: string,
+     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
+     *     job_title?: string,
+     *     ...
+     * }  $data  Contact data to update
+     * @return array{
+     *     id: int,
+     *     given_name?: string,
+     *     family_name?: string,
+     *     last_updated?: string,
+     *     ...
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -194,7 +270,15 @@ readonly class ContactsResource implements Resource
      *
      * Retrieves the custom fields for the Contact object.
      *
-     * @return array<string, mixed>
+     * @return array{
+     *     custom_fields?: array<int, array{
+     *         id: int,
+     *         label: string,
+     *         field_type: string,
+     *         options?: array<int, array{id: int, label: string}>
+     *     }>,
+     *     optional_properties?: array<string>
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -212,7 +296,15 @@ readonly class ContactsResource implements Resource
      * @param  int  $contactId  The contact ID
      * @param  int|null  $limit  Max number of results
      * @param  int|null  $offset  Starting offset
-     * @return array{tags: array<array<string, mixed>>, count: int}
+     * @return array{
+     *     tags: array<int, array{
+     *         id: int,
+     *         name: string,
+     *         description?: string,
+     *         category?: array{id: int, name: string}
+     *     }>,
+     *     count: int
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -228,7 +320,16 @@ readonly class ContactsResource implements Resource
      * Retrieves a list of emails sent to a contact.
      *
      * @param  int  $contactId  The contact ID
-     * @return array<string, mixed>
+     * @return array{
+     *     emails?: array<int, array{
+     *         id: int,
+     *         subject?: string,
+     *         sent_from_address?: string,
+     *         sent_to_address?: string,
+     *         sent_date?: string,
+     *         ...
+     *     }>
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -241,10 +342,22 @@ readonly class ContactsResource implements Resource
     /**
      * Update or create contact
      *
-     * Updates or creates a contact.
+     * Updates or creates a contact based on the duplicate_option field.
      *
-     * @param  array<string, mixed>  $data  Contact data
-     * @return array<string, mixed>
+     * @param  array{
+     *     duplicate_option?: string,
+     *     email?: string,
+     *     given_name?: string,
+     *     family_name?: string,
+     *     ...
+     * }  $data  Contact data
+     * @return array{
+     *     id: int,
+     *     given_name?: string,
+     *     family_name?: string,
+     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     ...
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -259,8 +372,18 @@ readonly class ContactsResource implements Resource
      *
      * Creates a new custom field for contacts.
      *
-     * @param  array<string, mixed>  $data  Custom field data
-     * @return array<string, mixed>
+     * @param  array{
+     *     label: string,
+     *     field_type: string,
+     *     group_id?: int,
+     *     options?: array<int, array{label: string}>
+     * }  $data  Custom field data
+     * @return array{
+     *     id: int,
+     *     label: string,
+     *     field_type: string,
+     *     options?: array<int, array{id: int, label: string}>
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -276,7 +399,16 @@ readonly class ContactsResource implements Resource
      * Retrieves all credit cards for a contact.
      *
      * @param  int  $contactId  The contact ID
-     * @return array<string, mixed>
+     * @return array{
+     *     credit_cards?: array<int, array{
+     *         id: int,
+     *         card_type?: string,
+     *         last_four?: string,
+     *         expiration_month?: string,
+     *         expiration_year?: string,
+     *         ...
+     *     }>
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -292,8 +424,20 @@ readonly class ContactsResource implements Resource
      * Creates a credit card for a contact.
      *
      * @param  int  $contactId  The contact ID
-     * @param  array<string, mixed>  $data  Credit card data
-     * @return array<string, mixed>
+     * @param  array{
+     *     card_number: string,
+     *     card_type: string,
+     *     expiration_month: string,
+     *     expiration_year: string,
+     *     cvv?: string
+     * }  $data  Credit card data
+     * @return array{
+     *     id: int,
+     *     card_type: string,
+     *     last_four: string,
+     *     expiration_month: string,
+     *     expiration_year: string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -309,8 +453,21 @@ readonly class ContactsResource implements Resource
      * Creates a record of an email sent to a contact.
      *
      * @param  int  $contactId  The contact ID
-     * @param  array<string, mixed>  $data  Email data
-     * @return array<string, mixed>
+     * @param  array{
+     *     subject: string,
+     *     html_content?: string,
+     *     plain_content?: string,
+     *     sent_from_address: string,
+     *     sent_to_address: string,
+     *     ...
+     * }  $data  Email data
+     * @return array{
+     *     id: int,
+     *     subject: string,
+     *     sent_from_address: string,
+     *     sent_to_address: string,
+     *     sent_date?: string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -338,11 +495,24 @@ readonly class ContactsResource implements Resource
     /**
      * Add UTM to contact
      *
-     * Adds UTM parameters to a contact.
+     * Adds UTM parameters to a contact for tracking.
      *
      * @param  int  $contactId  The contact ID
-     * @param  array<string, mixed>  $data  UTM data
-     * @return array<string, mixed>
+     * @param  array{
+     *     utm_source?: string,
+     *     utm_medium?: string,
+     *     utm_campaign?: string,
+     *     utm_term?: string,
+     *     utm_content?: string
+     * }  $data  UTM data
+     * @return array{
+     *     id: int,
+     *     utm_source?: string,
+     *     utm_medium?: string,
+     *     utm_campaign?: string,
+     *     utm_term?: string,
+     *     utm_content?: string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException

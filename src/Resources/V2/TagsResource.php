@@ -43,7 +43,15 @@ readonly class TagsResource implements Resource
      * iterate through all pages.
      *
      * @param  TagQuery|null  $query  Query builder with filters, sorting, and pagination options
-     * @return array{tags: array<array<string, mixed>>, next_page_token: ?string}
+     * @return array{
+     *     tags: array<int, array{
+     *         id: int,
+     *         name: string,
+     *         description?: string,
+     *         category?: array{id: int, name: string}
+     *     }>,
+     *     next_page_token: ?string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -80,7 +88,12 @@ readonly class TagsResource implements Resource
      * Retrieves a single tag by ID.
      *
      * @param  int  $tagId  The tag ID
-     * @return array<string, mixed>
+     * @return array{
+     *     id: int,
+     *     name: string,
+     *     description?: string,
+     *     category?: array{id: int, name: string}
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -97,8 +110,17 @@ readonly class TagsResource implements Resource
      *
      * Creates a new tag.
      *
-     * @param  array<string, mixed>  $data  Tag data
-     * @return array<string, mixed>
+     * @param  array{
+     *     name: string,
+     *     description?: string,
+     *     category?: array{id: int}
+     * }  $data  Tag data
+     * @return array{
+     *     id: int,
+     *     name: string,
+     *     description?: string,
+     *     category?: array{id: int, name: string}
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -116,8 +138,17 @@ readonly class TagsResource implements Resource
      * Updates an existing tag.
      *
      * @param  int  $tagId  The tag ID
-     * @param  array<string, mixed>  $data  Tag data to update
-     * @return array<string, mixed>
+     * @param  array{
+     *     name?: string,
+     *     description?: string,
+     *     category?: array{id: int}
+     * }  $data  Tag data to update
+     * @return array{
+     *     id: int,
+     *     name: string,
+     *     description?: string,
+     *     category?: array{id: int, name: string}
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -151,7 +182,13 @@ readonly class TagsResource implements Resource
      *
      * Retrieves a list of tag categories.
      *
-     * @return array<string, mixed>
+     * @return array{
+     *     tag_categories: array<int, array{
+     *         id: int,
+     *         name: string,
+     *         description?: string
+     *     }>
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -169,7 +206,11 @@ readonly class TagsResource implements Resource
      * Retrieves a single tag category by ID.
      *
      * @param  int  $tagCategoryId  The tag category ID
-     * @return array<string, mixed>
+     * @return array{
+     *     id: int,
+     *     name: string,
+     *     description?: string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -186,8 +227,15 @@ readonly class TagsResource implements Resource
      *
      * Creates a new tag category.
      *
-     * @param  array<string, mixed>  $data  Tag category data
-     * @return array<string, mixed>
+     * @param  array{
+     *     name: string,
+     *     description?: string
+     * }  $data  Tag category data
+     * @return array{
+     *     id: int,
+     *     name: string,
+     *     description?: string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -205,8 +253,15 @@ readonly class TagsResource implements Resource
      * Updates an existing tag category.
      *
      * @param  int  $tagCategoryId  The tag category ID
-     * @param  array<string, mixed>  $data  Tag category data to update
-     * @return array<string, mixed>
+     * @param  array{
+     *     name?: string,
+     *     description?: string
+     * }  $data  Tag category data to update
+     * @return array{
+     *     id: int,
+     *     name: string,
+     *     description?: string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -242,7 +297,10 @@ readonly class TagsResource implements Resource
      *
      * @param  int  $tagId  The tag ID
      * @param  array<int>  $contactIds  Array of contact IDs
-     * @return array<string, mixed>
+     * @return array{
+     *     success: bool,
+     *     message?: string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -284,7 +342,15 @@ readonly class TagsResource implements Resource
      * @param  int  $tagId  The tag ID
      * @param  int|null  $pageSize  Total number of items to return per page
      * @param  string|null  $pageToken  Page token for pagination
-     * @return array{contacts: array<array<string, mixed>>, next_page_token: ?string}
+     * @return array{
+     *     contacts: array<int, array{
+     *         id: int,
+     *         given_name?: string,
+     *         family_name?: string,
+     *         email_addresses?: array<int, array{email: string, field: string}>
+     *     }>,
+     *     next_page_token: ?string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -309,7 +375,14 @@ readonly class TagsResource implements Resource
      * @param  int  $tagId  The tag ID
      * @param  int|null  $pageSize  Total number of items to return per page
      * @param  string|null  $pageToken  Page token for pagination
-     * @return array{companies: array<array<string, mixed>>, next_page_token: ?string}
+     * @return array{
+     *     companies: array<int, array{
+     *         id: int,
+     *         company_name?: string,
+     *         email_addresses?: array<int, array{email: string, field: string}>
+     *     }>,
+     *     next_page_token: ?string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException

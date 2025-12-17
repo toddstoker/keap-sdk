@@ -41,14 +41,29 @@ readonly class ContactsResource implements Resource
     /**
      * List contacts with filtering, sorting, and pagination
      *
-     * Returns a single page of results. Use paginate() to automatically
+     * Returns a single page of results. Use newListPaginator() to automatically
      * iterate through all pages.
      *
      * @param  ContactQuery|null  $query  Query builder with filters and pagination options
-     * @return array{contacts: array<array<string, mixed>>, next_page_token: ?string}
+     * @return array{
+     *     contacts: array<int, array{
+     *         id: int,
+     *         given_name?: string,
+     *         family_name?: string,
+     *         email_addresses?: array<int, array{email: string, field: string}>,
+     *         phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
+     *         company_name?: string,
+     *         company_id?: int,
+     *         create_time?: string,
+     *         update_time?: string,
+     *         owner_id?: int,
+     *         ...
+     *     }>,
+     *     next_page_token: ?string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
-     * @throws \Saloon\Exceptions\Request\RequestException|\JsonException|\DateMalformedStringException
+     * @throws \Saloon\Exceptions\Request\RequestException
      */
     public function list(?ContactQuery $query = null): array
     {
@@ -84,7 +99,40 @@ readonly class ContactsResource implements Resource
      * Get a specific contact by ID
      *
      * @param  int  $contactId  The contact ID
-     * @return array<string, mixed>
+     * @return array{
+     *     id: int,
+     *     given_name?: string,
+     *     family_name?: string,
+     *     middle_name?: string,
+     *     preferred_name?: string,
+     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     phone_numbers?: array<int, array{number: string, field: string, type?: string, extension?: string}>,
+     *     addresses?: array<int, array{
+     *         country_code?: string,
+     *         line1?: string,
+     *         line2?: string,
+     *         locality?: string,
+     *         postal_code?: string,
+     *         region?: string,
+     *         zip_code?: string,
+     *         field: string
+     *     }>,
+     *     company_name?: string,
+     *     company_id?: int,
+     *     job_title?: string,
+     *     website?: string,
+     *     birthday?: string,
+     *     anniversary?: string,
+     *     spouse_name?: string,
+     *     time_zone?: string,
+     *     tag_ids?: array<int>,
+     *     create_time?: string,
+     *     update_time?: string,
+     *     owner_id?: int,
+     *     opt_in_reason?: string,
+     *     source_type?: string,
+     *     ...
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -99,8 +147,26 @@ readonly class ContactsResource implements Resource
     /**
      * Create a new contact
      *
-     * @param  array<string, mixed>  $data  Contact data
-     * @return array<string, mixed>
+     * @param  array{
+     *     given_name?: string,
+     *     family_name?: string,
+     *     middle_name?: string,
+     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
+     *     company_name?: string,
+     *     job_title?: string,
+     *     ...
+     * }  $data  Contact data
+     * @return array{
+     *     id: int,
+     *     given_name?: string,
+     *     family_name?: string,
+     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
+     *     create_time?: string,
+     *     update_time?: string,
+     *     ...
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -116,8 +182,25 @@ readonly class ContactsResource implements Resource
      * Update an existing contact
      *
      * @param  int  $contactId  The contact ID to update
-     * @param  array<string, mixed>  $data  Contact data to update
-     * @return array<string, mixed>
+     * @param  array{
+     *     given_name?: string,
+     *     family_name?: string,
+     *     middle_name?: string,
+     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
+     *     company_name?: string,
+     *     job_title?: string,
+     *     ...
+     * }  $data  Contact data to update
+     * @return array{
+     *     id: int,
+     *     given_name?: string,
+     *     family_name?: string,
+     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
+     *     update_time?: string,
+     *     ...
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -170,7 +253,15 @@ readonly class ContactsResource implements Resource
      * Retrieves a list of Linked Contacts for a given Contact.
      *
      * @param  int  $contactId  The contact ID
-     * @return array{links: array<array<string, mixed>>, next_page_token: ?string}
+     * @return array{
+     *     links: array<int, array{
+     *         contact1_id: int,
+     *         contact2_id: int,
+     *         link_type_id: int,
+     *         id: int
+     *     }>,
+     *     next_page_token: ?string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -190,7 +281,12 @@ readonly class ContactsResource implements Resource
      * @param  int  $contact1Id  The first contact ID
      * @param  int  $contact2Id  The second contact ID
      * @param  int  $linkTypeId  The link type ID
-     * @return array<string, mixed>
+     * @return array{
+     *     id: int,
+     *     contact1_id: int,
+     *     contact2_id: int,
+     *     link_type_id: int
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -234,7 +330,13 @@ readonly class ContactsResource implements Resource
      * @param  string|null  $orderBy  Field and direction to order by (e.g., "name asc")
      * @param  int|null  $pageSize  Total number of items to return per page
      * @param  string|null  $pageToken  Page token for pagination
-     * @return array{contact_link_types: array<array<string, mixed>>, next_page_token: ?string}
+     * @return array{
+     *     contact_link_types: array<int, array{
+     *         id: int,
+     *         name: string
+     *     }>,
+     *     next_page_token: ?string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
