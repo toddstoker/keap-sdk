@@ -14,13 +14,6 @@ use Saloon\Http\Response;
  */
 class RequestException extends SaloonRequestException
 {
-    /**
-     * Get the HTTP response that caused this exception
-     */
-    public function getResponse(): Response
-    {
-        return $this->getSenderItem();
-    }
 
     /**
      * Get the error message from the API response
