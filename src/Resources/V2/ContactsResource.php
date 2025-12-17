@@ -47,16 +47,21 @@ readonly class ContactsResource implements Resource
      * @param  ContactQuery|null  $query  Query builder with filters and pagination options
      * @return array{
      *     contacts: array<int, array{
-     *         id: int,
+     *         id: string,
      *         given_name?: string,
      *         family_name?: string,
-     *         email_addresses?: array<int, array{email: string, field: string}>,
+     *         email_addresses?: array<int, array{
+     *             email: string,
+     *             field: string,
+     *             email_opt_status?: string,
+     *             is_opt_in?: bool,
+     *             opt_in_reason?: string
+     *         }>,
      *         phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
-     *         company_name?: string,
-     *         company_id?: int,
+     *         company?: array{id: string, company_name?: string},
+     *         owner_id?: string,
      *         create_time?: string,
      *         update_time?: string,
-     *         owner_id?: int,
      *         ...
      *     }>,
      *     next_page_token: ?string
@@ -100,37 +105,57 @@ readonly class ContactsResource implements Resource
      *
      * @param  int  $contactId  The contact ID
      * @return array{
-     *     id: int,
+     *     id: string,
      *     given_name?: string,
      *     family_name?: string,
      *     middle_name?: string,
      *     preferred_name?: string,
-     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     prefix?: string,
+     *     suffix?: string,
+     *     email_addresses?: array<int, array{
+     *         email: string,
+     *         field: string,
+     *         email_opt_status?: string,
+     *         is_opt_in?: bool,
+     *         opt_in_reason?: string
+     *     }>,
      *     phone_numbers?: array<int, array{number: string, field: string, type?: string, extension?: string}>,
+     *     fax_numbers?: array<int, array{number: string, field: string, type?: string}>,
      *     addresses?: array<int, array{
+     *         country?: string,
      *         country_code?: string,
      *         line1?: string,
      *         line2?: string,
      *         locality?: string,
      *         postal_code?: string,
      *         region?: string,
+     *         region_code?: string,
      *         zip_code?: string,
+     *         zip_four?: string,
      *         field: string
      *     }>,
-     *     company_name?: string,
-     *     company_id?: int,
+     *     company?: array{id: string, company_name?: string},
      *     job_title?: string,
      *     website?: string,
-     *     birthday?: string,
-     *     anniversary?: string,
+     *     birth_date?: string,
+     *     anniversary_date?: string,
      *     spouse_name?: string,
      *     time_zone?: string,
-     *     tag_ids?: array<int>,
+     *     preferred_locale?: string,
+     *     tag_ids?: array<string>,
      *     create_time?: string,
      *     update_time?: string,
-     *     owner_id?: int,
-     *     opt_in_reason?: string,
+     *     owner_id?: string,
+     *     leadsource_id?: string,
      *     source_type?: string,
+     *     contact_type?: string,
+     *     score_value?: string,
+     *     referral_code?: string,
+     *     custom_fields?: array<int, array{id: string, content: mixed}>,
+     *     origin?: array,
+     *     social_accounts?: array,
+     *     links?: array,
+     *     utm_parameters?: array,
      *     ...
      * }
      *
@@ -151,18 +176,20 @@ readonly class ContactsResource implements Resource
      *     given_name?: string,
      *     family_name?: string,
      *     middle_name?: string,
-     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     email_addresses?: array<int, array{email: string, field: string, is_opt_in?: bool, opt_in_reason?: string}>,
      *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
-     *     company_name?: string,
+     *     company?: array{id?: string, company_name?: string},
+     *     owner_id?: string,
      *     job_title?: string,
      *     ...
      * }  $data  Contact data
      * @return array{
-     *     id: int,
+     *     id: string,
      *     given_name?: string,
      *     family_name?: string,
-     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     email_addresses?: array<int, array{email: string, field: string, email_opt_status?: string, is_opt_in?: bool}>,
      *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
+     *     owner_id?: string,
      *     create_time?: string,
      *     update_time?: string,
      *     ...
@@ -186,18 +213,21 @@ readonly class ContactsResource implements Resource
      *     given_name?: string,
      *     family_name?: string,
      *     middle_name?: string,
-     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     email_addresses?: array<int, array{email: string, field: string, is_opt_in?: bool, opt_in_reason?: string}>,
      *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
-     *     company_name?: string,
+     *     company?: array{id?: string, company_name?: string},
+     *     owner_id?: string,
      *     job_title?: string,
      *     ...
      * }  $data  Contact data to update
      * @return array{
-     *     id: int,
+     *     id: string,
      *     given_name?: string,
      *     family_name?: string,
-     *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     email_addresses?: array<int, array{email: string, field: string, email_opt_status?: string}>,
      *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
+     *     owner_id?: string,
+     *     create_time?: string,
      *     update_time?: string,
      *     ...
      * }
@@ -235,7 +265,10 @@ readonly class ContactsResource implements Resource
      * Retrieves information about the Lead Score of a Contact.
      *
      * @param  int  $contactId  The contact ID
-     * @return array{last_updated: string, score: string}
+     * @return array{
+     *     last_updated?: string,
+     *     score?: string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -255,10 +288,10 @@ readonly class ContactsResource implements Resource
      * @param  int  $contactId  The contact ID
      * @return array{
      *     links: array<int, array{
-     *         contact1_id: int,
-     *         contact2_id: int,
-     *         link_type_id: int,
-     *         id: int
+     *         contact1_id: string,
+     *         contact2_id: string,
+     *         link_type_id: string,
+     *         id: string
      *     }>,
      *     next_page_token: ?string
      * }
@@ -282,10 +315,10 @@ readonly class ContactsResource implements Resource
      * @param  int  $contact2Id  The second contact ID
      * @param  int  $linkTypeId  The link type ID
      * @return array{
-     *     id: int,
-     *     contact1_id: int,
-     *     contact2_id: int,
-     *     link_type_id: int
+     *     id: string,
+     *     contact1_id: string,
+     *     contact2_id: string,
+     *     link_type_id: string
      * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -332,7 +365,7 @@ readonly class ContactsResource implements Resource
      * @param  string|null  $pageToken  Page token for pagination
      * @return array{
      *     contact_link_types: array<int, array{
-     *         id: int,
+     *         id: string,
      *         name: string
      *     }>,
      *     next_page_token: ?string

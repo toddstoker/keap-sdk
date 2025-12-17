@@ -45,10 +45,10 @@ readonly class TagsResource implements Resource
      * @param  TagQuery|null  $query  Query builder with filters, sorting, and pagination options
      * @return array{
      *     tags: array<int, array{
-     *         id: int,
+     *         id: string,
      *         name: string,
      *         description?: string,
-     *         category?: array{id: int, name: string}
+     *         category?: array{id: string, name: string}
      *     }>,
      *     next_page_token: ?string
      * }
@@ -89,10 +89,10 @@ readonly class TagsResource implements Resource
      *
      * @param  int  $tagId  The tag ID
      * @return array{
-     *     id: int,
+     *     id: string,
      *     name: string,
      *     description?: string,
-     *     category?: array{id: int, name: string}
+     *     category?: array{id: string, name: string}
      * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -113,13 +113,13 @@ readonly class TagsResource implements Resource
      * @param  array{
      *     name: string,
      *     description?: string,
-     *     category?: array{id: int}
+     *     category?: array{id: string}
      * }  $data  Tag data
      * @return array{
-     *     id: int,
+     *     id: string,
      *     name: string,
      *     description?: string,
-     *     category?: array{id: int, name: string}
+     *     category?: array{id: string, name: string}
      * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -141,13 +141,13 @@ readonly class TagsResource implements Resource
      * @param  array{
      *     name?: string,
      *     description?: string,
-     *     category?: array{id: int}
+     *     category?: array{id: string}
      * }  $data  Tag data to update
      * @return array{
-     *     id: int,
+     *     id: string,
      *     name: string,
      *     description?: string,
-     *     category?: array{id: int, name: string}
+     *     category?: array{id: string, name: string}
      * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -184,7 +184,7 @@ readonly class TagsResource implements Resource
      *
      * @return array{
      *     tag_categories: array<int, array{
-     *         id: int,
+     *         id: string,
      *         name: string,
      *         description?: string
      *     }>
@@ -207,7 +207,7 @@ readonly class TagsResource implements Resource
      *
      * @param  int  $tagCategoryId  The tag category ID
      * @return array{
-     *     id: int,
+     *     id: string,
      *     name: string,
      *     description?: string
      * }
@@ -232,7 +232,7 @@ readonly class TagsResource implements Resource
      *     description?: string
      * }  $data  Tag category data
      * @return array{
-     *     id: int,
+     *     id: string,
      *     name: string,
      *     description?: string
      * }
@@ -258,7 +258,7 @@ readonly class TagsResource implements Resource
      *     description?: string
      * }  $data  Tag category data to update
      * @return array{
-     *     id: int,
+     *     id: string,
      *     name: string,
      *     description?: string
      * }
@@ -344,7 +344,7 @@ readonly class TagsResource implements Resource
      * @param  string|null  $pageToken  Page token for pagination
      * @return array{
      *     contacts: array<int, array{
-     *         id: int,
+     *         id: string,
      *         given_name?: string,
      *         family_name?: string,
      *         email_addresses?: array<int, array{email: string, field: string}>
@@ -377,7 +377,7 @@ readonly class TagsResource implements Resource
      * @param  string|null  $pageToken  Page token for pagination
      * @return array{
      *     companies: array<int, array{
-     *         id: int,
+     *         id: string,
      *         company_name?: string,
      *         email_addresses?: array<int, array{email: string, field: string}>
      *     }>,

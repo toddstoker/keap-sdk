@@ -38,7 +38,15 @@ readonly class TagsResource implements Resource
      * iterate through all pages.
      *
      * @param  TagQuery|null  $query  Query builder with filters and pagination options
-     * @return array{tags: array<array<string, mixed>>, count: int}
+     * @return array{
+     *     tags: array<int, array{
+     *         id: int,
+     *         name: string,
+     *         description?: string,
+     *         category?: array{id: int, name: string}
+     *     }>,
+     *     count: int
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -75,7 +83,12 @@ readonly class TagsResource implements Resource
      * Retrieves a single tag.
      *
      * @param  int  $tagId  The tag ID
-     * @return array<string, mixed>
+     * @return array{
+     *     id: int,
+     *     name: string,
+     *     description?: string,
+     *     category?: array{id: int, name: string}
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -92,8 +105,17 @@ readonly class TagsResource implements Resource
      *
      * Creates a new tag.
      *
-     * @param  array<string, mixed>  $data  Tag data
-     * @return array<string, mixed>
+     * @param  array{
+     *     name: string,
+     *     description?: string,
+     *     category?: array{id: int}
+     * }  $data  Tag data
+     * @return array{
+     *     id: int,
+     *     name: string,
+     *     description?: string,
+     *     category?: array{id: int, name: string}
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -110,8 +132,15 @@ readonly class TagsResource implements Resource
      *
      * Creates a new tag category.
      *
-     * @param  array<string, mixed>  $data  Tag category data
-     * @return array<string, mixed>
+     * @param  array{
+     *     name: string,
+     *     description?: string
+     * }  $data  Tag category data
+     * @return array{
+     *     id: int,
+     *     name: string,
+     *     description?: string
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -131,7 +160,14 @@ readonly class TagsResource implements Resource
      * @param  int  $tagId  The tag ID
      * @param  int|null  $limit  Max number of results (default 1000)
      * @param  int|null  $offset  Starting offset
-     * @return array{companies: array<array<string, mixed>>, count: int}
+     * @return array{
+     *     companies: array<int, array{
+     *         id: int,
+     *         company_name?: string,
+     *         email_addresses?: array<int, array{email: string, field: string}>
+     *     }>,
+     *     count: int
+     * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException

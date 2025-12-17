@@ -52,10 +52,14 @@ readonly class ContactsResource implements Resource
      *         id: int,
      *         given_name?: string,
      *         family_name?: string,
-     *         email?: string,
      *         email_addresses?: array<int, array{email: string, field: string}>,
      *         phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
      *         company?: array{id: int, company_name?: string},
+     *         owner_id?: int,
+     *         date_created?: string,
+     *         last_updated?: string,
+     *         email_status?: string,
+     *         email_opted_in?: bool,
      *         ...
      *     }>,
      *     count: int,
@@ -109,8 +113,11 @@ readonly class ContactsResource implements Resource
      *     family_name?: string,
      *     middle_name?: string,
      *     preferred_name?: string,
+     *     prefix?: string,
+     *     suffix?: string,
      *     email_addresses?: array<int, array{email: string, field: string}>,
      *     phone_numbers?: array<int, array{number: string, field: string, type?: string, extension?: string}>,
+     *     fax_numbers?: array<int, array{number: string, field: string, type?: string}>,
      *     addresses?: array<int, array{
      *         country_code?: string,
      *         line1?: string,
@@ -119,22 +126,33 @@ readonly class ContactsResource implements Resource
      *         postal_code?: string,
      *         region?: string,
      *         zip_code?: string,
+     *         zip_four?: string,
      *         field: string
      *     }>,
      *     company?: array{id: int, company_name?: string},
+     *     company_name?: string,
      *     job_title?: string,
      *     website?: string,
      *     birthday?: string,
      *     anniversary?: string,
      *     spouse_name?: string,
      *     time_zone?: string,
+     *     preferred_locale?: string,
      *     tag_ids?: array<int>,
      *     date_created?: string,
      *     last_updated?: string,
      *     owner_id?: int,
+     *     lead_source_id?: int,
      *     opt_in_reason?: string,
+     *     email_status?: string,
+     *     email_opted_in?: bool,
      *     source_type?: string,
+     *     contact_type?: string,
+     *     ScoreValue?: string,
      *     custom_fields?: array<int, array{id: int, content: mixed}>,
+     *     origin?: array{date: string, ip_address: string},
+     *     social_accounts?: array,
+     *     relationships?: array,
      *     ...
      * }
      *
@@ -158,8 +176,9 @@ readonly class ContactsResource implements Resource
      *     family_name?: string,
      *     email_addresses?: array<int, array{email: string, field: string}>,
      *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
-     *     addresses?: array<int, array{line1?: string, line2?: string, locality?: string, region?: string, postal_code?: string, country_code?: string, field: string}>,
+     *     addresses?: array<int, array{line1?: string, line2?: string, locality?: string, region?: string, postal_code?: string, zip_code?: string, country_code?: string, field: string}>,
      *     company?: array{id?: int, company_name?: string},
+     *     owner_id?: int,
      *     job_title?: string,
      *     ...
      * }  $data  Contact data
@@ -168,7 +187,9 @@ readonly class ContactsResource implements Resource
      *     given_name?: string,
      *     family_name?: string,
      *     email_addresses?: array<int, array{email: string, field: string}>,
+     *     owner_id?: int,
      *     date_created?: string,
+     *     last_updated?: string,
      *     ...
      * }
      *
@@ -191,6 +212,7 @@ readonly class ContactsResource implements Resource
      *     family_name?: string,
      *     email_addresses?: array<int, array{email: string, field: string}>,
      *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
+     *     owner_id?: int,
      *     job_title?: string,
      *     ...
      * }  $data  Contact data to update
@@ -198,6 +220,8 @@ readonly class ContactsResource implements Resource
      *     id: int,
      *     given_name?: string,
      *     family_name?: string,
+     *     owner_id?: int,
+     *     date_created?: string,
      *     last_updated?: string,
      *     ...
      * }
