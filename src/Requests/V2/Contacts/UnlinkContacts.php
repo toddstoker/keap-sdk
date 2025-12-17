@@ -30,7 +30,7 @@ class UnlinkContacts extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/contacts:unlink';
+        return '/v2/contacts:unlink';
     }
 
     protected function defaultBody(): array

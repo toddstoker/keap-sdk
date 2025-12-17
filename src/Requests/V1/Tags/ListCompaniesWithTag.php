@@ -26,7 +26,7 @@ class ListCompaniesWithTag extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/tags/{$this->tagId}/companies";
+        return "/v1/tags/{$this->tagId}/companies";
     }
 
     protected function defaultQuery(): array

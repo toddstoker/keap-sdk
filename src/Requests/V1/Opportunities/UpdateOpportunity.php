@@ -29,7 +29,7 @@ class UpdateOpportunity extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/opportunities/{$this->opportunityId}";
+        return "/v1/opportunities/{$this->opportunityId}";
     }
 
     protected function defaultBody(): array

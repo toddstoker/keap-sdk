@@ -97,13 +97,11 @@ class Keap extends Connector
     /**
      * Resolve the base URL for API requests
      *
-     * Dynamically constructs the base URL using the configured API version.
-     *
-     * @return string Base URL for the API (e.g., "https://api.infusionsoft.com/crm/rest/v2")
+     * @return string Base URL for the API (e.g., "https://api.infusionsoft.com/crm/rest")
      */
     public function resolveBaseUrl(): string
     {
-        return "https://api.infusionsoft.com/crm/rest/v{$this->apiVersion}";
+        return "https://api.infusionsoft.com/crm/rest";
     }
 
     /**

@@ -31,7 +31,7 @@ class ListContacts extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/contacts';
+        return '/v2/contacts';
     }
 
     /**

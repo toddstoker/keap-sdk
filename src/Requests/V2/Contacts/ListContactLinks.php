@@ -24,6 +24,6 @@ class ListContactLinks extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/{$this->contactId}/links";
+        return "/v2/contacts/{$this->contactId}/links";
     }
 }

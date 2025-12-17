@@ -24,6 +24,6 @@ class DelayedVerifyHook extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/hooks/{$this->key}/delayedVerify";
+        return "/v1/hooks/{$this->key}/delayedVerify";
     }
 }

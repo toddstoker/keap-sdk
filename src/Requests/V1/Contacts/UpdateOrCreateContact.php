@@ -28,7 +28,7 @@ class UpdateOrCreateContact extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/contacts';
+        return '/v1/contacts';
     }
 
     protected function defaultBody(): array

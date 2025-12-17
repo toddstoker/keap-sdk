@@ -29,7 +29,7 @@ class UpdateTagCategory extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/tags/categories/{$this->tagCategoryId}";
+        return "/v2/tags/categories/{$this->tagCategoryId}";
     }
 
     protected function defaultBody(): array

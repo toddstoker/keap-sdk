@@ -31,7 +31,7 @@ class ListTags extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/tags';
+        return '/v1/tags';
     }
 
     /**

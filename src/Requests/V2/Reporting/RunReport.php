@@ -35,7 +35,7 @@ class RunReport extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/reporting/reports/{$this->reportId}:run";
+        return "/v2/reporting/reports/{$this->reportId}:run";
     }
 
     /**

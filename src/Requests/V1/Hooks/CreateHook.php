@@ -28,7 +28,7 @@ class CreateHook extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/hooks';
+        return '/v1/hooks';
     }
 
     protected function defaultBody(): array

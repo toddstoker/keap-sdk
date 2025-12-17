@@ -24,6 +24,6 @@ class DeleteTag extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/tags/{$this->tagId}";
+        return "/v2/tags/{$this->tagId}";
     }
 }

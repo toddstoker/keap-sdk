@@ -24,6 +24,6 @@ class GetEmailAddressStatus extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/emailAddresses/{$this->email}/status";
+        return "/v2/emailAddresses/{$this->email}/status";
     }
 }

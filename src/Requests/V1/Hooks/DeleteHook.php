@@ -24,6 +24,6 @@ class DeleteHook extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/hooks/{$this->key}";
+        return "/v1/hooks/{$this->key}";
     }
 }

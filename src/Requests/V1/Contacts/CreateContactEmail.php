@@ -29,7 +29,7 @@ class CreateContactEmail extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/{$this->contactId}/emails";
+        return "/v1/contacts/{$this->contactId}/emails";
     }
 
     protected function defaultBody(): array

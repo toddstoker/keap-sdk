@@ -29,7 +29,7 @@ class CreateCreditCard extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/{$this->contactId}/creditCards";
+        return "/v1/contacts/{$this->contactId}/creditCards";
     }
 
     protected function defaultBody(): array

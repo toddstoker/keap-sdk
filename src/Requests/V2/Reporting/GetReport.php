@@ -26,6 +26,6 @@ class GetReport extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/reporting/reports/{$this->reportId}";
+        return "/v2/reporting/reports/{$this->reportId}";
     }
 }

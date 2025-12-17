@@ -31,7 +31,7 @@ class CreateContact extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/contacts';
+        return '/v1/contacts';
     }
 
     /**

@@ -15,6 +15,6 @@ class GetContactEmails extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/{$this->contactId}/emails";
+        return "/v1/contacts/{$this->contactId}/emails";
     }
 }

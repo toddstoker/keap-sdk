@@ -24,6 +24,6 @@ class VerifyHook extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/hooks/{$this->key}/verify";
+        return "/v1/hooks/{$this->key}/verify";
     }
 }

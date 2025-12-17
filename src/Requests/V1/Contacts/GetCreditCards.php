@@ -24,6 +24,6 @@ class GetCreditCards extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/{$this->contactId}/creditCards";
+        return "/v1/contacts/{$this->contactId}/creditCards";
     }
 }

@@ -24,6 +24,6 @@ class GetLeadScore extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/{$this->contactId}/leadScore";
+        return "/v2/contacts/{$this->contactId}/leadScore";
     }
 }

@@ -28,7 +28,7 @@ class CreateTag extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/tags';
+        return '/v2/tags';
     }
 
     protected function defaultBody(): array

@@ -29,7 +29,7 @@ class AddUtmToContact extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/{$this->contactId}/utm";
+        return "/v1/contacts/{$this->contactId}/utm";
     }
 
     protected function defaultBody(): array

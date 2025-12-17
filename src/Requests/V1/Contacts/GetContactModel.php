@@ -13,6 +13,6 @@ class GetContactModel extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/contacts/model';
+        return '/v1/contacts/model';
     }
 }

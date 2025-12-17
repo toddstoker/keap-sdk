@@ -29,7 +29,7 @@ class RemoveTagFromContacts extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/tags/{$this->tagId}/contacts:removeTags";
+        return "/v2/tags/{$this->tagId}/contacts:removeTags";
     }
 
     protected function defaultBody(): array

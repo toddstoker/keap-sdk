@@ -30,7 +30,7 @@ class LinkContacts extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/contacts:link';
+        return '/v2/contacts:link';
     }
 
     protected function defaultBody(): array

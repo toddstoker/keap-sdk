@@ -28,7 +28,7 @@ class CreateCustomField extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/contacts/model/customFields';
+        return '/v1/contacts/model/customFields';
     }
 
     protected function defaultBody(): array

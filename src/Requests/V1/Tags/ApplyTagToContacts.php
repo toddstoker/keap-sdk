@@ -29,7 +29,7 @@ class ApplyTagToContacts extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/tags/{$this->tagId}/contacts";
+        return "/v1/tags/{$this->tagId}/contacts";
     }
 
     protected function defaultBody(): array

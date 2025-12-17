@@ -28,7 +28,7 @@ class CreateOpportunity extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/opportunities';
+        return '/v1/opportunities';
     }
 
     protected function defaultBody(): array

@@ -25,7 +25,7 @@ class RemoveTagFromContacts extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/tags/{$this->tagId}/contacts";
+        return "/v1/tags/{$this->tagId}/contacts";
     }
 
     protected function defaultQuery(): array

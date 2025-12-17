@@ -28,7 +28,7 @@ class CreateTagCategory extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/tags/categories';
+        return '/v1/tags/categories';
     }
 
     protected function defaultBody(): array

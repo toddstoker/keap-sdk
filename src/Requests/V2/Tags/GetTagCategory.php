@@ -24,6 +24,6 @@ class GetTagCategory extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/tags/categories/{$this->tagCategoryId}";
+        return "/v2/tags/categories/{$this->tagCategoryId}";
     }
 }

@@ -27,7 +27,7 @@ class ListContactLinkTypes extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/contacts/links/types';
+        return '/v2/contacts/links/types';
     }
 
     protected function defaultQuery(): array

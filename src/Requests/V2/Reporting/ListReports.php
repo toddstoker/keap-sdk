@@ -33,7 +33,7 @@ class ListReports extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/reporting/reports';
+        return '/v2/reporting/reports';
     }
 
     /**

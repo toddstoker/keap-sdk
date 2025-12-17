@@ -24,6 +24,6 @@ class GetTag extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/tags/{$this->tagId}";
+        return "/v1/tags/{$this->tagId}";
     }
 }

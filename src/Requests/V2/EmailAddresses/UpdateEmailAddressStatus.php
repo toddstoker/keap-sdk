@@ -37,7 +37,7 @@ class UpdateEmailAddressStatus extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/emailAddresses/{$this->email}/status";
+        return "/v2/emailAddresses/{$this->email}/status";
     }
 
     protected function defaultBody(): array

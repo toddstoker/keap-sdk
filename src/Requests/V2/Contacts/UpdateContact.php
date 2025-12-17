@@ -33,7 +33,7 @@ class UpdateContact extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/{$this->contactId}";
+        return "/v2/contacts/{$this->contactId}";
     }
 
     /**

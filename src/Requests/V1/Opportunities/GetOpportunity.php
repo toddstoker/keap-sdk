@@ -24,6 +24,6 @@ class GetOpportunity extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/opportunities/{$this->opportunityId}";
+        return "/v1/opportunities/{$this->opportunityId}";
     }
 }

@@ -24,6 +24,6 @@ class GetContact extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/{$this->contactId}";
+        return "/v2/contacts/{$this->contactId}";
     }
 }

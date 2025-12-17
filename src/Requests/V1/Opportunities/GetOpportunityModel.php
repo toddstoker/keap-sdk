@@ -20,6 +20,6 @@ class GetOpportunityModel extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/opportunities/model';
+        return '/v1/opportunities/model';
     }
 }

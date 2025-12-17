@@ -31,7 +31,7 @@ class ListOpportunities extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/opportunities';
+        return '/v1/opportunities';
     }
 
     /**
