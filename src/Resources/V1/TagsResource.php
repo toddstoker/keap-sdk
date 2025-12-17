@@ -45,7 +45,7 @@ readonly class TagsResource implements Resource
      */
     public function list(?TagQuery $query = null): array
     {
-        $query = $query ?? TagQuery::make()->limit(1000);
+        $query = $query ?? TagQuery::make();
 
         $response = $this->connector->send(new ListTags($query));
 
@@ -61,7 +61,7 @@ readonly class TagsResource implements Resource
      */
     public function newListPaginator(?TagQuery $query = null): Paginator
     {
-        $query = $query ?? TagQuery::make()->limit(1000);
+        $query = $query ?? TagQuery::make();
 
         return new Paginator(
             fn (TagQuery $q) => $this->list($q),

@@ -43,7 +43,7 @@ abstract class Query
     /**
      * Number of items to return (max 1000)
      */
-    protected ?int $limit = null;
+    protected int $limit = 1000;
 
     /**
      * Number of items to skip

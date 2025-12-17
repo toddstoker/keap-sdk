@@ -39,7 +39,7 @@ readonly class OpportunitiesResource implements Resource
      */
     public function list(?OpportunityQuery $query = null): array
     {
-        $query = $query ?? OpportunityQuery::make()->limit(100);
+        $query = $query ?? OpportunityQuery::make();
 
         return $this->connector->send(new ListOpportunities($query))->json();
     }
@@ -53,7 +53,7 @@ readonly class OpportunitiesResource implements Resource
      */
     public function newListPaginator(?OpportunityQuery $query = null): Paginator
     {
-        $query = $query ?? OpportunityQuery::make()->limit(100);
+        $query = $query ?? OpportunityQuery::make();
 
         return new Paginator(
             fn (OpportunityQuery $q) => $this->list($q),

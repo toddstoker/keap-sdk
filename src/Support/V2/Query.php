@@ -38,7 +38,7 @@ abstract class Query
     /**
      * Number of items per page (1-1000)
      */
-    protected ?int $pageSize = null;
+    protected int $pageSize = 1000;
 
     /**
      * Page token for cursor-based pagination
@@ -135,6 +135,17 @@ abstract class Query
         $this->pageSize = $size;
 
         return $this;
+    }
+
+    /**
+     * Set the number of items to return per page (alias for pageSize)
+     *
+     * @param  int  $limit  Number of items (1-1000)
+     * @return $this
+     */
+    public function limit(int $limit): static
+    {
+        return $this->pageSize($limit);
     }
 
     /**

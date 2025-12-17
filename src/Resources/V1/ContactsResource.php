@@ -54,7 +54,7 @@ readonly class ContactsResource implements Resource
      */
     public function list(?ContactQuery $query = null): array
     {
-        $query = $query ?? ContactQuery::make()->limit(100);
+        $query = $query ?? ContactQuery::make();
 
         $response = $this->connector->send(new ListContacts($query));
         $data = $response->json();
@@ -76,7 +76,7 @@ readonly class ContactsResource implements Resource
      */
     public function newListPaginator(?ContactQuery $query = null): Paginator
     {
-        $query = $query ?? ContactQuery::make()->limit(100);
+        $query = $query ?? ContactQuery::make();
 
         return new Paginator(
             fn (ContactQuery $q) => $this->list($q),
