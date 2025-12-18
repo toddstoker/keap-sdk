@@ -60,9 +60,4 @@ class Utility
             $legacyPayload['LeadSourceId'] = $payload['lead_source_id'];
         }
     }
-
-    protected static function dateFromString(?string $dateString): ?\DateTimeImmutable
-    {
-        return new \DateTimeImmutable($dateString);
-    }
 }

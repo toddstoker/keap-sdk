@@ -335,20 +335,22 @@ trait ConvertsToLegacyPayload
             if (isset($customField['id']) && isset($customField['content'])) {
                 $fieldId = (string) $customField['id'];
 
+                $convertToDate = false;
                 // Determine legacy field name from mapping or use default
                 if (isset($customFieldMap[$fieldId])) {
                     $mapping = $customFieldMap[$fieldId];
                     $legacyFieldName = $mapping['name'];
+                    $convertToDate = in_array($mapping['type'], ['DATE', 'DATE_TIME'], true);
                     // Type is available as $mapping['type'] if needed for future use
                 } else {
                     $legacyFieldName = "_CustomField{$fieldId}";
                 }
 
+                $content = $convertToDate ? self::dateFromString($customField['content']) : $customField['content'];
                 // Content might be an object/array, convert to string if needed
-                $content = $customField['content'];
-                if (is_array($content) || is_object($content)) {
-                    $content = json_encode($content);
-                }
+//                if (is_array($content) || is_object($content)) {
+//                    $content = json_encode($content);
+//                }
 
                 $legacyPayload[$legacyFieldName] = $content;
             }
@@ -360,5 +362,10 @@ trait ConvertsToLegacyPayload
         if (isset($payload['tag_ids']) && is_array($payload['tag_ids'])) {
             $legacyPayload['Groups'] = $payload['tag_ids'];
         }
+    }
+
+    protected static function dateFromString(?string $dateString): ?\DateTimeImmutable
+    {
+        return new \DateTimeImmutable($dateString);
     }
 }
