@@ -33,6 +33,7 @@ trait ConvertsToLegacyPayload
         static::mapFaxFields($contactPayload, $legacyPayload);
         static::mapAddressFields($contactPayload, $legacyPayload);
         static::mapCustomFields($contactPayload, $customFieldMap, $legacyPayload);
+        static::mapTags($contactPayload, $legacyPayload);
 
         return $legacyPayload;
     }
