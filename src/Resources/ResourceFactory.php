@@ -53,6 +53,9 @@ class ResourceFactory
             1 => \Toddstoker\KeapSdk\Resources\V1\TagsResource::class,
             2 => \Toddstoker\KeapSdk\Resources\V2\TagsResource::class,
         ],
+        'users' => [
+            2 => \Toddstoker\KeapSdk\Resources\V2\UsersResource::class,
+        ],
     ];
 
     /**
