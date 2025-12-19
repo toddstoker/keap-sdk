@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Support\V1;
 
+use Toddstoker\KeapSdk\Support\V1\FieldSelector\ContactFieldSelector;
+
 /**
  * Query builder for Keap v1 Contacts API
  *
@@ -24,6 +26,11 @@ namespace Toddstoker\KeapSdk\Support\V1;
  */
 class ContactQuery extends Query
 {
+    public function __construct()
+    {
+        $this->fieldSelector = new ContactFieldSelector();
+    }
+
     /**
      * Allowed filter fields for contacts endpoint
      *
@@ -49,54 +56,6 @@ class ContactQuery extends Query
         'name',
         'firstName',
         'email',
-    ];
-
-    /**
-     * Allowed fields for field selection
-     *
-     * These are the optional properties that can be included in the response
-     * via the fields() method (V1 API uses 'optional_properties' parameter).
-     *
-     * @var array<string>
-     */
-    protected array $allowedFields = [
-        'addresses',
-//        'anniversary', // Not in v1
-//        'birthday', // Not in v1
-        'company',
-//        'company_name', // Not in v1
-        'contact_type',
-        'custom_fields',
-//        'date_created', // Not in v1
-        'email_addresses',
-//        'email_opted_in', // Not in v1
-//        'email_status', // Not in v1
-        'family_name',
-        'fax_numbers',
-        'given_name',
-        'id',
-        'job_title',
-//        'last_updated', // Not in v1
-//        'lead_source_id', // Not in v1
-        'middle_name',
-//        'opt_in_reason', // Not in v1
-        'origin',
-        'owner_id',
-        'phone_numbers',
-        'preferred_locale',
-        'preferred_name',
-        'prefix',
-//        'referral_code', // Not in v1
-//        'relationships', // Not in v1
-//        'score_value', // Not in v1
-        'social_accounts',
-        'source_type',
-        'spouse_name',
-        'suffix',
-        'tag_ids',
-        'time_zone',
-//        'utm_parameters', // Not in v1
-        'website',
     ];
 
     /**

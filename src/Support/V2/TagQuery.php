@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Support\V2;
 
+use Toddstoker\KeapSdk\Support\V2\FieldSelector\TagFieldSelector;
+
 /**
  * Query builder for Keap v2 Tags API
  *
@@ -23,6 +25,11 @@ namespace Toddstoker\KeapSdk\Support\V2;
  */
 class TagQuery extends Query
 {
+    public function __construct()
+    {
+        $this->fieldSelector = new TagFieldSelector();
+    }
+
     /**
      * Allowed filter fields for tags endpoint
      *

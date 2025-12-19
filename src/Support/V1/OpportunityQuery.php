@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Support\V1;
 
+use Toddstoker\KeapSdk\Support\V1\FieldSelector\OpportunityFieldSelector;
+
 /**
  * Query builder for Keap v1 Opportunities API
  *
@@ -20,6 +22,11 @@ namespace Toddstoker\KeapSdk\Support\V1;
  */
 class OpportunityQuery extends Query
 {
+    public function __construct()
+    {
+        $this->fieldSelector = new OpportunityFieldSelector();
+    }
+
     /**
      * Allowed filter fields for opportunities endpoint
      *

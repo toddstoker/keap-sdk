@@ -24,6 +24,7 @@ use Toddstoker\KeapSdk\Requests\V1\Contacts\UpdateContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\UpdateOrCreateContact;
 use Toddstoker\KeapSdk\Resources\Resource;
 use Toddstoker\KeapSdk\Support\V1\ContactQuery;
+use Toddstoker\KeapSdk\Support\V1\FieldSelector\ContactFieldSelector;
 use Toddstoker\KeapSdk\Support\V1\Paginator;
 
 /**
@@ -105,8 +106,11 @@ readonly class ContactsResource implements Resource
     /**
      * Get a specific contact by ID
      *
+     * Supports optional field selection. Pass an array of field names,
+     * a ContactFieldSelector instance, or null to get default fields.
+     *
      * @param  int  $contactId  The contact ID
-     * @param  array<string>|null  $optionalProperties  Optional properties to include (e.g., ['custom_fields', 'preferred_locale'])
+     * @param  ContactFieldSelector|array<string>|null  $fields  Fields to include in response
      * @return array{
      *     id: int,
      *     given_name?: string,
@@ -159,10 +163,17 @@ readonly class ContactsResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function get(int $contactId, ?array $optionalProperties = null): array
+    public function get(int $contactId, ContactFieldSelector|array|null $fields = null): array
     {
+        // Convert array to ContactFieldSelector if needed
+        if (is_array($fields)) {
+            $fieldSelector = ContactFieldSelector::make()->fields($fields);
+        } else {
+            $fieldSelector = $fields;
+        }
+
         $response = $this->connector->send(
-            new GetContact($contactId, $optionalProperties)
+            new GetContact($contactId, $fieldSelector)
         );
 
         return $response->json();

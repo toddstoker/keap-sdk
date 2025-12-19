@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Toddstoker\KeapSdk\Support\V1;
 
 use BadMethodCallException;
+use Toddstoker\KeapSdk\Support\V1\FieldSelector\FieldSelector;
 
 /**
  * Base query builder for Keap v1 API list endpoints
@@ -23,6 +24,8 @@ use BadMethodCallException;
  */
 abstract class Query
 {
+    protected FieldSelector $fieldSelector;
+
     /**
      * Filter conditions (key-value pairs)
      *
@@ -51,13 +54,6 @@ abstract class Query
     protected ?int $offset = null;
 
     /**
-     * Fields to include in response (V1 uses optional_properties parameter)
-     *
-     * @var array<string>|null
-     */
-    protected ?array $fields = null;
-
-    /**
      * Allowed filter fields (defined by child classes)
      *
      * @var array<string>
@@ -70,13 +66,6 @@ abstract class Query
      * @var array<string>
      */
     protected array $allowedOrderBy = [];
-
-    /**
-     * Allowed fields for field selection (defined by child classes)
-     *
-     * @var array<string>
-     */
-    protected array $allowedFields = [];
 
     /**
      * Create a new Query instance
@@ -170,7 +159,7 @@ abstract class Query
     /**
      * Set which fields to include in the response
      *
-     * Validates fields against the allowedFields array if defined.
+     * Proxies to FieldSelector.
      * V1 API uses 'optional_properties' parameter name.
      *
      * @param  array<string>  $fields  Array of field names
@@ -180,19 +169,7 @@ abstract class Query
      */
     public function fields(array $fields): static
     {
-        // Validate fields if allowedFields is defined
-        if (! empty($this->allowedFields)) {
-            $invalidFields = array_diff($fields, $this->allowedFields);
-
-            if (! empty($invalidFields)) {
-                throw new \InvalidArgumentException(
-                    'Invalid field(s): '.implode(', ', $invalidFields).'. '.
-                    'Allowed fields: '.implode(', ', $this->allowedFields)
-                );
-            }
-        }
-
-        $this->fields = $fields;
+        $this->fieldSelector->fields($fields);
 
         return $this;
     }
@@ -204,7 +181,7 @@ abstract class Query
      */
     public function allFields(): static
     {
-        $this->fields = $this->allowedFields;
+        $this->fieldSelector->allFields();
 
         return $this;
     }
@@ -339,11 +316,6 @@ abstract class Query
             $params['offset'] = $this->offset;
         }
 
-        // Add field selection (V1 uses 'optional_properties' parameter)
-        if ($this->fields !== null) {
-            $params['optional_properties'] = implode(',', $this->fields);
-        }
-
-        return $params;
+        return array_merge($params, $this->fieldSelector->toArray());
     }
 }

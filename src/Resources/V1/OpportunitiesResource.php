@@ -11,6 +11,7 @@ use Toddstoker\KeapSdk\Requests\V1\Opportunities\GetOpportunityModel;
 use Toddstoker\KeapSdk\Requests\V1\Opportunities\ListOpportunities;
 use Toddstoker\KeapSdk\Requests\V1\Opportunities\UpdateOpportunity;
 use Toddstoker\KeapSdk\Resources\Resource;
+use Toddstoker\KeapSdk\Support\V1\FieldSelector\OpportunityFieldSelector;
 use Toddstoker\KeapSdk\Support\V1\OpportunityQuery;
 use Toddstoker\KeapSdk\Support\V1\Paginator;
 
@@ -64,15 +65,26 @@ readonly class OpportunitiesResource implements Resource
     /**
      * Get a specific opportunity by ID
      *
+     * Supports optional field selection. Pass an array of field names,
+     * an OpportunityFieldSelector instance, or null to get default fields.
+     *
      * @param  int  $opportunityId  The opportunity ID
+     * @param  OpportunityFieldSelector|array<string>|null  $fields  Fields to include in response
      * @return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function get(int $opportunityId): array
+    public function get(int $opportunityId, OpportunityFieldSelector|array|null $fields = null): array
     {
-        return $this->connector->send(new GetOpportunity($opportunityId))->json();
+        // Convert array to OpportunityFieldSelector if needed
+        if (is_array($fields)) {
+            $fieldSelector = OpportunityFieldSelector::make()->fields($fields);
+        } else {
+            $fieldSelector = $fields;
+        }
+
+        return $this->connector->send(new GetOpportunity($opportunityId, $fieldSelector))->json();
     }
 
     /**

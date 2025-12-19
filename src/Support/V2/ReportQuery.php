@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Support\V2;
 
+use Toddstoker\KeapSdk\Support\V2\FieldSelector\ReportFieldSelector;
+
 /**
  * Query builder for Keap v2 Reporting API - List Reports endpoint
  *
@@ -18,6 +20,11 @@ namespace Toddstoker\KeapSdk\Support\V2;
  */
 class ReportQuery extends Query
 {
+    public function __construct()
+    {
+        $this->fieldSelector = new ReportFieldSelector();
+    }
+
     /**
      * Allowed filter fields for reports list endpoint
      *

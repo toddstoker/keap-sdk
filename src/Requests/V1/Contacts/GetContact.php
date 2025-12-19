@@ -6,11 +6,15 @@ namespace Toddstoker\KeapSdk\Requests\V1\Contacts;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Toddstoker\KeapSdk\Support\V1\FieldSelector\ContactFieldSelector;
 
 /**
- * Get Contact
+ * Get Contact (v1)
  *
  * Retrieves a single contact by ID.
+ *
+ * Supports optional field selection via optional_properties parameter
+ * to specify which contact properties to include in the response.
  *
  * @see https://developer.infusionsoft.com/docs/rest/
  */
@@ -20,11 +24,11 @@ class GetContact extends Request
 
     /**
      * @param  int  $contactId  The contact ID
-     * @param  array<string>|null  $optionalProperties  Comma-delimited list of Contact properties to include in the response
+     * @param  ContactFieldSelector|null  $fieldSelector  Field selector for optional properties
      */
     public function __construct(
         protected readonly int $contactId,
-        protected readonly ?array $optionalProperties = null,
+        protected readonly ?ContactFieldSelector $fieldSelector = null,
     ) {}
 
     public function resolveEndpoint(): string
@@ -37,12 +41,6 @@ class GetContact extends Request
      */
     protected function defaultQuery(): array
     {
-        if ($this->optionalProperties === null) {
-            return [];
-        }
-
-        return [
-            'optional_properties' => implode(',', $this->optionalProperties),
-        ];
+        return $this->fieldSelector?->toArray() ?? [];
     }
 }
