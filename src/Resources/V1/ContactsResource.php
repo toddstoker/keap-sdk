@@ -18,7 +18,7 @@ use Toddstoker\KeapSdk\Requests\V1\Contacts\GetContactModel;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\GetContactTags;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\GetCreditCards;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\ListContacts;
-use Toddstoker\KeapSdk\Requests\V1\Contacts\RemoveAllTagsFromContact;
+use Toddstoker\KeapSdk\Requests\V1\Contacts\RemoveTagsFromContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\RemoveTagFromContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\UpdateContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\UpdateOrCreateContact;
@@ -269,15 +269,35 @@ readonly class ContactsResource implements Resource
      * Apply a tag to a contact
      *
      * @param  int  $contactId  The contact ID
-     * @param  int  $tagId  The tag ID to apply
+     * @param  array|int  $tagIds  The tag IDs to apply
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function applyTag(int $contactId, int $tagId): bool
+    public function applyTags(int $contactId, array|int $tagIds): bool
     {
         $response = $this->connector->send(
-            new ApplyTagToContact($contactId, $tagId)
+            new ApplyTagToContact($contactId, $tagIds)
+        );
+
+        return $response->successful();
+    }
+
+    /**
+     * Remove tags from contact
+     *
+     * Removes specific tags from a contact.
+     *
+     * @param  int  $contactId  The contact ID
+     * @param  array|int  $tagIds  The tag IDs to remove
+     *
+     * @throws \Saloon\Exceptions\Request\FatalRequestException
+     * @throws \Saloon\Exceptions\Request\RequestException
+     */
+    public function removeTags(int $contactId, array|int $tagIds): bool
+    {
+        $response = $this->connector->send(
+            new RemoveTagsFromContact($contactId, $tagIds)
         );
 
         return $response->successful();
@@ -511,21 +531,6 @@ readonly class ContactsResource implements Resource
     public function createEmail(int $contactId, array $data): array
     {
         return $this->connector->send(new CreateContactEmail($contactId, $data))->json();
-    }
-
-    /**
-     * Remove all tags from contact
-     *
-     * Removes all tags from a contact.
-     *
-     * @param  int  $contactId  The contact ID
-     *
-     * @throws \Saloon\Exceptions\Request\FatalRequestException
-     * @throws \Saloon\Exceptions\Request\RequestException
-     */
-    public function removeAllTags(int $contactId): bool
-    {
-        return $this->connector->send(new RemoveAllTagsFromContact($contactId))->successful();
     }
 
     /**

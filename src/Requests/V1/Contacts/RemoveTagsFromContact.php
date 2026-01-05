@@ -4,27 +4,23 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Requests\V1\Contacts;
 
-use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use Saloon\Traits\Body\HasJsonBody;
 
 /**
- * Apply Tag to Contact
+ * Remove Tags from Contact (v1)
  *
- * Applies a tag to a contact.
+ * Removes specific tags from a contact.
  *
  * @see https://developer.infusionsoft.com/docs/rest/
  */
-class ApplyTagToContact extends Request implements HasBody
+class RemoveTagsFromContact extends Request
 {
-    use HasJsonBody;
-
-    protected Method $method = Method::POST;
+    protected Method $method = Method::DELETE;
 
     /**
      * @param  int  $contactId  The contact ID
-     * @param  int  $tagIds  The tag IDs to apply
+     * @param  int|array  $tagIds  The tag IDs to remove
      */
     public function __construct(
         protected readonly int $contactId,
@@ -39,10 +35,12 @@ class ApplyTagToContact extends Request implements HasBody
     /**
      * @return array<string, mixed>
      */
-    protected function defaultBody(): array
+    protected function defaultQuery(): array
     {
+        $tagIds = is_array($this->tagIds) ? $this->tagIds : [$this->tagIds];
+
         return [
-            'tagIds' => is_array($this->tagIds) ? $this->tagIds : [$this->tagIds],
+            'ids' => implode(',', $tagIds),
         ];
     }
 }
