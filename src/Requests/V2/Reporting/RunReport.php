@@ -26,7 +26,7 @@ class RunReport extends Request
 
     /**
      * @param  string  $reportId  The report ID to run
-     * @param  RunReportQuery  $query  The query builder with fields, sorting, and pagination
+     * @param  RunReportQuery  $queryBuilder  The query builder with fields, sorting, and pagination
      */
     public function __construct(
         protected readonly string $reportId,

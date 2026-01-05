@@ -14,7 +14,6 @@ use Saloon\Http\Response;
  */
 class RequestException extends SaloonRequestException
 {
-
     /**
      * Get the error message from the API response
      *

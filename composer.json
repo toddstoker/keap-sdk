@@ -7,10 +7,12 @@
         "saloonphp/saloon": "^3.0"
     },
     "require-dev": {
-      "psy/psysh": "@stable",
+        "psy/psysh": "@stable",
         "laravel/pint": "dev-main",
         "spatie/ray": "^1.0@dev",
-        "symfony/var-dumper": "8.1.x-dev"
+        "symfony/var-dumper": "8.1.x-dev",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/extension-installer": "^1.4"
     },
     "license": "MIT",
     "autoload": {
@@ -18,5 +20,22 @@
             "Toddstoker\\KeapSdk\\": "src/"
         }
     },
-    "minimum-stability": "dev"
+    "autoload-dev": {
+        "psr-4": {
+            "Toddstoker\\KeapSdk\\PHPStan\\": "phpstan/"
+        }
+    },
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "phpstan-extension.neon"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    }
 }

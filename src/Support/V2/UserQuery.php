@@ -29,7 +29,7 @@ class UserQuery extends Query
 
     public function __construct()
     {
-        $this->fieldSelector = new UserFieldSelector();
+        $this->fieldSelector = new UserFieldSelector;
     }
 
     /**

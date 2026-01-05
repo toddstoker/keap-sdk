@@ -17,7 +17,7 @@ trait ConvertsToLegacyPayload
      *
      * @param  array  $contactPayload  The API contact payload (v1 or v2)
      * @param  array<string, array{name: string, type: string}>  $customFieldMap  Map of custom field IDs to field config
-     *                                                                             Example: ['1' => ['name' => '_LegacyFieldName', 'type' => 'Text']]
+     *                                                                            Example: ['1' => ['name' => '_LegacyFieldName', 'type' => 'Text']]
      * @return array Legacy contact payload with PascalCase field names
      */
     public static function convertContactToLegacyPayload(array $contactPayload, array $customFieldMap = []): array
@@ -349,9 +349,9 @@ trait ConvertsToLegacyPayload
 
                 $content = $convertToDate ? self::dateFromString($customField['content']) : $customField['content'];
                 // Content might be an object/array, convert to string if needed
-//                if (is_array($content) || is_object($content)) {
-//                    $content = json_encode($content);
-//                }
+                //                if (is_array($content) || is_object($content)) {
+                //                    $content = json_encode($content);
+                //                }
 
                 $legacyPayload[$legacyFieldName] = $content;
             }

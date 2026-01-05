@@ -25,10 +25,9 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\ContactFieldSelector;
  */
 class ContactQuery extends Query
 {
-
     public function __construct()
     {
-        $this->fieldSelector = new ContactFieldSelector();
+        $this->fieldSelector = new ContactFieldSelector;
     }
 
     /**

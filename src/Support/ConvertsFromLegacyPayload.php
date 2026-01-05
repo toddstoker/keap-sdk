@@ -18,7 +18,7 @@ trait ConvertsFromLegacyPayload
      *
      * @param  array  $legacyPayload  The legacy contact payload with PascalCase field names
      * @param  array<string, array{name: string, type: string}>  $customFieldMap  Map of custom field IDs to field config
-     *                                                                             Example: ['1' => ['name' => '_LegacyFieldName', 'type' => 'Text']]
+     *                                                                            Example: ['1' => ['name' => '_LegacyFieldName', 'type' => 'Text']]
      * @return array API contact payload with snake_case field names
      */
     public static function convertLegacyToContactPayload(array $legacyPayload, array $customFieldMap = []): array
@@ -44,55 +44,55 @@ trait ConvertsFromLegacyPayload
      */
     protected static function mapLegacyBasicFields(array $legacyPayload, array &$apiPayload): void
     {
-        if (isset($legacyPayload['Id']) && $legacyPayload['Id'] !== '' && $legacyPayload['Id'] !== null) {
+        if (isset($legacyPayload['Id']) && $legacyPayload['Id'] !== '') {
             $apiPayload['id'] = $legacyPayload['Id'];
         }
 
-        if (isset($legacyPayload['FirstName']) && $legacyPayload['FirstName'] !== '' && $legacyPayload['FirstName'] !== null) {
+        if (isset($legacyPayload['FirstName']) && $legacyPayload['FirstName'] !== '') {
             $apiPayload['given_name'] = $legacyPayload['FirstName'];
         }
 
-        if (isset($legacyPayload['LastName']) && $legacyPayload['LastName'] !== '' && $legacyPayload['LastName'] !== null) {
+        if (isset($legacyPayload['LastName']) && $legacyPayload['LastName'] !== '') {
             $apiPayload['family_name'] = $legacyPayload['LastName'];
         }
 
-        if (isset($legacyPayload['MiddleName']) && $legacyPayload['MiddleName'] !== '' && $legacyPayload['MiddleName'] !== null) {
+        if (isset($legacyPayload['MiddleName']) && $legacyPayload['MiddleName'] !== '') {
             $apiPayload['middle_name'] = $legacyPayload['MiddleName'];
         }
 
-        if (isset($legacyPayload['Nickname']) && $legacyPayload['Nickname'] !== '' && $legacyPayload['Nickname'] !== null) {
+        if (isset($legacyPayload['Nickname']) && $legacyPayload['Nickname'] !== '') {
             $apiPayload['preferred_name'] = $legacyPayload['Nickname'];
         }
 
-        if (isset($legacyPayload['Title']) && $legacyPayload['Title'] !== '' && $legacyPayload['Title'] !== null) {
+        if (isset($legacyPayload['Title']) && $legacyPayload['Title'] !== '') {
             $apiPayload['prefix'] = $legacyPayload['Title'];
         }
 
-        if (isset($legacyPayload['Suffix']) && $legacyPayload['Suffix'] !== '' && $legacyPayload['Suffix'] !== null) {
+        if (isset($legacyPayload['Suffix']) && $legacyPayload['Suffix'] !== '') {
             $apiPayload['suffix'] = $legacyPayload['Suffix'];
         }
 
-        if (isset($legacyPayload['SpouseName']) && $legacyPayload['SpouseName'] !== '' && $legacyPayload['SpouseName'] !== null) {
+        if (isset($legacyPayload['SpouseName']) && $legacyPayload['SpouseName'] !== '') {
             $apiPayload['spouse_name'] = $legacyPayload['SpouseName'];
         }
 
-        if (isset($legacyPayload['JobTitle']) && $legacyPayload['JobTitle'] !== '' && $legacyPayload['JobTitle'] !== null) {
+        if (isset($legacyPayload['JobTitle']) && $legacyPayload['JobTitle'] !== '') {
             $apiPayload['job_title'] = $legacyPayload['JobTitle'];
         }
 
-        if (isset($legacyPayload['Website']) && $legacyPayload['Website'] !== '' && $legacyPayload['Website'] !== null) {
+        if (isset($legacyPayload['Website']) && $legacyPayload['Website'] !== '') {
             $apiPayload['website'] = $legacyPayload['Website'];
         }
 
-        if (isset($legacyPayload['TimeZone']) && $legacyPayload['TimeZone'] !== '' && $legacyPayload['TimeZone'] !== null) {
+        if (isset($legacyPayload['TimeZone']) && $legacyPayload['TimeZone'] !== '') {
             $apiPayload['time_zone'] = $legacyPayload['TimeZone'];
         }
 
-        if (isset($legacyPayload['Language']) && $legacyPayload['Language'] !== '' && $legacyPayload['Language'] !== null) {
+        if (isset($legacyPayload['Language']) && $legacyPayload['Language'] !== '') {
             $apiPayload['preferred_locale'] = $legacyPayload['Language'];
         }
 
-        if (isset($legacyPayload['ContactType']) && $legacyPayload['ContactType'] !== '' && $legacyPayload['ContactType'] !== null) {
+        if (isset($legacyPayload['ContactType']) && $legacyPayload['ContactType'] !== '') {
             $apiPayload['contact_type'] = $legacyPayload['ContactType'];
         }
     }
@@ -135,7 +135,7 @@ trait ConvertsFromLegacyPayload
         ];
 
         foreach ($emailMap as $legacyKey => $fieldKey) {
-            if (isset($legacyPayload[$legacyKey]) && $legacyPayload[$legacyKey] !== '' && $legacyPayload[$legacyKey] !== null) {
+            if (isset($legacyPayload[$legacyKey]) && $legacyPayload[$legacyKey] !== '') {
                 $emailAddresses[] = [
                     'email' => $legacyPayload[$legacyKey],
                     'field' => $fieldKey,
@@ -164,17 +164,17 @@ trait ConvertsFromLegacyPayload
         ];
 
         foreach ($phoneMap as $fieldKey => $mapping) {
-            if (isset($legacyPayload[$mapping['number']]) && $legacyPayload[$mapping['number']] !== '' && $legacyPayload[$mapping['number']] !== null) {
+            if (isset($legacyPayload[$mapping['number']]) && $legacyPayload[$mapping['number']] !== '') {
                 $phone = [
                     'number' => $legacyPayload[$mapping['number']],
                     'field' => $fieldKey,
                 ];
 
-                if (isset($legacyPayload[$mapping['ext']]) && $legacyPayload[$mapping['ext']] !== '' && $legacyPayload[$mapping['ext']] !== null) {
+                if (isset($legacyPayload[$mapping['ext']]) && $legacyPayload[$mapping['ext']] !== '') {
                     $phone['extension'] = $legacyPayload[$mapping['ext']];
                 }
 
-                if (isset($legacyPayload[$mapping['type']]) && $legacyPayload[$mapping['type']] !== '' && $legacyPayload[$mapping['type']] !== null) {
+                if (isset($legacyPayload[$mapping['type']]) && $legacyPayload[$mapping['type']] !== '') {
                     $phone['type'] = $legacyPayload[$mapping['type']];
                 }
 
@@ -200,13 +200,13 @@ trait ConvertsFromLegacyPayload
         ];
 
         foreach ($faxMap as $fieldKey => $mapping) {
-            if (isset($legacyPayload[$mapping['number']]) && $legacyPayload[$mapping['number']] !== '' && $legacyPayload[$mapping['number']] !== null) {
+            if (isset($legacyPayload[$mapping['number']]) && $legacyPayload[$mapping['number']] !== '') {
                 $fax = [
                     'number' => $legacyPayload[$mapping['number']],
                     'field' => $fieldKey,
                 ];
 
-                if (isset($legacyPayload[$mapping['type']]) && $legacyPayload[$mapping['type']] !== '' && $legacyPayload[$mapping['type']] !== null) {
+                if (isset($legacyPayload[$mapping['type']]) && $legacyPayload[$mapping['type']] !== '') {
                     $fax['type'] = $legacyPayload[$mapping['type']];
                 }
 
@@ -234,35 +234,35 @@ trait ConvertsFromLegacyPayload
         // First address (base field names)
         $address1 = [];
 
-        if (isset($legacyPayload['StreetAddress1']) && $legacyPayload['StreetAddress1'] !== '' && $legacyPayload['StreetAddress1'] !== null) {
+        if (isset($legacyPayload['StreetAddress1']) && $legacyPayload['StreetAddress1'] !== '') {
             $address1['line1'] = $legacyPayload['StreetAddress1'];
         }
 
-        if (isset($legacyPayload['StreetAddress2']) && $legacyPayload['StreetAddress2'] !== '' && $legacyPayload['StreetAddress2'] !== null) {
+        if (isset($legacyPayload['StreetAddress2']) && $legacyPayload['StreetAddress2'] !== '') {
             $address1['line2'] = $legacyPayload['StreetAddress2'];
         }
 
-        if (isset($legacyPayload['City']) && $legacyPayload['City'] !== '' && $legacyPayload['City'] !== null) {
+        if (isset($legacyPayload['City']) && $legacyPayload['City'] !== '') {
             $address1['locality'] = $legacyPayload['City'];
         }
 
-        if (isset($legacyPayload['State']) && $legacyPayload['State'] !== '' && $legacyPayload['State'] !== null) {
+        if (isset($legacyPayload['State']) && $legacyPayload['State'] !== '') {
             $address1['region'] = $legacyPayload['State'];
         }
 
-        if (isset($legacyPayload['PostalCode']) && $legacyPayload['PostalCode'] !== '' && $legacyPayload['PostalCode'] !== null) {
+        if (isset($legacyPayload['PostalCode']) && $legacyPayload['PostalCode'] !== '') {
             $address1['postal_code'] = $legacyPayload['PostalCode'];
         }
 
-        if (isset($legacyPayload['Country']) && $legacyPayload['Country'] !== '' && $legacyPayload['Country'] !== null) {
+        if (isset($legacyPayload['Country']) && $legacyPayload['Country'] !== '') {
             $address1['country_code'] = $legacyPayload['Country'];
         }
 
-        if (isset($legacyPayload['ZipFour1']) && $legacyPayload['ZipFour1'] !== '' && $legacyPayload['ZipFour1'] !== null) {
+        if (isset($legacyPayload['ZipFour1']) && $legacyPayload['ZipFour1'] !== '') {
             $address1['zip_four'] = $legacyPayload['ZipFour1'];
         }
 
-        if (isset($legacyPayload['Address1Type']) && $legacyPayload['Address1Type'] !== '' && $legacyPayload['Address1Type'] !== null) {
+        if (isset($legacyPayload['Address1Type']) && $legacyPayload['Address1Type'] !== '') {
             $address1['field'] = $legacyPayload['Address1Type'];
         } elseif (! empty($address1)) {
             $address1['field'] = 'BILLING'; // Default field type
@@ -275,35 +275,35 @@ trait ConvertsFromLegacyPayload
         // Second address (numbered fields)
         $address2 = [];
 
-        if (isset($legacyPayload['Address2Street1']) && $legacyPayload['Address2Street1'] !== '' && $legacyPayload['Address2Street1'] !== null) {
+        if (isset($legacyPayload['Address2Street1']) && $legacyPayload['Address2Street1'] !== '') {
             $address2['line1'] = $legacyPayload['Address2Street1'];
         }
 
-        if (isset($legacyPayload['Address2Street2']) && $legacyPayload['Address2Street2'] !== '' && $legacyPayload['Address2Street2'] !== null) {
+        if (isset($legacyPayload['Address2Street2']) && $legacyPayload['Address2Street2'] !== '') {
             $address2['line2'] = $legacyPayload['Address2Street2'];
         }
 
-        if (isset($legacyPayload['City2']) && $legacyPayload['City2'] !== '' && $legacyPayload['City2'] !== null) {
+        if (isset($legacyPayload['City2']) && $legacyPayload['City2'] !== '') {
             $address2['locality'] = $legacyPayload['City2'];
         }
 
-        if (isset($legacyPayload['State2']) && $legacyPayload['State2'] !== '' && $legacyPayload['State2'] !== null) {
+        if (isset($legacyPayload['State2']) && $legacyPayload['State2'] !== '') {
             $address2['region'] = $legacyPayload['State2'];
         }
 
-        if (isset($legacyPayload['PostalCode2']) && $legacyPayload['PostalCode2'] !== '' && $legacyPayload['PostalCode2'] !== null) {
+        if (isset($legacyPayload['PostalCode2']) && $legacyPayload['PostalCode2'] !== '') {
             $address2['postal_code'] = $legacyPayload['PostalCode2'];
         }
 
-        if (isset($legacyPayload['Country2']) && $legacyPayload['Country2'] !== '' && $legacyPayload['Country2'] !== null) {
+        if (isset($legacyPayload['Country2']) && $legacyPayload['Country2'] !== '') {
             $address2['country_code'] = $legacyPayload['Country2'];
         }
 
-        if (isset($legacyPayload['ZipFour2']) && $legacyPayload['ZipFour2'] !== '' && $legacyPayload['ZipFour2'] !== null) {
+        if (isset($legacyPayload['ZipFour2']) && $legacyPayload['ZipFour2'] !== '') {
             $address2['zip_four'] = $legacyPayload['ZipFour2'];
         }
 
-        if (isset($legacyPayload['Address2Type']) && $legacyPayload['Address2Type'] !== '' && $legacyPayload['Address2Type'] !== null) {
+        if (isset($legacyPayload['Address2Type']) && $legacyPayload['Address2Type'] !== '') {
             $address2['field'] = $legacyPayload['Address2Type'];
         } elseif (! empty($address2)) {
             $address2['field'] = 'SHIPPING'; // Default field type
@@ -316,35 +316,35 @@ trait ConvertsFromLegacyPayload
         // Third address (numbered fields)
         $address3 = [];
 
-        if (isset($legacyPayload['Address3Street1']) && $legacyPayload['Address3Street1'] !== '' && $legacyPayload['Address3Street1'] !== null) {
+        if (isset($legacyPayload['Address3Street1']) && $legacyPayload['Address3Street1'] !== '') {
             $address3['line1'] = $legacyPayload['Address3Street1'];
         }
 
-        if (isset($legacyPayload['Address3Street2']) && $legacyPayload['Address3Street2'] !== '' && $legacyPayload['Address3Street2'] !== null) {
+        if (isset($legacyPayload['Address3Street2']) && $legacyPayload['Address3Street2'] !== '') {
             $address3['line2'] = $legacyPayload['Address3Street2'];
         }
 
-        if (isset($legacyPayload['City3']) && $legacyPayload['City3'] !== '' && $legacyPayload['City3'] !== null) {
+        if (isset($legacyPayload['City3']) && $legacyPayload['City3'] !== '') {
             $address3['locality'] = $legacyPayload['City3'];
         }
 
-        if (isset($legacyPayload['State3']) && $legacyPayload['State3'] !== '' && $legacyPayload['State3'] !== null) {
+        if (isset($legacyPayload['State3']) && $legacyPayload['State3'] !== '') {
             $address3['region'] = $legacyPayload['State3'];
         }
 
-        if (isset($legacyPayload['PostalCode3']) && $legacyPayload['PostalCode3'] !== '' && $legacyPayload['PostalCode3'] !== null) {
+        if (isset($legacyPayload['PostalCode3']) && $legacyPayload['PostalCode3'] !== '') {
             $address3['postal_code'] = $legacyPayload['PostalCode3'];
         }
 
-        if (isset($legacyPayload['Country3']) && $legacyPayload['Country3'] !== '' && $legacyPayload['Country3'] !== null) {
+        if (isset($legacyPayload['Country3']) && $legacyPayload['Country3'] !== '') {
             $address3['country_code'] = $legacyPayload['Country3'];
         }
 
-        if (isset($legacyPayload['ZipFour3']) && $legacyPayload['ZipFour3'] !== '' && $legacyPayload['ZipFour3'] !== null) {
+        if (isset($legacyPayload['ZipFour3']) && $legacyPayload['ZipFour3'] !== '') {
             $address3['zip_four'] = $legacyPayload['ZipFour3'];
         }
 
-        if (isset($legacyPayload['Address3Type']) && $legacyPayload['Address3Type'] !== '' && $legacyPayload['Address3Type'] !== null) {
+        if (isset($legacyPayload['Address3Type']) && $legacyPayload['Address3Type'] !== '') {
             $address3['field'] = $legacyPayload['Address3Type'];
         } elseif (! empty($address3)) {
             $address3['field'] = 'OTHER'; // Default field type

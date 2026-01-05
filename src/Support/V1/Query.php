@@ -21,6 +21,8 @@ use Toddstoker\KeapSdk\Support\V1\FieldSelector\FieldSelector;
  * This enables dynamic method calls:
  * - by{FieldName}($value) - Adds a filter condition
  * - orderBy{FieldName}($direction) - Sets the orderBy clause
+ *
+ * @phpstan-consistent-constructor
  */
 abstract class Query
 {
@@ -308,7 +310,7 @@ abstract class Query
         }
 
         // Add pagination
-        if ($this->limit !== null) {
+        if ($this->limit > 0) {
             $params['limit'] = $this->limit;
         }
 

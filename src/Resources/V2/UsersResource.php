@@ -276,12 +276,12 @@ readonly class UsersResource implements Resource
      * Retrieves a HTML snippet that contains the user's email signature.
      *
      * @param  string  $userId  The user ID
-     * @return string HTML snippet with user's email signature
+     * @return array{signature?: string} Response containing the user's email signature
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function getSignature(string $userId): string
+    public function getSignature(string $userId): array
     {
         $response = $this->connector->send(new GetUserSignature($userId));
 

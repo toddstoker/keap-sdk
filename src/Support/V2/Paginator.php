@@ -29,6 +29,8 @@ use Generator;
  * $page1 = $paginator->getPage();
  * $page2 = $paginator->nextPage();
  * ```
+ *
+ * @phpstan-consistent-constructor
  */
 class Paginator
 {
@@ -48,21 +50,21 @@ class Paginator
      * Create a new Paginator instance
      *
      * @param  Closure  $fetchCallback  Callback that accepts a Query and returns the API response
-     * @param  Query  $query  The query builder instance
+     * @param  Query|RunReportQuery  $query  The query builder instance
      */
     public function __construct(
         protected Closure $fetchCallback,
-        protected Query $query,
+        protected Query|RunReportQuery $query,
         protected string $itemKey = ''
-    ){ }
+    ) {}
 
     /**
      * Create a new Paginator instance
      *
      * @param  Closure  $fetchCallback  Callback that accepts a Query and returns the API response
-     * @param  Query  $query  The query builder instance
+     * @param  Query|RunReportQuery  $query  The query builder instance
      */
-    public static function make(Closure $fetchCallback, Query $query): static
+    public static function make(Closure $fetchCallback, Query|RunReportQuery $query): static
     {
         return new static($fetchCallback, $query);
     }
@@ -125,7 +127,6 @@ class Paginator
      * Iterate through all items across all pages
      *
      * This generator will automatically fetch subsequent pages as needed.
-     *
      */
     public function items(): Generator
     {

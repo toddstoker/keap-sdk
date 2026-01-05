@@ -24,7 +24,7 @@ class OpportunityQuery extends Query
 {
     public function __construct()
     {
-        $this->fieldSelector = new OpportunityFieldSelector();
+        $this->fieldSelector = new OpportunityFieldSelector;
     }
 
     /**

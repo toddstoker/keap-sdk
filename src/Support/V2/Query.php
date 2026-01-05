@@ -21,6 +21,8 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\FieldSelector;
  * This enables dynamic method calls:
  * - by{FieldName}($value) - Adds a filter condition
  * - orderBy{FieldName}($direction) - Sets the orderBy clause
+ *
+ * @phpstan-consistent-constructor
  */
 abstract class Query
 {
@@ -292,7 +294,7 @@ abstract class Query
             $params['order_by'] = $this->orderBy;
         }
 
-        if ($this->pageSize !== null) {
+        if ($this->pageSize > 0) {
             $params['page_size'] = $this->pageSize;
         }
 

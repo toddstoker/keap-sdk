@@ -12,6 +12,8 @@ namespace Toddstoker\KeapSdk\Support\V2;
  * direct fields and order_by parameters.
  *
  * Note: The run report endpoint is deprecated as of v2 but still functional.
+ *
+ * @phpstan-consistent-constructor
  */
 class RunReportQuery
 {

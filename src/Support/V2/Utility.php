@@ -63,22 +63,22 @@ class Utility
     protected static function mapLegacyDateFields(array $legacyPayload, array &$apiPayload): void
     {
         // Birthday: DateTimeImmutable or string → date string (YYYY-MM-DD)
-        if (isset($legacyPayload['Birthday']) && $legacyPayload['Birthday'] !== '' && $legacyPayload['Birthday'] !== null) {
+        if (isset($legacyPayload['Birthday']) && $legacyPayload['Birthday'] !== '') {
             $apiPayload['birth_date'] = self::dateToString($legacyPayload['Birthday'], 'Y-m-d');
         }
 
         // Anniversary: DateTimeImmutable or string → date string (YYYY-MM-DD)
-        if (isset($legacyPayload['Anniversary']) && $legacyPayload['Anniversary'] !== '' && $legacyPayload['Anniversary'] !== null) {
+        if (isset($legacyPayload['Anniversary']) && $legacyPayload['Anniversary'] !== '') {
             $apiPayload['anniversary_date'] = self::dateToString($legacyPayload['Anniversary'], 'Y-m-d');
         }
 
         // DateCreated: DateTimeImmutable or string → RFC 3339 timestamp
-        if (isset($legacyPayload['DateCreated']) && $legacyPayload['DateCreated'] !== '' && $legacyPayload['DateCreated'] !== null) {
+        if (isset($legacyPayload['DateCreated']) && $legacyPayload['DateCreated'] !== '') {
             $apiPayload['create_time'] = self::dateToString($legacyPayload['DateCreated'], 'c');
         }
 
         // LastUpdated: DateTimeImmutable or string → RFC 3339 timestamp
-        if (isset($legacyPayload['LastUpdated']) && $legacyPayload['LastUpdated'] !== '' && $legacyPayload['LastUpdated'] !== null) {
+        if (isset($legacyPayload['LastUpdated']) && $legacyPayload['LastUpdated'] !== '') {
             $apiPayload['update_time'] = self::dateToString($legacyPayload['LastUpdated'], 'c');
         }
     }
@@ -90,11 +90,11 @@ class Utility
      */
     protected static function mapLegacyIdFields(array $legacyPayload, array &$apiPayload): void
     {
-        if (isset($legacyPayload['OwnerID']) && $legacyPayload['OwnerID'] !== '' && $legacyPayload['OwnerID'] !== null) {
+        if (isset($legacyPayload['OwnerID']) && $legacyPayload['OwnerID'] !== '') {
             $apiPayload['owner_id'] = $legacyPayload['OwnerID'];
         }
 
-        if (isset($legacyPayload['LeadSourceId']) && $legacyPayload['LeadSourceId'] !== '' && $legacyPayload['LeadSourceId'] !== null) {
+        if (isset($legacyPayload['LeadSourceId']) && $legacyPayload['LeadSourceId'] !== '') {
             $apiPayload['leadsource_id'] = $legacyPayload['LeadSourceId'];
         }
     }
@@ -108,11 +108,11 @@ class Utility
     {
         $company = [];
 
-        if (isset($legacyPayload['Company']) && $legacyPayload['Company'] !== '' && $legacyPayload['Company'] !== null) {
+        if (isset($legacyPayload['Company']) && $legacyPayload['Company'] !== '') {
             $company['company_name'] = $legacyPayload['Company'];
         }
 
-        if (isset($legacyPayload['CompanyID']) && $legacyPayload['CompanyID'] !== '' && $legacyPayload['CompanyID'] !== null) {
+        if (isset($legacyPayload['CompanyID']) && $legacyPayload['CompanyID'] !== '') {
             $company['id'] = (string) $legacyPayload['CompanyID'];
         }
 
