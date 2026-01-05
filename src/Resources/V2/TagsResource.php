@@ -21,6 +21,7 @@ use Toddstoker\KeapSdk\Requests\V2\Tags\UpdateTag;
 use Toddstoker\KeapSdk\Requests\V2\Tags\UpdateTagCategory;
 use Toddstoker\KeapSdk\Resources\Resource;
 use Toddstoker\KeapSdk\Support\V2\Paginator;
+use Toddstoker\KeapSdk\Support\V2\TagCategoryQuery;
 use Toddstoker\KeapSdk\Support\V2\TagQuery;
 
 /**
@@ -178,26 +179,50 @@ readonly class TagsResource implements Resource
     }
 
     /**
-     * List tag categories
+     * List tag categories with filtering, sorting, and pagination
      *
-     * Retrieves a list of tag categories.
+     * Returns a single page of results. Use newListCategoriesPaginator() to automatically
+     * iterate through all pages.
      *
+     * @param  TagCategoryQuery|null  $query  Query builder with filters, sorting, and pagination options
      * @return array{
      *     tag_categories: array<int, array{
      *         id: string,
      *         name: string,
-     *         description?: string
-     *     }>
+     *         description?: string,
+     *         create_time?: string,
+     *         update_time?: string
+     *     }>,
+     *     next_page_token: ?string
      * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function listCategories(): array
+    public function listCategories(?TagCategoryQuery $query = null): array
     {
-        $response = $this->connector->send(new ListTagCategories);
+        $query = $query ?? TagCategoryQuery::make();
+
+        $response = $this->connector->send(new ListTagCategories($query));
 
         return $response->json();
+    }
+
+    /**
+     * Create a paginator for iterating through the list tag categories endpoint.
+     *
+     * Automatically fetches subsequent pages using cursor-based pagination.
+     *
+     * @param  TagCategoryQuery|null  $query  Query builder with filters, sorting, and pagination options
+     */
+    public function newListCategoriesPaginator(?TagCategoryQuery $query = null): Paginator
+    {
+        $query = $query ?? TagCategoryQuery::make();
+
+        return new Paginator(
+            fn (TagCategoryQuery $q) => $this->listCategories($q),
+            $query
+        );
     }
 
     /**
