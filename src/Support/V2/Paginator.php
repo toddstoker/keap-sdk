@@ -106,7 +106,8 @@ class Paginator
         // Check if there's a next page token
         $nextToken = $currentPage['next_page_token'] ?? null;
 
-        if ($nextToken === null) {
+        // No more pages if token is null or empty string
+        if ($nextToken === null || $nextToken === '') {
             return null;
         }
 
@@ -124,7 +125,10 @@ class Paginator
     {
         $currentPage = $this->getPage();
 
-        return isset($currentPage['next_page_token']);
+        $nextToken = $currentPage['next_page_token'] ?? null;
+
+        // Has more pages if token exists and is not empty
+        return $nextToken !== null && $nextToken !== '';
     }
 
     /**
