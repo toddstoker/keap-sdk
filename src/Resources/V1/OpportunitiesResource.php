@@ -58,7 +58,8 @@ readonly class OpportunitiesResource implements Resource
 
         return new Paginator(
             fn (OpportunityQuery $q) => $this->list($q),
-            $query
+            $query,
+            'opportunities'
         );
     }
 

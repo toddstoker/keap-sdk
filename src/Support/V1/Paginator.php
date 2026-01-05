@@ -21,7 +21,7 @@ use Generator;
  * );
  *
  * // Iterate through all contacts across all pages
- * foreach ($paginator->items('contacts') as $contact) {
+ * foreach ($paginator->items() as $contact) {
  *     echo $contact['email'];
  * }
  *
@@ -32,16 +32,6 @@ use Generator;
  */
 class Paginator
 {
-    /**
-     * The query builder instance
-     */
-    protected Query $query;
-
-    /**
-     * The fetch callback that executes the API request
-     */
-    protected Closure $fetchCallback;
-
     /**
      * The current page response data
      *
@@ -64,11 +54,13 @@ class Paginator
      *
      * @param  Closure  $fetchCallback  Callback that accepts a Query and returns the API response
      * @param  Query  $query  The query builder instance
+     * @param  string  $itemKey  The key in the response containing the items array (e.g., 'contacts', 'tags')
      */
-    public function __construct(Closure $fetchCallback, Query $query)
-    {
-        $this->fetchCallback = $fetchCallback;
-        $this->query = $query;
+    public function __construct(
+        protected Closure $fetchCallback,
+        protected Query $query,
+        protected string $itemKey
+    ) {
         $this->currentOffset = $query->getOffset() ?? 0;
     }
 
@@ -110,13 +102,7 @@ class Paginator
         $currentPage = $this->getPage();
 
         // Get the number of items in the current page
-        // Assumes the response has a key containing the items array
-        $itemsKey = $this->detectItemsKey($currentPage);
-        if ($itemsKey === null) {
-            return null;
-        }
-
-        $items = $currentPage[$itemsKey] ?? [];
+        $items = $currentPage[$this->itemKey] ?? [];
         $count = count($items);
 
         // If we got fewer items than the limit, we're on the last page
@@ -131,7 +117,7 @@ class Paginator
         $this->currentPage = ($this->fetchCallback)($this->query);
 
         // Check if the new page has any items
-        $newItems = $this->currentPage[$itemsKey] ?? [];
+        $newItems = $this->currentPage[$this->itemKey] ?? [];
         if (empty($newItems)) {
             return null;
         }
@@ -145,13 +131,8 @@ class Paginator
     public function hasMorePages(): bool
     {
         $currentPage = $this->getPage();
-        $itemsKey = $this->detectItemsKey($currentPage);
 
-        if ($itemsKey === null) {
-            return false;
-        }
-
-        $items = $currentPage[$itemsKey] ?? [];
+        $items = $currentPage[$this->itemKey] ?? [];
         $count = count($items);
         $limit = $this->query->getLimit() ?? 100;
 
@@ -163,16 +144,14 @@ class Paginator
      * Iterate through all items across all pages
      *
      * This generator will automatically fetch subsequent pages as needed.
-     *
-     * @param  string  $key  The key in the response containing the items array (e.g., 'contacts', 'companies')
      */
-    public function items(string $key): Generator
+    public function items(): Generator
     {
         $page = $this->getPage();
 
         while ($page) {
             // Yield items from current page
-            $items = $page[$key] ?? [];
+            $items = $page[$this->itemKey] ?? [];
             foreach ($items as $item) {
                 yield $item;
             }
@@ -210,31 +189,10 @@ class Paginator
      * WARNING: This will fetch all pages and load all results into memory.
      * Use with caution for large result sets.
      *
-     * @param  string  $key  The key in the response containing the items array
      * @return array<mixed>
      */
-    public function all(string $key): array
+    public function all(): array
     {
-        return iterator_to_array($this->items($key), false);
-    }
-
-    /**
-     * Detect the items key in the response
-     *
-     * Looks for common keys like 'contacts', 'companies', 'tags', etc.
-     *
-     * @param  array<string, mixed>  $response
-     */
-    protected function detectItemsKey(array $response): ?string
-    {
-        $commonKeys = ['contacts', 'companies', 'tags', 'opportunities', 'tasks', 'products'];
-
-        foreach ($commonKeys as $key) {
-            if (isset($response[$key]) && is_array($response[$key])) {
-                return $key;
-            }
-        }
-
-        return null;
+        return iterator_to_array($this->items(), false);
     }
 }

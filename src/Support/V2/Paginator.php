@@ -33,16 +33,6 @@ use Generator;
 class Paginator
 {
     /**
-     * The query builder instance
-     */
-    protected Query $query;
-
-    /**
-     * The fetch callback that executes the API request
-     */
-    protected Closure $fetchCallback;
-
-    /**
      * The current page response data
      *
      * @var array<string, mixed>|null
@@ -60,11 +50,11 @@ class Paginator
      * @param  Closure  $fetchCallback  Callback that accepts a Query and returns the API response
      * @param  Query  $query  The query builder instance
      */
-    public function __construct(Closure $fetchCallback, Query $query)
-    {
-        $this->fetchCallback = $fetchCallback;
-        $this->query = $query;
-    }
+    public function __construct(
+        protected Closure $fetchCallback,
+        protected Query $query,
+        protected string $itemKey = ''
+    ){ }
 
     /**
      * Create a new Paginator instance
@@ -136,15 +126,14 @@ class Paginator
      *
      * This generator will automatically fetch subsequent pages as needed.
      *
-     * @param  string  $key  The key in the response containing the items array (e.g., 'contacts', 'companies')
      */
-    public function items(string $key): Generator
+    public function items(): Generator
     {
         $page = $this->getPage();
 
         while ($page) {
             // Yield items from current page
-            $items = $page[$key] ?? [];
+            $items = $page[$this->itemKey] ?? [];
             foreach ($items as $item) {
                 yield $item;
             }
@@ -182,11 +171,10 @@ class Paginator
      * WARNING: This will fetch all pages and load all results into memory.
      * Use with caution for large result sets.
      *
-     * @param  string  $key  The key in the response containing the items array
      * @return array<mixed>
      */
-    public function all(string $key): array
+    public function all(): array
     {
-        return iterator_to_array($this->items($key), false);
+        return iterator_to_array($this->items(), false);
     }
 }

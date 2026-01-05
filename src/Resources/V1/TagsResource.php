@@ -73,7 +73,8 @@ readonly class TagsResource implements Resource
 
         return new Paginator(
             fn (TagQuery $q) => $this->list($q),
-            $query
+            $query,
+            'tags'
         );
     }
 

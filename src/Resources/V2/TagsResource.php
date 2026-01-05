@@ -79,7 +79,8 @@ readonly class TagsResource implements Resource
 
         return new Paginator(
             fn (TagQuery $q) => $this->list($q),
-            $query
+            $query,
+            'tags'
         );
     }
 
@@ -221,7 +222,8 @@ readonly class TagsResource implements Resource
 
         return new Paginator(
             fn (TagCategoryQuery $q) => $this->listCategories($q),
-            $query
+            $query,
+            'tag_categories'
         );
     }
 

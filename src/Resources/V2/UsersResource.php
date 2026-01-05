@@ -114,7 +114,8 @@ readonly class UsersResource implements Resource
 
         return new Paginator(
             fn (UserQuery $q) => $this->list($q),
-            $query
+            $query,
+            'users'
         );
     }
 

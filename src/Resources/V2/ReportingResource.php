@@ -62,7 +62,8 @@ readonly class ReportingResource implements Resource
 
         return new Paginator(
             fn (ReportQuery $q) => $this->list($q),
-            $query
+            $query,
+            'reports'
         );
     }
 
@@ -120,7 +121,8 @@ readonly class ReportingResource implements Resource
 
         return new Paginator(
             fn (RunReportQuery $q) => $this->run($reportId, $q),
-            $query
+            $query,
+            'results'
         );
     }
 }

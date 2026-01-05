@@ -97,7 +97,8 @@ readonly class ContactsResource implements Resource
 
         return new Paginator(
             fn (ContactQuery $q) => $this->list($q),
-            $query
+            $query,
+            'contacts'
         );
     }
 
