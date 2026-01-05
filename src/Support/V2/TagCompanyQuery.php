@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Toddstoker\KeapSdk\Support\V2;
+
+use Toddstoker\KeapSdk\Support\V2\FieldSelector\TagCompanyFieldSelector;
+
+/**
+ * Query builder for Keap v2 Tag Companies API
+ *
+ * Provides filter validation and helpers for the List Companies with Tag
+ * endpoint via dynamic method calls.
+ *
+ * @method $this byCompanyName(string $name) Filter by company name
+ * @method $this byEmail(string $email) Filter by email address
+ * @method $this bySinceAppliedTime(string $datetime) Filter by start applied time
+ * @method $this byUntilAppliedTime(string $datetime) Filter by end applied time
+ * @method $this orderByCompanyName(string $direction = 'asc') Order by company name
+ * @method $this orderByEmail(string $direction = 'asc') Order by email address
+ * @method $this orderByAppliedTime(string $direction = 'asc') Order by applied time
+ */
+class TagCompanyQuery extends Query
+{
+
+    public function __construct()
+    {
+        $this->fieldSelector = new TagCompanyFieldSelector();
+    }
+
+    /**
+     * Allowed filter fields for tag companies endpoint
+     *
+     * @var array<string>
+     */
+    protected array $allowedFilters = [
+        'company_name',
+        'email',
+        'since_applied_time',
+        'until_applied_time',
+    ];
+
+    /**
+     * Allowed orderBy fields for tag companies endpoint
+     *
+     * @var array<string>
+     */
+    protected array $allowedOrderBy = [
+        'company_name',
+        'email',
+        'applied_time',
+    ];
+
+    /**
+     * Convenience method: Filter by companies with tag applied between two dates
+     *
+     * @param  string  $startDatetime  Start datetime (ISO 8601 format)
+     * @param  string  $endDatetime  End datetime (ISO 8601 format)
+     * @return $this
+     */
+    public function appliedBetween(string $startDatetime, string $endDatetime): static
+    {
+        return $this->bySinceAppliedTime($startDatetime)
+            ->byUntilAppliedTime($endDatetime);
+    }
+}

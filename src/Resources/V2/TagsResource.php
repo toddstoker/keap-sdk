@@ -22,6 +22,8 @@ use Toddstoker\KeapSdk\Requests\V2\Tags\UpdateTagCategory;
 use Toddstoker\KeapSdk\Resources\Resource;
 use Toddstoker\KeapSdk\Support\V2\Paginator;
 use Toddstoker\KeapSdk\Support\V2\TagCategoryQuery;
+use Toddstoker\KeapSdk\Support\V2\TagCompanyQuery;
+use Toddstoker\KeapSdk\Support\V2\TagContactQuery;
 use Toddstoker\KeapSdk\Support\V2\TagQuery;
 
 /**
@@ -364,17 +366,21 @@ readonly class TagsResource implements Resource
     /**
      * List contacts with tag
      *
-     * Retrieves a list of contacts that have a specific tag.
+     * Retrieves a list of contacts that have a specific tag with filtering,
+     * sorting, and pagination.
+     *
+     * Returns a single page of results. Use newListContactsPaginator() to automatically
+     * iterate through all pages.
      *
      * @param  int  $tagId  The tag ID
-     * @param  int|null  $pageSize  Total number of items to return per page
-     * @param  string|null  $pageToken  Page token for pagination
+     * @param  TagContactQuery|null  $query  Query builder with filters, sorting, and pagination options
      * @return array{
      *     contacts: array<int, array{
      *         id: string,
      *         given_name?: string,
      *         family_name?: string,
-     *         email_addresses?: array<int, array{email: string, field: string}>
+     *         email?: string,
+     *         applied_time?: string
      *     }>,
      *     next_page_token: ?string
      * }
@@ -384,29 +390,61 @@ readonly class TagsResource implements Resource
      */
     public function listContacts(
         int $tagId,
-        ?int $pageSize = null,
-        ?string $pageToken = null
+        ?TagContactQuery $query = null
     ): array {
+        $query = $query ?? TagContactQuery::make();
+
         $response = $this->connector->send(
-            new ListContactsWithTag($tagId, $pageSize, $pageToken)
+            new ListContactsWithTag($tagId, $query)
         );
 
         return $response->json();
     }
 
     /**
-     * List companies with tag
+     * Create a paginator for iterating through contacts with a specific tag.
      *
-     * Retrieves a list of companies that have a specific tag.
+     * Automatically fetches subsequent pages using cursor-based pagination.
      *
      * @param  int  $tagId  The tag ID
-     * @param  int|null  $pageSize  Total number of items to return per page
-     * @param  string|null  $pageToken  Page token for pagination
+     * @param  TagContactQuery|null  $query  Query builder with filters, sorting, and pagination options
+     */
+    public function newListContactsPaginator(int $tagId, ?TagContactQuery $query = null): Paginator
+    {
+        $query = $query ?? TagContactQuery::make();
+
+        return new Paginator(
+            fn (TagContactQuery $q) => $this->listContacts($tagId, $q),
+            $query,
+            'contacts'
+        );
+    }
+
+    /**
+     * List companies with tag
+     *
+     * Retrieves a list of companies that have a specific tag with filtering,
+     * sorting, and pagination.
+     *
+     * Returns a single page of results. Use newListCompaniesPaginator() to automatically
+     * iterate through all pages.
+     *
+     * @param  int  $tagId  The tag ID
+     * @param  TagCompanyQuery|null  $query  Query builder with filters, sorting, and pagination options
      * @return array{
-     *     companies: array<int, array{
-     *         id: string,
-     *         company_name?: string,
-     *         email_addresses?: array<int, array{email: string, field: string}>
+     *     tagged_companies: array<int, array{
+     *         applied_time?: string,
+     *         company: array{
+     *             id: string,
+     *             company_name?: string,
+     *             email_address?: array{
+     *                 email: string,
+     *                 field: string,
+     *                 email_opt_status?: string,
+     *                 is_opt_in?: bool,
+     *                 opt_in_reason?: string
+     *             }
+     *         }
      *     }>,
      *     next_page_token: ?string
      * }
@@ -416,13 +454,33 @@ readonly class TagsResource implements Resource
      */
     public function listCompanies(
         int $tagId,
-        ?int $pageSize = null,
-        ?string $pageToken = null
+        ?TagCompanyQuery $query = null
     ): array {
+        $query = $query ?? TagCompanyQuery::make();
+
         $response = $this->connector->send(
-            new ListCompaniesWithTag($tagId, $pageSize, $pageToken)
+            new ListCompaniesWithTag($tagId, $query)
         );
 
         return $response->json();
+    }
+
+    /**
+     * Create a paginator for iterating through companies with a specific tag.
+     *
+     * Automatically fetches subsequent pages using cursor-based pagination.
+     *
+     * @param  int  $tagId  The tag ID
+     * @param  TagCompanyQuery|null  $query  Query builder with filters, sorting, and pagination options
+     */
+    public function newListCompaniesPaginator(int $tagId, ?TagCompanyQuery $query = null): Paginator
+    {
+        $query = $query ?? TagCompanyQuery::make();
+
+        return new Paginator(
+            fn (TagCompanyQuery $q) => $this->listCompanies($tagId, $q),
+            $query,
+            'tagged_companies'
+        );
     }
 }
