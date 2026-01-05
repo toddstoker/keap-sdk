@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Support\V1;
 
+use Toddstoker\KeapSdk\Support\ConvertsFromLegacyPayload;
 use Toddstoker\KeapSdk\Support\ConvertsToLegacyPayload;
 
 /**
@@ -11,6 +12,7 @@ use Toddstoker\KeapSdk\Support\ConvertsToLegacyPayload;
  */
 class Utility
 {
+    use ConvertsFromLegacyPayload;
     use ConvertsToLegacyPayload;
 
     /**
@@ -59,5 +61,64 @@ class Utility
         if (isset($payload['lead_source_id'])) {
             $legacyPayload['LeadSourceId'] = $payload['lead_source_id'];
         }
+    }
+
+    /**
+     * Map legacy date fields to V1 API format
+     *
+     * V1 target fields: birthday, anniversary, date_created, last_updated
+     */
+    protected static function mapLegacyDateFields(array $legacyPayload, array &$apiPayload): void
+    {
+        // Birthday: DateTimeImmutable or string → ISO 8601 datetime string
+        if (isset($legacyPayload['Birthday']) && $legacyPayload['Birthday'] !== '' && $legacyPayload['Birthday'] !== null) {
+            $apiPayload['birthday'] = self::dateToString($legacyPayload['Birthday'], 'Y-m-d\TH:i:s\Z');
+        }
+
+        // Anniversary: DateTimeImmutable or string → date string (YYYY-MM-DD)
+        if (isset($legacyPayload['Anniversary']) && $legacyPayload['Anniversary'] !== '' && $legacyPayload['Anniversary'] !== null) {
+            $apiPayload['anniversary'] = self::dateToString($legacyPayload['Anniversary'], 'Y-m-d');
+        }
+
+        // DateCreated: DateTimeImmutable or string → ISO 8601 datetime string
+        if (isset($legacyPayload['DateCreated']) && $legacyPayload['DateCreated'] !== '' && $legacyPayload['DateCreated'] !== null) {
+            $apiPayload['date_created'] = self::dateToString($legacyPayload['DateCreated'], 'Y-m-d\TH:i:s\Z');
+        }
+
+        // LastUpdated: DateTimeImmutable or string → ISO 8601 datetime string
+        if (isset($legacyPayload['LastUpdated']) && $legacyPayload['LastUpdated'] !== '' && $legacyPayload['LastUpdated'] !== null) {
+            $apiPayload['last_updated'] = self::dateToString($legacyPayload['LastUpdated'], 'Y-m-d\TH:i:s\Z');
+        }
+    }
+
+    /**
+     * Map legacy ID fields to V1 API format
+     *
+     * V1 uses: owner_id, lead_source_id (with underscore)
+     */
+    protected static function mapLegacyIdFields(array $legacyPayload, array &$apiPayload): void
+    {
+        if (isset($legacyPayload['OwnerID']) && $legacyPayload['OwnerID'] !== '' && $legacyPayload['OwnerID'] !== null) {
+            $apiPayload['owner_id'] = $legacyPayload['OwnerID'];
+        }
+
+        if (isset($legacyPayload['LeadSourceId']) && $legacyPayload['LeadSourceId'] !== '' && $legacyPayload['LeadSourceId'] !== null) {
+            $apiPayload['lead_source_id'] = $legacyPayload['LeadSourceId'];
+        }
+    }
+
+    /**
+     * Map legacy company fields to V1 API format
+     *
+     * V1 uses flat structure: company_name field
+     */
+    protected static function mapLegacyCompanyFields(array $legacyPayload, array &$apiPayload): void
+    {
+        if (isset($legacyPayload['Company']) && $legacyPayload['Company'] !== '' && $legacyPayload['Company'] !== null) {
+            $apiPayload['company_name'] = $legacyPayload['Company'];
+        }
+
+        // Note: V1 API doesn't appear to have a company ID field based on the existing conversion
+        // If needed in the future, it can be added here
     }
 }
