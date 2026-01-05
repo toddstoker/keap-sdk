@@ -29,7 +29,13 @@ use Toddstoker\KeapSdk\Resources\ResourceFactory;
  * This class extends SaloonPHP's Connector and uses the magic __call() method
  * to provide dynamic resource access via ResourceFactory.
  *
- * @method \Toddstoker\KeapSdk\Resources\V1\ContactsResource|\Toddstoker\KeapSdk\Resources\V2\ContactsResource contacts(?int $version = null) Access the Contacts resource
+ * @method \Toddstoker\KeapSdk\Resources\V1\ContactsResource|\Toddstoker\KeapSdk\Resources\V2\ContactsResource contacts(?int $version = null) Access the Contacts resource (v1, v2)
+ * @method \Toddstoker\KeapSdk\Resources\V2\EmailAddressesResource emailAddresses(?int $version = null) Access the Email Addresses resource (v2)
+ * @method \Toddstoker\KeapSdk\Resources\V1\HooksResource hooks(?int $version = null) Access the Hooks resource (v1)
+ * @method \Toddstoker\KeapSdk\Resources\V1\OpportunitiesResource opportunities(?int $version = null) Access the Opportunities resource (v1)
+ * @method \Toddstoker\KeapSdk\Resources\V2\ReportingResource reporting(?int $version = null) Access the Reporting resource (v2)
+ * @method \Toddstoker\KeapSdk\Resources\V1\TagsResource|\Toddstoker\KeapSdk\Resources\V2\TagsResource tags(?int $version = null) Access the Tags resource (v1, v2)
+ * @method \Toddstoker\KeapSdk\Resources\V2\UsersResource users(?int $version = null) Access the Users resource (v2)
  */
 class Keap extends Connector
 {
