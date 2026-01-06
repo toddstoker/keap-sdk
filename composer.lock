@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "715324c3bcfc01534f789226ca9d36b5",
+    "content-hash": "c77da07a21f10bb0de1e1f4255ff761e",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -758,16 +758,16 @@
         },
         {
             "name": "laravel/pint",
-            "version": "dev-main",
+            "version": "v1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/pint.git",
-                "reference": "205a9c245bc9201dac122cb5c3a6fc152ef19edd"
+                "reference": "c67b4195b75491e4dfc6b00b1c78b68d86f54c90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/205a9c245bc9201dac122cb5c3a6fc152ef19edd",
-                "reference": "205a9c245bc9201dac122cb5c3a6fc152ef19edd",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/c67b4195b75491e4dfc6b00b1c78b68d86f54c90",
+                "reference": "c67b4195b75491e4dfc6b00b1c78b68d86f54c90",
                 "shasum": ""
             },
             "require": {
@@ -786,7 +786,6 @@
                 "nunomaduro/termwind": "^2.3.3",
                 "pestphp/pest": "^3.8.4"
             },
-            "default-branch": true,
             "bin": [
                 "builds/pint"
             ],
@@ -822,7 +821,7 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-            "time": "2026-01-05T16:52:44+00:00"
+            "time": "2026-01-05T16:49:17+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -884,61 +883,12 @@
             "time": "2025-12-06T20:24:35+00:00"
         },
         {
-            "name": "phpstan/extension-installer",
-            "version": "1.4.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/extension-installer.git",
-                "reference": "3233735de60eb92d21ba20b1b6b146661c9f639c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/3233735de60eb92d21ba20b1b6b146661c9f639c",
-                "reference": "3233735de60eb92d21ba20b1b6b146661c9f639c",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^2.0",
-                "php": "^7.4 || ^8.0",
-                "phpstan/phpstan": "^2.0"
-            },
-            "require-dev": {
-                "composer/composer": "^2.0",
-                "php-parallel-lint/php-parallel-lint": "^1.2.0",
-                "phpstan/phpstan-strict-rules": "^2.0"
-            },
-            "default-branch": true,
-            "type": "composer-plugin",
-            "extra": {
-                "class": "PHPStan\\ExtensionInstaller\\Plugin"
-            },
-            "autoload": {
-                "psr-4": {
-                    "PHPStan\\ExtensionInstaller\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Composer plugin for automatic installation of PHPStan extensions",
-            "keywords": [
-                "dev",
-                "static analysis"
-            ],
-            "support": {
-                "issues": "https://github.com/phpstan/extension-installer/issues",
-                "source": "https://github.com/phpstan/extension-installer/tree/1.4.x"
-            },
-            "time": "2025-12-15T08:43:48+00:00"
-        },
-        {
             "name": "phpstan/phpstan",
             "version": "2.1.x-dev",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/a4325dd67ed91f7398e56642790ed0f645d96eec",
-                "reference": "a4325dd67ed91f7398e56642790ed0f645d96eec",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/901b335a45943e127841c0c1dc1258fe22cd355b",
+                "reference": "901b335a45943e127841c0c1dc1258fe22cd355b",
                 "shasum": ""
             },
             "require": {
@@ -984,7 +934,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-05T18:33:46+00:00"
+            "time": "2026-01-06T12:49:52+00:00"
         },
         {
             "name": "psr/container",
@@ -1042,16 +992,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.12.18",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "ddff0ac01beddc251786fe70367cd8bbdb258196"
+                "reference": "7bd88a0b4234d30a0ff6c86745dd8c96d2dc6a44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/ddff0ac01beddc251786fe70367cd8bbdb258196",
-                "reference": "ddff0ac01beddc251786fe70367cd8bbdb258196",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/7bd88a0b4234d30a0ff6c86745dd8c96d2dc6a44",
+                "reference": "7bd88a0b4234d30a0ff6c86745dd8c96d2dc6a44",
                 "shasum": ""
             },
             "require": {
@@ -1074,6 +1024,7 @@
                 "ext-pcntl": "Enabling the PCNTL extension makes PsySH a lot happier :)",
                 "ext-posix": "If you have PCNTL, you'll want the POSIX extension as well."
             },
+            "default-branch": true,
             "bin": [
                 "bin/psysh"
             ],
@@ -1115,9 +1066,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.12.18"
+                "source": "https://github.com/bobthecow/psysh/tree/main"
             },
-            "time": "2025-12-17T14:35:46+00:00"
+            "time": "2026-01-06T17:41:45+00:00"
         },
         {
             "name": "ramsey/collection",
@@ -1480,12 +1431,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "ccae82871faae9494fc568a0bb8aa0c3ce1cd76c"
+                "reference": "487e1dca3b50d4aeb86db71c3e31124731b38e25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/ccae82871faae9494fc568a0bb8aa0c3ce1cd76c",
-                "reference": "ccae82871faae9494fc568a0bb8aa0c3ce1cd76c",
+                "url": "https://api.github.com/repos/symfony/console/zipball/487e1dca3b50d4aeb86db71c3e31124731b38e25",
+                "reference": "487e1dca3b50d4aeb86db71c3e31124731b38e25",
                 "shasum": ""
             },
             "require": {
@@ -1562,7 +1513,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-25T03:44:57+00:00"
+            "time": "2026-01-05T11:08:21+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -2238,9 +2189,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "laravel/pint": 20,
-        "psy/psysh": 0,
-        "spatie/ray": 20,
         "symfony/var-dumper": 20
     },
     "prefer-stable": false,
