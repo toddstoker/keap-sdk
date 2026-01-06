@@ -122,25 +122,15 @@ readonly class UsersResource implements Resource
     /**
      * Get a specific user by ID
      *
+     * Retrieves information about a User.
+     *
      * @param  string  $userId  The user ID
      * @return array{
      *     id: string,
      *     given_name?: string,
      *     family_name?: string,
-     *     email_addresses?: array<int, array{
-     *         email: string,
-     *         field: string,
-     *         email_opt_status?: string,
-     *         is_opt_in?: bool,
-     *         opt_in_reason?: string
-     *     }>,
-     *     phone_numbers?: array<int, array{
-     *         number: string,
-     *         field: string,
-     *         type?: string,
-     *         extension?: string,
-     *         number_e164?: string
-     *     }>,
+     *     email_addresses?: array<int, array{email: string, field: string, email_opt_status?: string, is_opt_in?: bool, opt_in_reason?: string}>,
+     *     phone_numbers?: array<int, array{number: string, field: string, type?: string, extension?: string, number_e164?: string}>,
      *     fax_numbers?: array<int, array{number: string, field: string, type?: string}>,
      *     address?: array{
      *         country?: string,
@@ -156,13 +146,10 @@ readonly class UsersResource implements Resource
      *         zip_four?: string
      *     },
      *     social_accounts?: array<int, array{type: string, name?: string}>,
-     *     admin?: bool,
-     *     partner?: bool,
-     *     status?: string,
      *     company_name?: string,
      *     title?: string,
      *     website?: string,
-     *     global_user_id?: string,
+     *     time_zone?: string,
      *     keap_id?: string,
      *     create_time?: string,
      *     update_time?: string,
@@ -170,6 +157,8 @@ readonly class UsersResource implements Resource
      *     updated_by?: int,
      *     ...
      * }
+     *
+     * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -221,7 +210,7 @@ readonly class UsersResource implements Resource
      *     email_addresses?: array<int, array{email: string, field: string, email_opt_status?: string}>,
      *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
      *     fax_numbers?: array<int, array{number: string, field: string, type?: string}>,
-     *     address?: array,
+     *     address?: array<string, mixed>,
      *     company_name?: string,
      *     title?: string,
      *     website?: string,
@@ -229,6 +218,8 @@ readonly class UsersResource implements Resource
      *     update_time?: string,
      *     ...
      * }
+     *
+     * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -260,6 +251,8 @@ readonly class UsersResource implements Resource
      *     is_admin?: bool
      * }
      *
+     * @phpstan-return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -276,12 +269,12 @@ readonly class UsersResource implements Resource
      * Retrieves a HTML snippet that contains the user's email signature.
      *
      * @param  string  $userId  The user ID
-     * @return string HTML snippet with user's email signature
+     * @return array{signature?: string} Response containing the user's email signature
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function getSignature(string $userId): string
+    public function getSignature(string $userId): array
     {
         $response = $this->connector->send(new GetUserSignature($userId));
 

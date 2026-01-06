@@ -23,7 +23,7 @@ class ListTagCategories extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param  TagCategoryQuery  $query  The query builder with filters, sorting, and pagination
+     * @param  TagCategoryQuery  $queryBuilder  The query builder with filters, sorting, and pagination
      */
     public function __construct(
         protected readonly TagCategoryQuery $queryBuilder

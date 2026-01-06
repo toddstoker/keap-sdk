@@ -22,6 +22,10 @@ class UpdateHook extends Request implements HasBody
 
     protected Method $method = Method::PUT;
 
+    /**
+     * @param  string  $key  Hook key
+     * @param  array<string, mixed>  $data  Hook subscription data
+     */
     public function __construct(
         protected readonly string $key,
         protected readonly array $data
@@ -32,6 +36,9 @@ class UpdateHook extends Request implements HasBody
         return "/v1/hooks/{$this->key}";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return $this->data;

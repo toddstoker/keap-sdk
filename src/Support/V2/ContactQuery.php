@@ -16,7 +16,7 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\ContactFieldSelector;
  * @method $this byGivenName(string $name) Filter by given name (first name)
  * @method $this byFamilyName(string $name) Filter by family name (last name)
  * @method $this byCompanyId(string $id) Filter by company ID
- * @method $this byContactIds(array $ids) Filter by specific contact IDs
+ * @method $this byContactIds(array<int> $ids) Filter by specific contact IDs
  * @method $this byStartUpdateTime(string $datetime) Filter by start update time
  * @method $this byEndUpdateTime(string $datetime) Filter by end update time
  * @method $this orderById(string $direction = 'asc') Order by contact ID
@@ -25,10 +25,9 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\ContactFieldSelector;
  */
 class ContactQuery extends Query
 {
-
     public function __construct()
     {
-        $this->fieldSelector = new ContactFieldSelector();
+        $this->fieldSelector = new ContactFieldSelector;
     }
 
     /**

@@ -24,7 +24,7 @@ class ListPaymentMethods extends Request
 
     /**
      * @param  int|string  $contactId  Contact ID or '-' to filter across all contacts
-     * @param  PaymentMethodQuery  $query  The query builder with filters, sorting, and pagination
+     * @param  PaymentMethodQuery  $queryBuilder  The query builder with filters, sorting, and pagination
      */
     public function __construct(
         protected readonly int|string $contactId,

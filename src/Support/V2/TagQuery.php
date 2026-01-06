@@ -27,7 +27,7 @@ class TagQuery extends Query
 {
     public function __construct()
     {
-        $this->fieldSelector = new TagFieldSelector();
+        $this->fieldSelector = new TagFieldSelector;
     }
 
     /**

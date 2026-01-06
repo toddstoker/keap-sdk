@@ -22,6 +22,10 @@ class RemoveTagFromContacts extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
+    /**
+     * @param  int  $tagId  The tag ID
+     * @param  array<int>  $contactIds  The contact IDs
+     */
     public function __construct(
         protected readonly int $tagId,
         protected readonly int|array $contactIds
@@ -32,6 +36,9 @@ class RemoveTagFromContacts extends Request implements HasBody
         return "/v2/tags/{$this->tagId}/contacts:removeTags";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return [

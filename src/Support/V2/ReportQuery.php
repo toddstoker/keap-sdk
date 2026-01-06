@@ -22,7 +22,7 @@ class ReportQuery extends Query
 {
     public function __construct()
     {
-        $this->fieldSelector = new ReportFieldSelector();
+        $this->fieldSelector = new ReportFieldSelector;
     }
 
     /**

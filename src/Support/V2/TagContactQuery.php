@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Toddstoker\KeapSdk\Support\V2;
 
 use Toddstoker\KeapSdk\Support\V2\FieldSelector\ContactFieldSelector;
-use Toddstoker\KeapSdk\Support\V2\FieldSelector\TagContactFieldSelector;
 
 /**
  * Query builder for Keap v2 Tag Contacts API
@@ -25,10 +24,9 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\TagContactFieldSelector;
  */
 class TagContactQuery extends Query
 {
-
     public function __construct()
     {
-        $this->fieldSelector = new ContactFieldSelector();
+        $this->fieldSelector = new ContactFieldSelector;
     }
 
     /**

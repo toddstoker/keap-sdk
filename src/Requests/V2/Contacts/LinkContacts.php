@@ -33,6 +33,9 @@ class LinkContacts extends Request implements HasBody
         return '/v2/contacts:link';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return [

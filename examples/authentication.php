@@ -22,8 +22,6 @@ use Toddstoker\KeapSdk\Credentials\ServiceAccountKey;
 use Toddstoker\KeapSdk\Exceptions\ClientException\NotFoundException;
 use Toddstoker\KeapSdk\Exceptions\ClientException\TooManyRequestsException;
 use Toddstoker\KeapSdk\Exceptions\ClientException\UnauthorizedException;
-use Toddstoker\KeapSdk\Exceptions\KeapException;
-use Toddstoker\KeapSdk\Exceptions\ValidationException;
 use Toddstoker\KeapSdk\Keap;
 
 // ============================================================================
@@ -37,7 +35,7 @@ $keap = new Keap($pat);
 
 // Now you can make API calls
 try {
-    $contacts = $keap->contacts()->list(limit: 10);
+    $contacts = $keap->contacts(1)->list(limit: 10);
     echo "Found {$contacts['count']} contacts\n";
 } catch (\Exception $e) {
     echo 'Error: '.$e->getMessage()."\n";
@@ -275,7 +273,7 @@ try {
             ['email' => 'invalid-email'], // Invalid: bad email format
         ],
     ]);
-} catch (ValidationException $e) {
+} catch (\Toddstoker\KeapSdk\Exceptions\RequestException $e) {
     echo "Validation failed: {$e->getMessage()}\n";
 
     // Access field-specific errors
@@ -315,7 +313,7 @@ try {
 // --------------------------------------
 try {
     $contact = $keap->contacts()->get(123);
-} catch (KeapException $e) {
+} catch (\Toddstoker\KeapSdk\Exceptions\RequestException $e) {
     // This catches ALL Keap SDK exceptions
     echo "API Error: {$e->getMessage()}\n";
     echo "HTTP Status: {$e->getCode()}\n";

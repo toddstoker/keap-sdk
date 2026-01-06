@@ -26,7 +26,7 @@ class TagCategoryQuery extends Query
 {
     public function __construct()
     {
-        $this->fieldSelector = new TagCategoryFieldSelector();
+        $this->fieldSelector = new TagCategoryFieldSelector;
     }
 
     /**
