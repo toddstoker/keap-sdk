@@ -25,7 +25,7 @@ class ListCompaniesWithTag extends Request
 
     /**
      * @param  int  $tagId  The tag ID
-     * @param  TagCompanyQuery  $query  The query builder with filters, sorting, and pagination
+     * @param  TagCompanyQuery  $queryBuilder  The query builder with filters, sorting, and pagination
      */
     public function __construct(
         protected readonly int $tagId,

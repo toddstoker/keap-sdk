@@ -1,0 +1,5 @@
+services:
+    -
+        class: Toddstoker\KeapSdk\PHPStan\KeapResourcesDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension

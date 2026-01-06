@@ -16,7 +16,7 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\UserFieldSelector;
  * @method $this byGivenName(string $name) Filter by given name (first name)
  * @method $this byIncludeInactive(bool $include) Filter to include inactive users
  * @method $this byIncludePartners(bool $include) Filter to include partner users
- * @method $this byUserIds(array $ids) Filter by specific user IDs
+ * @method $this byUserIds(array<string> $ids) Filter by specific user IDs
  * @method $this orderByDateCreated(string $direction = 'asc') Order by creation date
  * @method $this orderByEmail(string $direction = 'asc') Order by email address
  */
@@ -29,7 +29,7 @@ class UserQuery extends Query
 
     public function __construct()
     {
-        $this->fieldSelector = new UserFieldSelector();
+        $this->fieldSelector = new UserFieldSelector;
     }
 
     /**

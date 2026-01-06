@@ -22,6 +22,9 @@ class CreateTag extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
+    /**
+     * @param  array<string, mixed>  $data  Tag data
+     */
     public function __construct(
         protected readonly array $data
     ) {}
@@ -31,6 +34,9 @@ class CreateTag extends Request implements HasBody
         return '/v1/tags';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return $this->data;

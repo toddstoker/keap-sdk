@@ -22,6 +22,9 @@ class UpdateOrCreateContact extends Request implements HasBody
 
     protected Method $method = Method::PUT;
 
+    /**
+     * @param  array<string, mixed>  $data  Contact data
+     */
     public function __construct(
         protected readonly array $data
     ) {}
@@ -31,6 +34,9 @@ class UpdateOrCreateContact extends Request implements HasBody
         return '/v1/contacts';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return $this->data;

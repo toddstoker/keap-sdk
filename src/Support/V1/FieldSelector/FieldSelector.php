@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Support\V1\FieldSelector;
 
+/**
+ * Base field selector for v1 API endpoints
+ *
+ * @phpstan-consistent-constructor
+ */
 abstract class FieldSelector
 {
-
     /**
      * Fields to include in response
      *
@@ -23,7 +27,7 @@ abstract class FieldSelector
 
     public static function make(): static
     {
-        return new static();
+        return new static;
     }
 
     /**
@@ -72,7 +76,7 @@ abstract class FieldSelector
     public function toArray(): array
     {
         return $this->fields
-            ? [ 'optional_properties' => implode(',', $this->fields) ]
+            ? ['optional_properties' => implode(',', $this->fields)]
             : [];
     }
 }

@@ -23,7 +23,7 @@ class ListUsers extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param  UserQuery  $query  The query builder with filters, sorting, and pagination
+     * @param  UserQuery  $queryBuilder  The query builder with filters, sorting, and pagination
      */
     public function __construct(
         protected readonly UserQuery $queryBuilder

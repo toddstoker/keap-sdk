@@ -29,13 +29,15 @@ use Toddstoker\KeapSdk\Resources\ResourceFactory;
  * This class extends SaloonPHP's Connector and uses the magic __call() method
  * to provide dynamic resource access via ResourceFactory.
  *
- * @method \Toddstoker\KeapSdk\Resources\V1\ContactsResource|\Toddstoker\KeapSdk\Resources\V2\ContactsResource contacts(?int $version = null) Access the Contacts resource (v1, v2)
- * @method \Toddstoker\KeapSdk\Resources\V2\EmailAddressesResource emailAddresses(?int $version = null) Access the Email Addresses resource (v2)
- * @method \Toddstoker\KeapSdk\Resources\V1\HooksResource hooks(?int $version = null) Access the Hooks resource (v1)
- * @method \Toddstoker\KeapSdk\Resources\V1\OpportunitiesResource opportunities(?int $version = null) Access the Opportunities resource (v1)
- * @method \Toddstoker\KeapSdk\Resources\V2\ReportingResource reporting(?int $version = null) Access the Reporting resource (v2)
- * @method \Toddstoker\KeapSdk\Resources\V1\TagsResource|\Toddstoker\KeapSdk\Resources\V2\TagsResource tags(?int $version = null) Access the Tags resource (v1, v2)
- * @method \Toddstoker\KeapSdk\Resources\V2\UsersResource users(?int $version = null) Access the Users resource (v2)
+ * Dynamic resource access methods (pass 1 or 2 for API version, defaults to $apiVersion):
+ *
+ * @method \Toddstoker\KeapSdk\Resources\V1\ContactsResource|\Toddstoker\KeapSdk\Resources\V2\ContactsResource contacts(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V2\EmailAddressesResource emailAddresses(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V1\HooksResource hooks(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V1\OpportunitiesResource opportunities(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V2\ReportingResource reporting(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V1\TagsResource|\Toddstoker\KeapSdk\Resources\V2\TagsResource tags(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V2\UsersResource users(?int $version = null)
  */
 class Keap extends Connector
 {
@@ -82,7 +84,7 @@ class Keap extends Connector
      * Resources are created and cached by the ResourceFactory.
      *
      * @param  string  $name  Resource name (e.g., 'contacts', 'companies', 'tags')
-     * @param  array{0?: int}  $arguments  Optional array with API version as first element
+     * @param  array<int, mixed>  $arguments  Optional array with API version as first element (int)
      * @return object The requested resource instance
      *
      * @throws \InvalidArgumentException If resource doesn't exist for the specified version
@@ -107,7 +109,7 @@ class Keap extends Connector
      */
     public function resolveBaseUrl(): string
     {
-        return "https://api.infusionsoft.com/crm/rest";
+        return 'https://api.infusionsoft.com/crm/rest';
     }
 
     /**
@@ -258,6 +260,9 @@ class Keap extends Connector
         $authenticator = $this->parentCreateOAuthAuthenticatorFromResponse($response, $fallbackRefreshToken);
 
         $this->authenticate($authenticator);
+
+        // Ensure we have an OAuth credential (this method is only called during OAuth flows)
+        assert($this->credential instanceof OAuth);
 
         // Create a NEW OAuth credential instance with updated tokens
         // (OAuth is readonly/immutable, so we cannot modify the existing instance)

@@ -25,7 +25,7 @@ class ListContactsWithTag extends Request
 
     /**
      * @param  int  $tagId  The tag ID
-     * @param  TagContactQuery  $query  The query builder with filters, sorting, and pagination
+     * @param  TagContactQuery  $queryBuilder  The query builder with filters, sorting, and pagination
      */
     public function __construct(
         protected readonly int $tagId,

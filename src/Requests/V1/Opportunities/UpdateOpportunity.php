@@ -22,6 +22,10 @@ class UpdateOpportunity extends Request implements HasBody
 
     protected Method $method = Method::PATCH;
 
+    /**
+     * @param  int  $opportunityId  The opportunity ID
+     * @param  array<string, mixed>  $data  Opportunity data
+     */
     public function __construct(
         protected readonly int $opportunityId,
         protected readonly array $data
@@ -32,6 +36,9 @@ class UpdateOpportunity extends Request implements HasBody
         return "/v1/opportunities/{$this->opportunityId}";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return $this->data;

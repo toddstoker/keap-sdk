@@ -22,6 +22,10 @@ class ApplyTagToContacts extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
+    /**
+     * @param  int  $tagId  The tag ID
+     * @param  array<int>  $contactIds  The contact IDs
+     */
     public function __construct(
         protected readonly int $tagId,
         protected readonly array $contactIds
@@ -32,6 +36,9 @@ class ApplyTagToContacts extends Request implements HasBody
         return "/v1/tags/{$this->tagId}/contacts";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return [

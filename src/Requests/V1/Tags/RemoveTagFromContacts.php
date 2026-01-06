@@ -18,6 +18,10 @@ class RemoveTagFromContacts extends Request
 {
     protected Method $method = Method::DELETE;
 
+    /**
+     * @param  int  $tagId  The tag ID
+     * @param  array<int>  $contactIds  The contact IDs
+     */
     public function __construct(
         protected readonly int $tagId,
         protected readonly array $contactIds
@@ -28,6 +32,9 @@ class RemoveTagFromContacts extends Request
         return "/v1/tags/{$this->tagId}/contacts";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultQuery(): array
     {
         return [

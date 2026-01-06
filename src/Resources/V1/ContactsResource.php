@@ -18,8 +18,8 @@ use Toddstoker\KeapSdk\Requests\V1\Contacts\GetContactModel;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\GetContactTags;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\GetCreditCards;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\ListContacts;
-use Toddstoker\KeapSdk\Requests\V1\Contacts\RemoveTagsFromContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\RemoveTagFromContact;
+use Toddstoker\KeapSdk\Requests\V1\Contacts\RemoveTagsFromContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\UpdateContact;
 use Toddstoker\KeapSdk\Requests\V1\Contacts\UpdateOrCreateContact;
 use Toddstoker\KeapSdk\Resources\Resource;
@@ -156,10 +156,11 @@ readonly class ContactsResource implements Resource
      *     ScoreValue?: string,
      *     custom_fields?: array<int, array{id: int, content: mixed}>,
      *     origin?: array{date: string, ip_address: string},
-     *     social_accounts?: array,
-     *     relationships?: array,
-     *     ...
+     *     social_accounts?: array<int, array{name: string, type: string}>,
+     *     relationships?: array<int, array{id: int, linked_contact_id: int, relationship_type_id: int}>,
      * }
+     *
+     * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -205,6 +206,8 @@ readonly class ContactsResource implements Resource
      *     ...
      * }
      *
+     * @phpstan-return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -238,6 +241,8 @@ readonly class ContactsResource implements Resource
      *     ...
      * }
      *
+     * @phpstan-return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -247,7 +252,10 @@ readonly class ContactsResource implements Resource
             new UpdateContact($contactId, $data)
         );
 
-        return $response->json();
+        /** @var array<string, mixed> $result */
+        $result = $response->json();
+
+        return $result;
     }
 
     /**
@@ -269,7 +277,7 @@ readonly class ContactsResource implements Resource
      * Apply a tag to a contact
      *
      * @param  int  $contactId  The contact ID
-     * @param  array|int  $tagIds  The tag IDs to apply
+     * @param  array<int>|int  $tagIds  The tag IDs to apply
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -289,7 +297,7 @@ readonly class ContactsResource implements Resource
      * Removes specific tags from a contact.
      *
      * @param  int  $contactId  The contact ID
-     * @param  array|int  $tagIds  The tag IDs to remove
+     * @param  array<int>|int  $tagIds  The tag IDs to remove
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -362,6 +370,8 @@ readonly class ContactsResource implements Resource
      *     count: int
      * }
      *
+     * @phpstan-return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -415,6 +425,8 @@ readonly class ContactsResource implements Resource
      *     ...
      * }
      *
+     * @phpstan-return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -440,6 +452,8 @@ readonly class ContactsResource implements Resource
      *     field_type: string,
      *     options?: array<int, array{id: int, label: string}>
      * }
+     *
+     * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -495,6 +509,8 @@ readonly class ContactsResource implements Resource
      *     expiration_year: string
      * }
      *
+     * @phpstan-return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -525,6 +541,8 @@ readonly class ContactsResource implements Resource
      *     sent_date?: string
      * }
      *
+     * @phpstan-return array<string, mixed>
+     *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
@@ -554,6 +572,8 @@ readonly class ContactsResource implements Resource
      *     utm_term?: string,
      *     utm_content?: string
      * }
+     *
+     * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException

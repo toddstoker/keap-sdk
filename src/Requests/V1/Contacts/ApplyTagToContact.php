@@ -24,7 +24,7 @@ class ApplyTagToContact extends Request implements HasBody
 
     /**
      * @param  int  $contactId  The contact ID
-     * @param  int  $tagIds  The tag IDs to apply
+     * @param  int|array<int>  $tagIds  The tag IDs to apply
      */
     public function __construct(
         protected readonly int $contactId,

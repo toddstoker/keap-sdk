@@ -29,6 +29,8 @@ use Generator;
  * $page1 = $paginator->getPage();
  * $page2 = $paginator->nextPage();
  * ```
+ *
+ * @phpstan-consistent-constructor
  */
 class Paginator
 {
@@ -59,7 +61,7 @@ class Paginator
     public function __construct(
         protected Closure $fetchCallback,
         protected Query $query,
-        protected string $itemKey
+        protected string $itemKey = ''
     ) {
         $this->currentOffset = $query->getOffset() ?? 0;
     }

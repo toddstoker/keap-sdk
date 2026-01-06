@@ -22,10 +22,9 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\TagCompanyFieldSelector;
  */
 class TagCompanyQuery extends Query
 {
-
     public function __construct()
     {
-        $this->fieldSelector = new TagCompanyFieldSelector();
+        $this->fieldSelector = new TagCompanyFieldSelector;
     }
 
     /**

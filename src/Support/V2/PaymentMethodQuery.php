@@ -17,10 +17,9 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\PaymentMethodFieldSelector;
  */
 class PaymentMethodQuery extends Query
 {
-
     public function __construct()
     {
-        $this->fieldSelector = new PaymentMethodFieldSelector();
+        $this->fieldSelector = new PaymentMethodFieldSelector;
     }
 
     /**

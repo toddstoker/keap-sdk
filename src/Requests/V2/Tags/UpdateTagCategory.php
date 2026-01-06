@@ -22,6 +22,10 @@ class UpdateTagCategory extends Request implements HasBody
 
     protected Method $method = Method::PATCH;
 
+    /**
+     * @param  int  $tagCategoryId  The tag category ID
+     * @param  array<string, mixed>  $data  Tag category data
+     */
     public function __construct(
         protected readonly int $tagCategoryId,
         protected readonly array $data
@@ -32,6 +36,9 @@ class UpdateTagCategory extends Request implements HasBody
         return "/v2/tags/categories/{$this->tagCategoryId}";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return $this->data;

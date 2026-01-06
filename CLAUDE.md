@@ -783,6 +783,71 @@ class ContactsResource
 }
 ```
 
+## PHPStan Dynamic Return Type Extension
+
+The SDK includes a PHPStan extension that provides accurate type inference for dynamically called resource methods, improving IDE autocomplete and static analysis accuracy.
+
+### How It Works
+
+The extension analyzes calls to resource methods on the `Keap` connector and determines the correct return type based on the API version parameter:
+
+```php
+// PHPStan knows this returns V1\ContactsResource
+$contacts = $keap->contacts(1);
+
+// PHPStan knows this returns V2\ContactsResource
+$contacts = $keap->contacts(2);
+
+// PHPStan returns union type V1\ContactsResource|V2\ContactsResource
+$contacts = $keap->contacts();
+```
+
+### Installation
+
+The extension is automatically registered via `phpstan/extension-installer`. After running `composer install`, the extension is ready to use.
+
+```bash
+composer install
+vendor/bin/phpstan analyse
+```
+
+### Configuration
+
+The extension is configured in `phpstan-extension.neon` and included in `phpstan.neon.dist`:
+
+```neon
+# phpstan-extension.neon
+services:
+    -
+        class: Toddstoker\KeapSdk\PHPStan\KeapResourcesDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+```
+
+### Maintaining the Extension
+
+When adding new resources to the SDK, update the `CLASS_MAP` constant in `KeapResourcesDynamicReturnTypeExtension.php` to keep it synchronized with `ResourceFactory::$classMap`:
+
+```php
+// In KeapResourcesDynamicReturnTypeExtension.php
+private const CLASS_MAP = [
+    'newResource' => [
+        1 => \Toddstoker\KeapSdk\Resources\V1\NewResource::class,
+        2 => \Toddstoker\KeapSdk\Resources\V2\NewResource::class,
+    ],
+    // ... other resources
+];
+```
+
+**Important:** The `CLASS_MAP` must stay in sync with `ResourceFactory::$classMap` for accurate type inference.
+
+### Benefits
+
+- **IDE Autocomplete:** IDEs using PHPStan (PhpStorm, VS Code with plugins) get accurate method suggestions
+- **Static Analysis:** Catch type errors at compile time instead of runtime
+- **Refactoring Safety:** Rename methods across the codebase with confidence
+- **Developer Experience:** No need to manually cast or document types in calling code
+
 ## Development Workflow
 
 1. **Before implementing a new feature:**
@@ -868,4 +933,4 @@ Maintain a CHANGELOG.md following "Keep a Changelog" format:
 
 ---
 
-**Last Updated:** 2025-12-09
+**Last Updated:** 2026-01-05

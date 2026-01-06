@@ -33,6 +33,9 @@ class UnlinkContacts extends Request implements HasBody
         return '/v2/contacts:unlink';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return [

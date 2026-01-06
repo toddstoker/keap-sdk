@@ -40,6 +40,9 @@ class UpdateEmailAddressStatus extends Request implements HasBody
         return "/v2/emailAddresses/{$this->email}/status";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return [

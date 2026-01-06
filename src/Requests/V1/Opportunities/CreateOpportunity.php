@@ -22,6 +22,9 @@ class CreateOpportunity extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
+    /**
+     * @param  array<string, mixed>  $data  Opportunity data
+     */
     public function __construct(
         protected readonly array $data
     ) {}
@@ -31,6 +34,9 @@ class CreateOpportunity extends Request implements HasBody
         return '/v1/opportunities';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return $this->data;
