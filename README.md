@@ -1,9 +1,15 @@
 # Keap SDK for PHP
-
 A modern, type-safe PHP SDK for the Keap REST API (v1 & v2), built on [SaloonPHP](https://docs.saloon.dev/).
 
 [![PHP Version](https://img.shields.io/badge/php-%5E8.4-blue)](https://www.php.net/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
+> [!CAUTION]
+> This project is under active development
+>
+> **Method APIs and features will probably change.**
+>
+> We will likely switch to a stable release branch with updates on a dev branch as we settle on implementation and design decisions.
 
 ## Features
 
