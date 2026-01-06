@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Toddstoker\KeapSdk\Resources\V2;
 
 use Toddstoker\KeapSdk\Keap;
+use Toddstoker\KeapSdk\Requests\V2\Orders\ListOrderPayments;
 use Toddstoker\KeapSdk\Requests\V2\Orders\ListOrders;
 use Toddstoker\KeapSdk\Resources\Resource;
+use Toddstoker\KeapSdk\Support\V2\OrderPaymentQuery;
 use Toddstoker\KeapSdk\Support\V2\OrderQuery;
 use Toddstoker\KeapSdk\Support\V2\Paginator;
 
@@ -178,6 +180,68 @@ readonly class OrdersResource implements Resource
             fn (OrderQuery $q) => $this->list($q),
             $query,
             'orders'
+        );
+    }
+
+    /**
+     * List payments for a specific order
+     *
+     * Retrieves a list of payments made against a given order, including
+     * historical or external payments of cash or credit card.
+     *
+     * Returns a single page of results. Use newListPaymentsPaginator() to
+     * automatically iterate through all pages.
+     *
+     * @param  string|int  $orderId  Order ID
+     * @param  OrderPaymentQuery|null  $query  Query builder with filters and pagination options
+     * @return array{
+     *     invoice_order_payments: array<int, array{
+     *         id: string,
+     *         invoice_id?: string,
+     *         payment_id?: string,
+     *         amount?: float,
+     *         pay_time?: string,
+     *         pay_status?: string,
+     *         skip_commission?: bool,
+     *         note?: string,
+     *         last_updated_time?: string,
+     *         refund_invoice_payment_id?: string
+     *     }>,
+     *     next_page_token: ?string
+     * }
+     *
+     * @throws \Saloon\Exceptions\Request\FatalRequestException
+     * @throws \Saloon\Exceptions\Request\RequestException
+     */
+    public function listPayments(string|int $orderId, ?OrderPaymentQuery $query = null): array
+    {
+        $query = $query ?? OrderPaymentQuery::make();
+
+        $response = $this->connector->send(new ListOrderPayments($orderId, $query));
+        $data = $response->json();
+
+        return [
+            'invoice_order_payments' => $data['invoice_order_payments'] ?? [],
+            'next_page_token' => $data['next_page_token'] ?? null,
+        ];
+    }
+
+    /**
+     * Create a paginator for iterating through order payments
+     *
+     * Automatically fetches subsequent pages using cursor-based pagination.
+     *
+     * @param  string|int  $orderId  Order ID
+     * @param  OrderPaymentQuery|null  $query  Query builder with filters and pagination options
+     */
+    public function newListPaymentsPaginator(string|int $orderId, ?OrderPaymentQuery $query = null): Paginator
+    {
+        $query = $query ?? OrderPaymentQuery::make();
+
+        return new Paginator(
+            fn (OrderPaymentQuery $q) => $this->listPayments($orderId, $q),
+            $query,
+            'invoice_order_payments'
         );
     }
 }
