@@ -46,6 +46,9 @@ class ResourceFactory
         'opportunities' => [
             1 => \Toddstoker\KeapSdk\Resources\V1\OpportunitiesResource::class,
         ],
+        'paymentMethods' => [
+            2 => \Toddstoker\KeapSdk\Resources\V2\PaymentMethodsResource::class,
+        ],
         'reporting' => [
             2 => \Toddstoker\KeapSdk\Resources\V2\ReportingResource::class,
         ],
