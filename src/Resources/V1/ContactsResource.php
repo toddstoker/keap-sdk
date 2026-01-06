@@ -156,9 +156,8 @@ readonly class ContactsResource implements Resource
      *     ScoreValue?: string,
      *     custom_fields?: array<int, array{id: int, content: mixed}>,
      *     origin?: array{date: string, ip_address: string},
-     *     social_accounts?: array,
-     *     relationships?: array,
-     *     ...
+     *     social_accounts?: array<int, array{name: string, type: string}>,
+     *     relationships?: array<int, array{id: int, linked_contact_id: int, relationship_type_id: int}>,
      * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -269,7 +268,7 @@ readonly class ContactsResource implements Resource
      * Apply a tag to a contact
      *
      * @param  int  $contactId  The contact ID
-     * @param  array|int  $tagIds  The tag IDs to apply
+     * @param  array<int>|int  $tagIds  The tag IDs to apply
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -289,7 +288,7 @@ readonly class ContactsResource implements Resource
      * Removes specific tags from a contact.
      *
      * @param  int  $contactId  The contact ID
-     * @param  array|int  $tagIds  The tag IDs to remove
+     * @param  array<int>|int  $tagIds  The tag IDs to remove
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException

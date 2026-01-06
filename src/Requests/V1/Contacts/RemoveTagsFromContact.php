@@ -20,7 +20,7 @@ class RemoveTagsFromContact extends Request
 
     /**
      * @param  int  $contactId  The contact ID
-     * @param  int|array  $tagIds  The tag IDs to remove
+     * @param  int|array<int>  $tagIds  The tag IDs to remove
      */
     public function __construct(
         protected readonly int $contactId,

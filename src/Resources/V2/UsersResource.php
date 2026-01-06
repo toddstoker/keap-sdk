@@ -221,7 +221,7 @@ readonly class UsersResource implements Resource
      *     email_addresses?: array<int, array{email: string, field: string, email_opt_status?: string}>,
      *     phone_numbers?: array<int, array{number: string, field: string, type?: string}>,
      *     fax_numbers?: array<int, array{number: string, field: string, type?: string}>,
-     *     address?: array,
+     *     address?: array<string, mixed>,
      *     company_name?: string,
      *     title?: string,
      *     website?: string,

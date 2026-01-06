@@ -16,10 +16,10 @@ trait ConvertsFromLegacyPayload
     /**
      * Convert a legacy contact payload to API contact payload format
      *
-     * @param  array  $legacyPayload  The legacy contact payload with PascalCase field names
+     * @param  array<string, mixed>  $legacyPayload  The legacy contact payload with PascalCase field names
      * @param  array<string, array{name: string, type: string}>  $customFieldMap  Map of custom field IDs to field config
      *                                                                            Example: ['1' => ['name' => '_LegacyFieldName', 'type' => 'Text']]
-     * @return array API contact payload with snake_case field names
+     * @return array<string, mixed> API contact payload with snake_case field names
      */
     public static function convertLegacyToContactPayload(array $legacyPayload, array $customFieldMap = []): array
     {
@@ -41,6 +41,9 @@ trait ConvertsFromLegacyPayload
 
     /**
      * Map basic contact fields from PascalCase to snake_case
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
      */
     protected static function mapLegacyBasicFields(array $legacyPayload, array &$apiPayload): void
     {
@@ -102,6 +105,9 @@ trait ConvertsFromLegacyPayload
      *
      * V1 target: birthday, anniversary, date_created, last_updated
      * V2 target: birth_date, anniversary_date, create_time, update_time
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
      */
     abstract protected static function mapLegacyDateFields(array $legacyPayload, array &$apiPayload): void;
 
@@ -110,6 +116,9 @@ trait ConvertsFromLegacyPayload
      *
      * V1 target: owner_id, lead_source_id (with underscore)
      * V2 target: owner_id, leadsource_id (no underscore)
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
      */
     abstract protected static function mapLegacyIdFields(array $legacyPayload, array &$apiPayload): void;
 
@@ -118,11 +127,17 @@ trait ConvertsFromLegacyPayload
      *
      * V1 target: company_name (flat structure)
      * V2 target: company: {company_name, id} (nested structure)
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
      */
     abstract protected static function mapLegacyCompanyFields(array $legacyPayload, array &$apiPayload): void;
 
     /**
      * Map numbered email fields to email_addresses array
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
      */
     protected static function mapLegacyEmailFields(array $legacyPayload, array &$apiPayload): void
     {
@@ -150,6 +165,9 @@ trait ConvertsFromLegacyPayload
 
     /**
      * Map numbered phone fields to phone_numbers array
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
      */
     protected static function mapLegacyPhoneFields(array $legacyPayload, array &$apiPayload): void
     {
@@ -189,6 +207,9 @@ trait ConvertsFromLegacyPayload
 
     /**
      * Map numbered fax fields to fax_numbers array
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
      */
     protected static function mapLegacyFaxFields(array $legacyPayload, array &$apiPayload): void
     {
@@ -226,6 +247,9 @@ trait ConvertsFromLegacyPayload
      * - First: StreetAddress1/2, City, State, PostalCode, Country, ZipFour1, Address1Type
      * - Second: Address2Street1/2, City2, State2, PostalCode2, Country2, ZipFour2, Address2Type
      * - Third: Address3Street1/2, City3, State3, PostalCode3, Country3, ZipFour3, Address3Type
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
      */
     protected static function mapLegacyAddressFields(array $legacyPayload, array &$apiPayload): void
     {
@@ -362,9 +386,9 @@ trait ConvertsFromLegacyPayload
     /**
      * Map custom fields using reverse lookup from customFieldMap
      *
-     * @param  array  $legacyPayload  The legacy contact payload
+     * @param  array<string, mixed>  $legacyPayload  The legacy contact payload
      * @param  array<string, array{name: string, type: string}>  $customFieldMap  Map of custom field IDs to field config
-     * @param  array  $apiPayload  The API payload being built
+     * @param  array<string, mixed>  $apiPayload  The API payload being built
      */
     protected static function mapLegacyCustomFields(array $legacyPayload, array $customFieldMap, array &$apiPayload): void
     {
@@ -408,6 +432,9 @@ trait ConvertsFromLegacyPayload
 
     /**
      * Map Groups to tag_ids
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
      */
     protected static function mapLegacyTagFields(array $legacyPayload, array &$apiPayload): void
     {

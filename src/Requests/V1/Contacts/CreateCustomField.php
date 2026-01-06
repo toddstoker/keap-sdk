@@ -22,6 +22,9 @@ class CreateCustomField extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
+    /**
+     * @param  array<string, mixed>  $data  Custom field data
+     */
     public function __construct(
         protected readonly array $data
     ) {}
@@ -31,6 +34,9 @@ class CreateCustomField extends Request implements HasBody
         return '/v1/contacts/model/customFields';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return $this->data;

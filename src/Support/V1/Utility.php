@@ -19,6 +19,9 @@ class Utility
      * Map V1-specific date fields
      *
      * V1 uses: birthday, anniversary, date_created, last_updated
+     *
+     * @param  array<string, mixed>  $payload
+     * @param  array<string, mixed>  $legacyPayload
      */
     protected static function mapDateFields(array $payload, array &$legacyPayload): void
     {
@@ -51,6 +54,9 @@ class Utility
      * Map V1-specific ID fields
      *
      * V1 uses: owner_id, lead_source_id (with underscore)
+     *
+     * @param  array<string, mixed>  $payload
+     * @param  array<string, mixed>  $legacyPayload
      */
     protected static function mapIdFields(array $payload, array &$legacyPayload): void
     {
@@ -67,6 +73,9 @@ class Utility
      * Map legacy date fields to V1 API format
      *
      * V1 target fields: birthday, anniversary, date_created, last_updated
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
      */
     protected static function mapLegacyDateFields(array $legacyPayload, array &$apiPayload): void
     {
@@ -95,6 +104,9 @@ class Utility
      * Map legacy ID fields to V1 API format
      *
      * V1 uses: owner_id, lead_source_id (with underscore)
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
      */
     protected static function mapLegacyIdFields(array $legacyPayload, array &$apiPayload): void
     {
@@ -111,6 +123,9 @@ class Utility
      * Map legacy company fields to V1 API format
      *
      * V1 uses flat structure: company_name field
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
      */
     protected static function mapLegacyCompanyFields(array $legacyPayload, array &$apiPayload): void
     {

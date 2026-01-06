@@ -158,10 +158,10 @@ readonly class ContactsResource implements Resource
      *     score_value?: string,
      *     referral_code?: string,
      *     custom_fields?: array<int, array{id: string, content: mixed}>,
-     *     origin?: array,
-     *     social_accounts?: array,
-     *     links?: array,
-     *     utm_parameters?: array,
+     *     origin?: array{date: string, ip_address: string},
+     *     social_accounts?: array<int, array{name: string, type: string}>,
+     *     links?: array<int, array{id: string, link_type_id: string, link_type_name: string, linked_contact_id: string}>,
+     *     utm_parameters?: array<int, array{dateCreated: string, firstTouch: bool, id: int, keapSourceId: string, lastTouch: bool, utmCampaign: string, utmContent: string, utmMedium: string, utmSource: string, utmTerm: string}>,
      *     ...
      * }
      *

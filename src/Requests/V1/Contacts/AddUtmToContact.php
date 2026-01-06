@@ -22,6 +22,10 @@ class AddUtmToContact extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
+    /**
+     * @param  int  $contactId  The contact ID
+     * @param  array<string, mixed>  $data  UTM data
+     */
     public function __construct(
         protected readonly int $contactId,
         protected readonly array $data
@@ -32,6 +36,9 @@ class AddUtmToContact extends Request implements HasBody
         return "/v1/contacts/{$this->contactId}/utm";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return $this->data;
