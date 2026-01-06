@@ -281,7 +281,7 @@ abstract class Query
         $fieldName = substr($methodName, strlen($prefix));
 
         // Convert PascalCase to snake_case
-        $snakeCase = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $fieldName));
+        $snakeCase = strtolower((string) preg_replace('/([a-z])([A-Z])/', '$1_$2', $fieldName));
 
         return $snakeCase;
     }

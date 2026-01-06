@@ -397,6 +397,10 @@ trait ConvertsToLegacyPayload
 
     protected static function dateFromString(?string $dateString): ?\DateTimeImmutable
     {
+        if ($dateString === null) {
+            return null;
+        }
+
         return new \DateTimeImmutable($dateString);
     }
 }
