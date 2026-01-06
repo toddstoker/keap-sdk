@@ -29,6 +29,7 @@ readonly class EmailAddressesResource implements Resource
      *
      * @param  string  $email  The email address
      * @return array{email: string, opted_in: bool, status: string}
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -57,6 +58,7 @@ readonly class EmailAddressesResource implements Resource
      * @param  bool  $optedIn  Whether the email is opted in
      * @param  string  $reason  Reason for the opt-in/opt-out change (required for compliance)
      * @return array{email: string, opted_in: bool, status: string}
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException

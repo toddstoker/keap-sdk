@@ -36,6 +36,7 @@ readonly class ReportingResource implements Resource
      *
      * @param  ReportQuery|null  $query  Query builder with filters, sorting, and pagination options
      * @return array{reports: array<array<string, mixed>>, next_page_token: ?string}
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -95,6 +96,7 @@ readonly class ReportingResource implements Resource
      * @param  string  $reportId  The report ID
      * @param  RunReportQuery|null  $query  Query builder with field selection, sorting, and pagination
      * @return array{results: array<array<string, mixed>>, page_token: ?string}
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException

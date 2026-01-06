@@ -30,6 +30,7 @@ use Toddstoker\KeapSdk\Resources\ResourceFactory;
  * to provide dynamic resource access via ResourceFactory.
  *
  * Dynamic resource access methods (pass 1 or 2 for API version, defaults to $apiVersion):
+ *
  * @method \Toddstoker\KeapSdk\Resources\V1\ContactsResource|\Toddstoker\KeapSdk\Resources\V2\ContactsResource contacts(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\EmailAddressesResource emailAddresses(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V1\HooksResource hooks(?int $version = null)

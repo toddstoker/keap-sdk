@@ -55,6 +55,7 @@ readonly class TagsResource implements Resource
      *     }>,
      *     next_page_token: ?string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -99,6 +100,7 @@ readonly class TagsResource implements Resource
      *     description?: string,
      *     category?: array{id: string, name: string}
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -127,6 +129,7 @@ readonly class TagsResource implements Resource
      *     description?: string,
      *     category?: array{id: string, name: string}
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -156,6 +159,7 @@ readonly class TagsResource implements Resource
      *     description?: string,
      *     category?: array{id: string, name: string}
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -202,6 +206,7 @@ readonly class TagsResource implements Resource
      *     }>,
      *     next_page_token: ?string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -245,6 +250,7 @@ readonly class TagsResource implements Resource
      *     name: string,
      *     description?: string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -271,6 +277,7 @@ readonly class TagsResource implements Resource
      *     name: string,
      *     description?: string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -298,6 +305,7 @@ readonly class TagsResource implements Resource
      *     name: string,
      *     description?: string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -338,6 +346,7 @@ readonly class TagsResource implements Resource
      *     success: bool,
      *     message?: string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -393,6 +402,7 @@ readonly class TagsResource implements Resource
      *     }>,
      *     next_page_token: ?string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -458,6 +468,7 @@ readonly class TagsResource implements Resource
      *     }>,
      *     next_page_token: ?string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException

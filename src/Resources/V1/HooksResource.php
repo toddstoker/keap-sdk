@@ -42,6 +42,7 @@ readonly class HooksResource implements Resource
 
     /**
      * @return array{eventKey: string, hookUrl: string, key: string, status: string}
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \JsonException
@@ -56,6 +57,7 @@ readonly class HooksResource implements Resource
     /**
      * @param  array{eventKey?: string, hookUrl?: string}  $data
      * @return array{eventKey: string, hookUrl: string, key: string, status: string}
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws FatalRequestException
@@ -70,6 +72,7 @@ readonly class HooksResource implements Resource
     /**
      * @param  array{eventKey?: string, hookUrl?: string}  $data
      * @return array{eventKey: string, hookUrl: string, key: string, status: string}
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws FatalRequestException
@@ -100,6 +103,7 @@ readonly class HooksResource implements Resource
 
     /**
      * @return array{eventKey: string, hookUrl: string, key: string, status: string}
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws FatalRequestException
@@ -113,6 +117,7 @@ readonly class HooksResource implements Resource
 
     /**
      * @return array{eventKey: string, hookUrl: string, key: string, status: string}
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws FatalRequestException

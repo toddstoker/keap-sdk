@@ -20,8 +20,8 @@ class Utility
      *
      * V2 uses: birth_date, anniversary_date, create_time, update_time
      *
-     * @param array{birth_date?: string|null, anniversary_date?: string|null, create_time?: string|null, update_time?: string|null,} $payload
-     * @param array{Birthday?: string, Anniversary?: string, DateCreated?: string, LastUpdated?: string} $legacyPayload
+     * @param  array{birth_date?: string|null, anniversary_date?: string|null, create_time?: string|null, update_time?: string|null,}  $payload
+     * @param  array{Birthday?: string, Anniversary?: string, DateCreated?: string, LastUpdated?: string}  $legacyPayload
      */
     protected static function mapDateFields(array $payload, array &$legacyPayload): void
     {
@@ -66,8 +66,8 @@ class Utility
      *
      * V2 target fields: birth_date, anniversary_date, create_time, update_time
      *
-     * @param array{Birthday?: string, Anniversary?: string, DateCreated?: string, LastUpdated?: string} $legacyPayload
-     * @param array{birth_date?: string|null, anniversary_date?: string|null, create_time?: string|null, update_time?: string|null} $apiPayload
+     * @param  array{Birthday?: string, Anniversary?: string, DateCreated?: string, LastUpdated?: string}  $legacyPayload
+     * @param  array{birth_date?: string|null, anniversary_date?: string|null, create_time?: string|null, update_time?: string|null}  $apiPayload
      */
     protected static function mapLegacyDateFields(array $legacyPayload, array &$apiPayload): void
     {
@@ -97,8 +97,8 @@ class Utility
      *
      * V2 uses: owner_id, leadsource_id (no underscore)
      *
-     * @param array{OwnerID?: string, LeadSourceId?: string} $legacyPayload
-     * @param array{owner_id?: string, leadsource_id?: string} $apiPayload
+     * @param  array{OwnerID?: string, LeadSourceId?: string}  $legacyPayload
+     * @param  array{owner_id?: string, leadsource_id?: string}  $apiPayload
      */
     protected static function mapLegacyIdFields(array $legacyPayload, array &$apiPayload): void
     {

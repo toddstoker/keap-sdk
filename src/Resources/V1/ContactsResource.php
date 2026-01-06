@@ -159,6 +159,7 @@ readonly class ContactsResource implements Resource
      *     social_accounts?: array<int, array{name: string, type: string}>,
      *     relationships?: array<int, array{id: int, linked_contact_id: int, relationship_type_id: int}>,
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -204,6 +205,7 @@ readonly class ContactsResource implements Resource
      *     last_updated?: string,
      *     ...
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -238,6 +240,7 @@ readonly class ContactsResource implements Resource
      *     last_updated?: string,
      *     ...
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -366,6 +369,7 @@ readonly class ContactsResource implements Resource
      *     }>,
      *     count: int
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -420,6 +424,7 @@ readonly class ContactsResource implements Resource
      *     email_addresses?: array<int, array{email: string, field: string}>,
      *     ...
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -447,6 +452,7 @@ readonly class ContactsResource implements Resource
      *     field_type: string,
      *     options?: array<int, array{id: int, label: string}>
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -502,6 +508,7 @@ readonly class ContactsResource implements Resource
      *     expiration_month: string,
      *     expiration_year: string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -533,6 +540,7 @@ readonly class ContactsResource implements Resource
      *     sent_to_address: string,
      *     sent_date?: string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -564,6 +572,7 @@ readonly class ContactsResource implements Resource
      *     utm_term?: string,
      *     utm_content?: string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException

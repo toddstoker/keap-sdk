@@ -164,6 +164,7 @@ readonly class ContactsResource implements Resource
      *     utm_parameters?: array<int, array{dateCreated: string, firstTouch: bool, id: int, keapSourceId: string, lastTouch: bool, utmCampaign: string, utmContent: string, utmMedium: string, utmSource: string, utmTerm: string}>,
      *     ...
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -208,6 +209,7 @@ readonly class ContactsResource implements Resource
      *     update_time?: string,
      *     ...
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -246,6 +248,7 @@ readonly class ContactsResource implements Resource
      *     update_time?: string,
      *     ...
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -311,6 +314,7 @@ readonly class ContactsResource implements Resource
      *     }>,
      *     next_page_token: ?string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -337,6 +341,7 @@ readonly class ContactsResource implements Resource
      *     contact2_id: string,
      *     link_type_id: string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -388,6 +393,7 @@ readonly class ContactsResource implements Resource
      *     }>,
      *     next_page_token: ?string
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -412,6 +418,7 @@ readonly class ContactsResource implements Resource
      * Get the custom fields and optional properties for the Contact object.
      *
      * @return array{custom_fields: array<array<string, mixed>>, optional_properties: array<string>}
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException

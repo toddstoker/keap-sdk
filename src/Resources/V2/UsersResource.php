@@ -157,6 +157,7 @@ readonly class UsersResource implements Resource
      *     updated_by?: int,
      *     ...
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -217,6 +218,7 @@ readonly class UsersResource implements Resource
      *     update_time?: string,
      *     ...
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
@@ -248,6 +250,7 @@ readonly class UsersResource implements Resource
      *     keap_id?: string,
      *     is_admin?: bool
      * }
+     *
      * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
