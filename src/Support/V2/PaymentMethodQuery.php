@@ -13,7 +13,7 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\PaymentMethodFieldSelector;
  * List Payment Methods endpoint via dynamic method calls.
  *
  * @method $this byMerchantAccountId(string $id) Filter by merchant account ID
- * @method $this orderByDateCreated(string $direction = 'asc') Order by creation date
+ * @method $this orderByCreatedTime(string $direction = 'asc') Order by created time
  */
 class PaymentMethodQuery extends Query
 {
@@ -38,6 +38,6 @@ class PaymentMethodQuery extends Query
      * @var array<string>
      */
     protected array $allowedOrderBy = [
-        'date_created',
+        'created_time',
     ];
 }
