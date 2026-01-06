@@ -343,7 +343,7 @@ readonly class TagsResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function applyToContacts(int $tagId, array $contactIds): array
+    public function applyToContacts(int $tagId, int|array $contactIds): array
     {
         $response = $this->connector->send(
             new ApplyTagToContacts($tagId, $contactIds)
@@ -363,7 +363,7 @@ readonly class TagsResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function removeFromContacts(int $tagId, array $contactIds): bool
+    public function removeFromContacts(int $tagId, int|array $contactIds): bool
     {
         $response = $this->connector->send(
             new RemoveTagFromContacts($tagId, $contactIds)

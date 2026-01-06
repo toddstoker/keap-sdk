@@ -28,7 +28,7 @@ class ApplyTagToContacts extends Request implements HasBody
      */
     public function __construct(
         protected readonly int $tagId,
-        protected readonly array $contactIds
+        protected readonly int|array $contactIds
     ) {}
 
     public function resolveEndpoint(): string
@@ -42,7 +42,9 @@ class ApplyTagToContacts extends Request implements HasBody
     protected function defaultBody(): array
     {
         return [
-            'contact_ids' => array_map('strval', $this->contactIds),
+            'contact_ids' => is_array($this->contactIds)
+                ? array_map('strval', $this->contactIds)
+                : [strval($this->contactIds)],
         ];
     }
 }
