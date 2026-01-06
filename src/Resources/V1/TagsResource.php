@@ -47,6 +47,7 @@ readonly class TagsResource implements Resource
      *     }>,
      *     count: int
      * }
+     * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -90,6 +91,7 @@ readonly class TagsResource implements Resource
      *     description?: string,
      *     category?: array{id: int, name: string}
      * }
+     * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -117,6 +119,7 @@ readonly class TagsResource implements Resource
      *     description?: string,
      *     category?: array{id: int, name: string}
      * }
+     * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -142,6 +145,7 @@ readonly class TagsResource implements Resource
      *     name: string,
      *     description?: string
      * }
+     * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -169,6 +173,7 @@ readonly class TagsResource implements Resource
      *     }>,
      *     count: int
      * }
+     * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
@@ -189,6 +194,7 @@ readonly class TagsResource implements Resource
      * @param  int|null  $limit  Max number of results (default 1000)
      * @param  int|null  $offset  Starting offset
      * @return array{contacts: array<array<string, mixed>>, count: int}
+     * @phpstan-return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException

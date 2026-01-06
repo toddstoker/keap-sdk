@@ -42,6 +42,7 @@ readonly class HooksResource implements Resource
 
     /**
      * @return array{eventKey: string, hookUrl: string, key: string, status: string}
+     * @phpstan-return array<string, mixed>
      *
      * @throws \JsonException
      * @throws FatalRequestException
@@ -55,6 +56,7 @@ readonly class HooksResource implements Resource
     /**
      * @param  array{eventKey?: string, hookUrl?: string}  $data
      * @return array{eventKey: string, hookUrl: string, key: string, status: string}
+     * @phpstan-return array<string, mixed>
      *
      * @throws FatalRequestException
      * @throws RequestException
@@ -68,6 +70,7 @@ readonly class HooksResource implements Resource
     /**
      * @param  array{eventKey?: string, hookUrl?: string}  $data
      * @return array{eventKey: string, hookUrl: string, key: string, status: string}
+     * @phpstan-return array<string, mixed>
      *
      * @throws FatalRequestException
      * @throws RequestException
@@ -97,6 +100,7 @@ readonly class HooksResource implements Resource
 
     /**
      * @return array{eventKey: string, hookUrl: string, key: string, status: string}
+     * @phpstan-return array<string, mixed>
      *
      * @throws FatalRequestException
      * @throws RequestException
@@ -109,6 +113,7 @@ readonly class HooksResource implements Resource
 
     /**
      * @return array{eventKey: string, hookUrl: string, key: string, status: string}
+     * @phpstan-return array<string, mixed>
      *
      * @throws FatalRequestException
      * @throws RequestException
@@ -116,6 +121,9 @@ readonly class HooksResource implements Resource
      */
     public function delayedVerify(string $key): array
     {
-        return $this->connector->send(new DelayedVerifyHook($key))->json();
+        /** @var array<string, mixed> $result */
+        $result = $this->connector->send(new DelayedVerifyHook($key))->json();
+
+        return $result;
     }
 }
