@@ -362,12 +362,16 @@ readonly class ContactsResource implements Resource
      * @param  int|null  $offset  Starting offset
      * @return array{
      *     tags: array<int, array{
-     *         id: int,
-     *         name: string,
-     *         description?: string,
-     *         category?: array{id: int, name: string}
+     *         date_applied: string,
+     *         tag: array{
+     *             id: int,
+     *             name: string,
+     *             category: ?string,
+     *         }
      *     }>,
-     *     count: int
+     *     count: int,
+     *     next: string,
+     *     previous: string
      * }
      *
      * @phpstan-return array<string, mixed>
