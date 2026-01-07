@@ -35,7 +35,7 @@ class UpdateLeadSource extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/leadSources/{$this->leadSourceId}";
+        return "/v2/leadSources/{$this->leadSourceId}";
     }
 
     /**

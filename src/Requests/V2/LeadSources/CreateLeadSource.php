@@ -34,7 +34,7 @@ class CreateLeadSource extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/leadSources';
+        return '/v2/leadSources';
     }
 
     /**
