@@ -6,6 +6,7 @@ namespace Toddstoker\KeapSdk\Requests\V2\Contacts;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Traits\Plugins\HasTimeout;
 use Toddstoker\KeapSdk\Support\V2\FieldSelector\ContactFieldSelector;
 
 /**
@@ -20,6 +21,10 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\ContactFieldSelector;
  */
 class GetContact extends Request
 {
+    use HasTimeout;
+
+    protected int $requestTimeout = 60;
+
     protected Method $method = Method::GET;
 
     public function __construct(

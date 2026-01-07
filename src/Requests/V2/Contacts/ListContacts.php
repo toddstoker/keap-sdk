@@ -6,6 +6,7 @@ namespace Toddstoker\KeapSdk\Requests\V2\Contacts;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Traits\Plugins\HasTimeout;
 use Toddstoker\KeapSdk\Support\V2\ContactQuery;
 
 /**
@@ -20,6 +21,10 @@ use Toddstoker\KeapSdk\Support\V2\ContactQuery;
  */
 class ListContacts extends Request
 {
+    use HasTimeout;
+
+    protected int $requestTimeout = 60;
+
     protected Method $method = Method::GET;
 
     /**
