@@ -35,6 +35,7 @@ trait ConvertsFromLegacyPayload
         static::mapLegacyAddressFields($legacyPayload, $apiPayload);
         static::mapLegacyCustomFields($legacyPayload, $customFieldMap, $apiPayload);
         static::mapLegacyTagFields($legacyPayload, $apiPayload);
+        static::mapLegacyNotesFields($legacyPayload, $apiPayload);
 
         return $apiPayload;
     }
@@ -440,6 +441,19 @@ trait ConvertsFromLegacyPayload
     {
         if (isset($legacyPayload['Groups']) && is_array($legacyPayload['Groups']) && ! empty($legacyPayload['Groups'])) {
             $apiPayload['tag_ids'] = $legacyPayload['Groups'];
+        }
+    }
+
+    /**
+     * Map ContactNotes field
+     *
+     * @param  array<string, mixed>  $legacyPayload
+     * @param  array<string, mixed>  $apiPayload
+     */
+    protected static function mapLegacyNotesFields(array $legacyPayload, array &$apiPayload): void
+    {
+        if (isset($legacyPayload['ContactNotes']) && $legacyPayload['ContactNotes'] !== '' && $legacyPayload['ContactNotes'] !== null) {
+            $apiPayload['notes'] = $legacyPayload['ContactNotes'];
         }
     }
 
