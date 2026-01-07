@@ -60,11 +60,7 @@ class Keap extends Connector
      * Note: In concurrent request scenarios, this will contain the most recent
      * response from any request on this connector instance.
      */
-    protected ?Response $lastResponse = null {
-        get {
-            return $this->lastResponse;
-        }
-    }
+    protected ?Response $lastResponse = null;
 
     /**
      * Initialize the Keap SDK
@@ -276,5 +272,10 @@ class Keap extends Connector
         );
 
         return $authenticator;
+    }
+
+    public function getLastResponse(): ?Response
+    {
+        return $this->lastResponse;
     }
 }
