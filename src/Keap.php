@@ -46,6 +46,8 @@ class Keap extends Connector
         createOAuthAuthenticatorFromResponse as parentCreateOAuthAuthenticatorFromResponse;
     }
 
+    protected ?string $response = KeapResponse::class;
+
     /**
      * Resource factory instance for managing resource instantiation
      */
@@ -60,7 +62,7 @@ class Keap extends Connector
      * Note: In concurrent request scenarios, this will contain the most recent
      * response from any request on this connector instance.
      */
-    protected ?Response $lastResponse = null;
+    protected ?KeapResponse $lastResponse = null;
 
     /**
      * Initialize the Keap SDK
@@ -144,7 +146,13 @@ class Keap extends Connector
     public function boot(PendingRequest $pendingRequest): void
     {
         $pendingRequest->middleware()
-            ->onResponse(fn (Response $response) => $this->lastResponse = $response)
+            ->onResponse(function (Response $response) {
+                assert($response instanceof KeapResponse);
+
+                $this->lastResponse = $response;
+
+                return $response;
+            })
             ->onResponse(new RequestExceptionHandler);
     }
 
@@ -247,7 +255,7 @@ class Keap extends Connector
      * - Initial authorization code exchange (via getAccessToken())
      * - Token refresh (via refreshToken() -> refreshAccessToken())
      *
-     * @param  Response  $response  The OAuth token response
+     * @param  KeapResponse  $response  The OAuth token response
      * @param  string|null  $fallbackRefreshToken  Optional fallback refresh token
      * @return OAuthAuthenticator The authenticator containing the new tokens
      */
@@ -274,7 +282,7 @@ class Keap extends Connector
         return $authenticator;
     }
 
-    public function getLastResponse(): ?Response
+    public function getLastResponse(): ?KeapResponse
     {
         return $this->lastResponse;
     }
