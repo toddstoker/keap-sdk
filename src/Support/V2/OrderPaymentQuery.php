@@ -27,10 +27,9 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\OrderPaymentFieldSelector;
  */
 class OrderPaymentQuery extends Query
 {
-
     public function __construct()
     {
-        $this->fieldSelector = new OrderPaymentFieldSelector();
+        $this->fieldSelector = new OrderPaymentFieldSelector;
     }
 
     /**

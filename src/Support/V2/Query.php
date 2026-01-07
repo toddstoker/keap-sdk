@@ -81,7 +81,7 @@ abstract class Query
      */
     public function where(string $field, int|string|array $value): static
     {
-        if(is_array($value)) {
+        if (is_array($value)) {
             $value = implode(',', $value);
         }
 

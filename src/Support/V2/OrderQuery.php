@@ -22,10 +22,9 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\OrderFieldSelector;
  */
 class OrderQuery extends Query
 {
-
     public function __construct()
     {
-        $this->fieldSelector = new OrderFieldSelector();
+        $this->fieldSelector = new OrderFieldSelector;
     }
 
     /**
