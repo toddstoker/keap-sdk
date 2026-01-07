@@ -19,7 +19,7 @@ class ListNotes extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/{$this->contactId}/notes";
+        return "/v2/contacts/{$this->contactId}/notes";
     }
 
     protected function defaultQuery(): array

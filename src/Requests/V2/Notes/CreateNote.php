@@ -32,7 +32,7 @@ class CreateNote extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/{$this->contactId}/notes";
+        return "/v2/contacts/{$this->contactId}/notes";
     }
 
     /**

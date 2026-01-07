@@ -18,6 +18,6 @@ class DeleteNote extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/contacts/{$this->contactId}/notes/{$this->noteId}";
+        return "/v2/contacts/{$this->contactId}/notes/{$this->noteId}";
     }
 }
