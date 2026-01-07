@@ -23,6 +23,16 @@
         "psr-4": {
         }
     },
+    "scripts": {
+        "test": [
+            "@test:lint",
+            "@test:types"
+        ],
+        "test:lint": "pint --parallel --test",
+        "test:types": "phpstan analyse",
+        "pint": "pint --parallel",
+        "phpstan": "phpstan analyse"
+    },
     "extra": {
     },
     "minimum-stability": "dev",
