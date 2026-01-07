@@ -43,6 +43,9 @@ class ResourceFactory
         'hooks' => [
             1 => \Toddstoker\KeapSdk\Resources\V1\HooksResource::class,
         ],
+        'leadSources' => [
+            2 => \Toddstoker\KeapSdk\Resources\V2\LeadSourcesResource::class,
+        ],
         'opportunities' => [
             1 => \Toddstoker\KeapSdk\Resources\V1\OpportunitiesResource::class,
         ],
