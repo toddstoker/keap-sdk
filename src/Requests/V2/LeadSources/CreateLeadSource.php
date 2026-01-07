@@ -37,6 +37,9 @@ class CreateLeadSource extends Request implements HasBody
         return '/leadSources';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return $this->data;
