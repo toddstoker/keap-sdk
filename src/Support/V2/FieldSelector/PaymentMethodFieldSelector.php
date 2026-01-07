@@ -12,13 +12,5 @@ namespace Toddstoker\KeapSdk\Support\V2\FieldSelector;
  */
 class PaymentMethodFieldSelector extends FieldSelector
 {
-    /**
-     * Allowed fields for payment method field selection
-     *
-     * Note: The Payment Methods API does not currently document field selection support.
-     * This array is empty but can be updated when field selection is added.
-     *
-     * @var array<string>
-     */
-    protected array $allowedFields = [];
+    use DisabledFieldSelection;
 }

@@ -18,7 +18,7 @@ class ListLeadSources extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/leadSources';
+        return '/v2/leadSources';
     }
 
     protected function defaultQuery(): array

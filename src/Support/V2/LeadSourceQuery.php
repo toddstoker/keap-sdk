@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Toddstoker\KeapSdk\Support\V2;
 
+use Toddstoker\KeapSdk\Support\V2\FieldSelector\LeadSourceFieldSelector;
+
 /**
  * Query builder for Keap v2 Lead Sources API
  *
@@ -28,6 +30,11 @@ namespace Toddstoker\KeapSdk\Support\V2;
  */
 class LeadSourceQuery extends Query
 {
+    public function __construct()
+    {
+        $this->fieldSelector = new LeadSourceFieldSelector;
+    }
+
     /**
      * Allowed filter fields for lead sources endpoint
      *

@@ -452,7 +452,7 @@ trait ConvertsFromLegacyPayload
      */
     protected static function mapLegacyNotesFields(array $legacyPayload, array &$apiPayload): void
     {
-        if (isset($legacyPayload['ContactNotes']) && $legacyPayload['ContactNotes'] !== '' && $legacyPayload['ContactNotes'] !== null) {
+        if (isset($legacyPayload['ContactNotes']) && $legacyPayload['ContactNotes'] !== '') {
             $apiPayload['notes'] = $legacyPayload['ContactNotes'];
         }
     }

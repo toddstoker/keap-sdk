@@ -404,7 +404,7 @@ trait ConvertsToLegacyPayload
      */
     protected static function mapNotesFields(array $payload, array &$legacyPayload): void
     {
-        if (isset($payload['notes']) && $payload['notes'] !== '' && $payload['notes'] !== null) {
+        if (isset($payload['notes']) && $payload['notes'] !== '') {
             $legacyPayload['ContactNotes'] = $payload['notes'];
         }
     }

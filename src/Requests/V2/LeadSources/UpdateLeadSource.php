@@ -38,6 +38,9 @@ class UpdateLeadSource extends Request implements HasBody
         return "/leadSources/{$this->leadSourceId}";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return $this->data;

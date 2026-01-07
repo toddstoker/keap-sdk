@@ -76,7 +76,7 @@ abstract class Query
      * Add a filter condition using equality operator
      *
      * @param  string  $field  Field name to filter on
-     * @param  int|string|array  $value  Value to match
+     * @param  int|string|array<int|string>  $value  Value to match
      * @return $this
      */
     public function where(string $field, int|string|array $value): static

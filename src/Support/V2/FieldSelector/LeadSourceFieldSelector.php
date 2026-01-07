@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Toddstoker\KeapSdk\Support\V2\FieldSelector;
 
 /**
- * Field selector for Order Payments
+ * Field selector for Lead Sources
  *
- * The Order Payments API does not currently support field selection.
+ * The Lead Sources API does not currently support field selection.
  * This class exists for consistency with other resources and future compatibility.
  */
-class OrderPaymentFieldSelector extends FieldSelector
+class LeadSourceFieldSelector extends FieldSelector
 {
     use DisabledFieldSelection;
 }

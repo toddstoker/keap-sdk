@@ -12,12 +12,5 @@ namespace Toddstoker\KeapSdk\Support\V2\FieldSelector;
  */
 class TagCompanyFieldSelector extends FieldSelector
 {
-    /**
-     * Allowed fields for field selection
-     *
-     * Empty array as this endpoint does not support field selection.
-     *
-     * @var array<string>
-     */
-    protected array $allowedFields = [];
+    use DisabledFieldSelection;
 }
