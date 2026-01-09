@@ -66,4 +66,34 @@ class TagContactQuery extends Query
         return $this->bySinceAppliedTime($startDatetime)
             ->byUntilAppliedTime($endDatetime);
     }
+
+    /**
+     * Set the page token for cursor-based pagination
+     *
+     * Handles cases where the API returns a full URL instead of just a token.
+     * If a URL is detected, the page_token query parameter is extracted.
+     *
+     * @param  string  $token  Page token from previous response (may be a URL)
+     * @return $this
+     */
+    public function pageToken(string $token): static
+    {
+        // Check if the token is a URL
+        if (filter_var($token, FILTER_VALIDATE_URL)) {
+            // Parse the URL
+            $parsedUrl = parse_url($token);
+
+            // Extract query parameters
+            if (isset($parsedUrl['query'])) {
+                parse_str($parsedUrl['query'], $queryParams);
+
+                // If page_token exists in the query params, use it
+                if (isset($queryParams['page_token'])) {
+                    $token = $queryParams['page_token'];
+                }
+            }
+        }
+
+        return parent::pageToken($token);
+    }
 }
