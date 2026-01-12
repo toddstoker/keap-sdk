@@ -33,9 +33,11 @@ use Toddstoker\KeapSdk\Resources\ResourceFactory;
  *
  * @method \Toddstoker\KeapSdk\Resources\V1\ContactsResource|\Toddstoker\KeapSdk\Resources\V2\ContactsResource contacts(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\EmailAddressesResource emailAddresses(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V1\FilesResource|\Toddstoker\KeapSdk\Resources\V2\FilesResource files(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V1\HooksResource hooks(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V1\OpportunitiesResource opportunities(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\ReportingResource reporting(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V2\SettingsResource settings(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V1\TagsResource|\Toddstoker\KeapSdk\Resources\V2\TagsResource tags(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\UsersResource users(?int $version = null)
  */

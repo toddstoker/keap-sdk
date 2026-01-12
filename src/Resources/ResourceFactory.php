@@ -65,6 +65,9 @@ class ResourceFactory
         'reporting' => [
             2 => \Toddstoker\KeapSdk\Resources\V2\ReportingResource::class,
         ],
+        'settings' => [
+            2 => \Toddstoker\KeapSdk\Resources\V2\SettingsResource::class,
+        ],
         'tags' => [
             1 => \Toddstoker\KeapSdk\Resources\V1\TagsResource::class,
             2 => \Toddstoker\KeapSdk\Resources\V2\TagsResource::class,
