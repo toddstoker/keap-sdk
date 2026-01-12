@@ -8,6 +8,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
+use Saloon\Traits\Plugins\HasTimeout;
 
 /**
  * Update Email Address Status (v2)
@@ -25,7 +26,9 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class UpdateEmailAddressStatus extends Request implements HasBody
 {
-    use HasJsonBody;
+    use HasJsonBody, HasTimeout;
+    
+    protected int $requestTimeout = 60;
 
     protected Method $method = Method::PATCH;
 
