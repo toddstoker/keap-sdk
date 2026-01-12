@@ -137,7 +137,7 @@ readonly class FilesResource implements Resource
      * Upload a new file
      *
      * @param  string  $fileName  File name
-     * @param  string  $fileContents  File contents (binary data)
+     * @param  mixed  $fileContents  File contents (binary data or resource)
      * @param  string  $fileAssociation  File association (CONTACT, USER, or COMPANY)
      * @param  bool  $isPublic  Whether the file is public
      * @param  int|null  $contactId  Contact ID (required if file_association is CONTACT)
@@ -162,56 +162,13 @@ readonly class FilesResource implements Resource
      */
     public function upload(
         string $fileName,
-        string $fileContents,
+        mixed $fileContents,
         string $fileAssociation,
         bool $isPublic,
         ?int $contactId = null
     ): array {
         $response = $this->connector->send(
             new UploadFile($fileName, $fileContents, $fileAssociation, $isPublic, $contactId)
-        );
-
-        return $response->json();
-    }
-
-    /**
-     * Update an existing file
-     *
-     * Note: This endpoint uses POST instead of PATCH.
-     *
-     * @param  int  $fileId  File ID
-     * @param  string|null  $fileName  New file name
-     * @param  string|null  $fileContents  New file contents (binary data)
-     * @param  bool|null  $isPublic  Whether the file is public
-     * @param  array<string>|null  $updateMask  Fields to update (file, file_name, is_public)
-     * @return array{
-     *     id: string,
-     *     file_name?: string,
-     *     file_size?: int,
-     *     category?: string,
-     *     file_box_type?: string,
-     *     contact_id?: string,
-     *     created_by_id?: string,
-     *     is_public?: bool,
-     *     remote_file_key?: string,
-     *     created_time?: string,
-     *     updated_time?: string
-     * }
-     *
-     * @phpstan-return array<string, mixed>
-     *
-     * @throws \Saloon\Exceptions\Request\FatalRequestException
-     * @throws \Saloon\Exceptions\Request\RequestException|\JsonException
-     */
-    public function update(
-        int $fileId,
-        ?string $fileName = null,
-        ?string $fileContents = null,
-        ?bool $isPublic = null,
-        ?array $updateMask = null
-    ): array {
-        $response = $this->connector->send(
-            new UpdateFile($fileId, $fileName, $fileContents, $isPublic, $updateMask)
         );
 
         return $response->json();

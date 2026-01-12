@@ -28,33 +28,30 @@ class UploadFile extends Request implements HasBody
      */
     public function __construct(
         protected readonly string $fileName,
-        protected readonly string $fileContents,
+        protected readonly mixed $fileContents,
         protected readonly string $fileAssociation,
         protected readonly bool $isPublic,
         protected readonly ?int $contactId = null
     ) {}
 
-    public function resolveEndpoint(): string
-    {
-        return '/v2/files';
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
     protected function defaultBody(): array
     {
         $body = [
-            'file' => new MultipartValue($this->fileContents, $this->fileName),
-            'file_name' => $this->fileName,
-            'file_association' => $this->fileAssociation,
-            'is_public' => $this->isPublic ? 'true' : 'false',
+            new MultipartValue('file', $this->fileContents, $this->fileName),
+            new MultipartValue('file_name', $this->fileName),
+            new MultipartValue('file_association', $this->fileAssociation),
+            new MultipartValue('is_public', $this->isPublic ? 'true' : 'false'),
         ];
 
         if ($this->contactId !== null) {
-            $body['contact_id'] = (string) $this->contactId;
+            $body[] = new MultipartValue('contact_id', (string) $this->contactId);
         }
 
         return $body;
+    }
+
+    public function resolveEndpoint(): string
+    {
+        return '/v2/files';
     }
 }
