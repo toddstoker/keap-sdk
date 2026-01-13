@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Toddstoker\KeapSdk\Resources\V2;
 
 use Toddstoker\KeapSdk\Keap;
+use Toddstoker\KeapSdk\Requests\V2\Orders\GetOrder;
 use Toddstoker\KeapSdk\Requests\V2\Orders\ListOrderPayments;
 use Toddstoker\KeapSdk\Requests\V2\Orders\ListOrders;
 use Toddstoker\KeapSdk\Resources\Resource;
+use Toddstoker\KeapSdk\Support\V2\FieldSelector\OrderFieldSelector;
 use Toddstoker\KeapSdk\Support\V2\OrderPaymentQuery;
 use Toddstoker\KeapSdk\Support\V2\OrderQuery;
 use Toddstoker\KeapSdk\Support\V2\Paginator;
@@ -181,6 +183,148 @@ readonly class OrdersResource implements Resource
             $query,
             'orders'
         );
+    }
+
+    /**
+     * Get a specific order by ID
+     *
+     * Supports optional field selection. Pass an array of field names,
+     * an OrderFieldSelector instance, or null to get all available fields.
+     *
+     * Note: The Orders API does not currently support field selection,
+     * but the parameter exists for consistency and future compatibility.
+     *
+     * @param  string|int  $orderId  The order ID
+     * @param  OrderFieldSelector|array<string>|null  $fields  Fields to include in response (not currently supported)
+     * @return array{
+     *     id: string,
+     *     contact?: array{
+     *         id: string,
+     *         given_name?: string,
+     *         family_name?: string,
+     *         email?: string
+     *     },
+     *     order_time?: string,
+     *     creation_time?: string,
+     *     modification_time?: string,
+     *     status?: string,
+     *     order_type?: string,
+     *     source_type?: string,
+     *     title?: string,
+     *     notes?: string,
+     *     terms?: string,
+     *     invoice_number?: string,
+     *     total?: array{
+     *         amount: int,
+     *         currency_code: string,
+     *         formatted_amount: string
+     *     },
+     *     total_due?: array{
+     *         amount: int,
+     *         currency_code: string,
+     *         formatted_amount: string
+     *     },
+     *     total_paid?: array{
+     *         amount: int,
+     *         currency_code: string,
+     *         formatted_amount: string
+     *     },
+     *     refund_total?: array{
+     *         amount: int,
+     *         currency_code: string,
+     *         formatted_amount: string
+     *     },
+     *     order_items?: array<int, array{
+     *         id: string,
+     *         name?: string,
+     *         description?: string,
+     *         item_type?: string,
+     *         quantity?: int,
+     *         price_per_unit?: array{
+     *             amount: int,
+     *             currency_code: string,
+     *             formatted_amount: string
+     *         },
+     *         cost_per_unit?: array{
+     *             amount: int,
+     *             currency_code: string,
+     *             formatted_amount: string
+     *         },
+     *         discount?: array{
+     *             amount: int,
+     *             currency_code: string,
+     *             formatted_amount: string
+     *         },
+     *         product?: array{
+     *             id: string,
+     *             name?: string,
+     *             description?: string,
+     *             sku?: string,
+     *             shippable?: bool,
+     *             taxable?: bool
+     *         },
+     *         notes?: string
+     *     }>,
+     *     shipping_information?: array{
+     *         id?: string,
+     *         given_name?: string,
+     *         family_name?: string,
+     *         company?: string,
+     *         phone_number?: string,
+     *         invoice_to_company?: bool,
+     *         address?: array{
+     *             line1?: string,
+     *             line2?: string,
+     *             locality?: string,
+     *             region?: string,
+     *             region_code?: string,
+     *             postal_code?: string,
+     *             country?: string,
+     *             country_code?: string,
+     *             field?: string
+     *         }
+     *     },
+     *     payment_plan?: array{
+     *         auto_charge?: bool,
+     *         days_between_payments: int,
+     *         days_between_retries?: int,
+     *         initial_payment_amount?: array{
+     *             amount: int,
+     *             currency_code: string,
+     *             formatted_amount: string
+     *         },
+     *         initial_payment_date?: string,
+     *         initial_payment_percent?: float,
+     *         max_charge_attempts?: int,
+     *         number_of_payments: int,
+     *         payment_method_id?: string,
+     *         plan_start_date: string
+     *     },
+     *     lead_affiliate_id?: string,
+     *     sales_affiliate_id?: string,
+     *     allow_payment?: bool,
+     *     allow_paypal?: bool,
+     *     files?: array<int, array{file_id: string}>,
+     *     ...
+     * }
+     *
+     * @phpstan-return array<string, mixed>
+     *
+     * @throws \Saloon\Exceptions\Request\FatalRequestException
+     * @throws \Saloon\Exceptions\Request\RequestException
+     */
+    public function get(string|int $orderId, OrderFieldSelector|array|null $fields = null): array
+    {
+        // Convert array to OrderFieldSelector if needed
+        if (is_array($fields)) {
+            $fieldSelector = OrderFieldSelector::make()->fields($fields);
+        } else {
+            $fieldSelector = $fields;
+        }
+
+        $response = $this->connector->send(new GetOrder($orderId, $fieldSelector));
+
+        return $response->json();
     }
 
     /**
