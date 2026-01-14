@@ -9,7 +9,6 @@ use Toddstoker\KeapSdk\Requests\V2\Files\DeleteFile;
 use Toddstoker\KeapSdk\Requests\V2\Files\GetFile;
 use Toddstoker\KeapSdk\Requests\V2\Files\GetFileData;
 use Toddstoker\KeapSdk\Requests\V2\Files\ListFiles;
-use Toddstoker\KeapSdk\Requests\V2\Files\UpdateFile;
 use Toddstoker\KeapSdk\Requests\V2\Files\UploadFile;
 use Toddstoker\KeapSdk\Resources\Resource;
 use Toddstoker\KeapSdk\Support\V2\FileQuery;

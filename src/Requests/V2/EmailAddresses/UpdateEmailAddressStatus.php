@@ -27,7 +27,7 @@ use Saloon\Traits\Plugins\HasTimeout;
 class UpdateEmailAddressStatus extends Request implements HasBody
 {
     use HasJsonBody, HasTimeout;
-    
+
     protected int $requestTimeout = 60;
 
     protected Method $method = Method::PATCH;
