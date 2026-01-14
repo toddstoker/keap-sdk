@@ -111,7 +111,7 @@ readonly class ContactsResource implements Resource
      * a ContactFieldSelector instance, or null to get default fields.
      *
      * @param  int  $contactId  The contact ID
-     * @param  ContactFieldSelector|array<string>|null  $fields  Fields to include in response
+     * @param  ContactFieldSelector|array<string>|string|null  $fields  Fields to include in response ('*' for all)
      * @return array{
      *     id: int,
      *     given_name?: string,
@@ -165,14 +165,9 @@ readonly class ContactsResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function get(int $contactId, ContactFieldSelector|array|null $fields = null): array
+    public function get(int $contactId, ContactFieldSelector|array|string|null $fields = null): array
     {
-        // Convert array to ContactFieldSelector if needed
-        if (is_array($fields)) {
-            $fieldSelector = ContactFieldSelector::make()->fields($fields);
-        } else {
-            $fieldSelector = $fields;
-        }
+        $fieldSelector = ContactFieldSelector::for($fields);
 
         $response = $this->connector->send(
             new GetContact($contactId, $fieldSelector)

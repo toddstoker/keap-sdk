@@ -70,20 +70,15 @@ readonly class OpportunitiesResource implements Resource
      * an OpportunityFieldSelector instance, or null to get default fields.
      *
      * @param  int  $opportunityId  The opportunity ID
-     * @param  OpportunityFieldSelector|array<string>|null  $fields  Fields to include in response
+     * @param  OpportunityFieldSelector|array<string>|string|null  $fields  Fields to include in response ('*' for all)
      * @return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function get(int $opportunityId, OpportunityFieldSelector|array|null $fields = null): array
+    public function get(int $opportunityId, OpportunityFieldSelector|array|string|null $fields = null): array
     {
-        // Convert array to OpportunityFieldSelector if needed
-        if (is_array($fields)) {
-            $fieldSelector = OpportunityFieldSelector::make()->fields($fields);
-        } else {
-            $fieldSelector = $fields;
-        }
+        $fieldSelector = OpportunityFieldSelector::for($fields);
 
         return $this->connector->send(new GetOpportunity($opportunityId, $fieldSelector))->json();
     }
