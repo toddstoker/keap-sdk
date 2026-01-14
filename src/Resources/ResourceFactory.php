@@ -33,6 +33,9 @@ class ResourceFactory
      * @var array<string, array<int, class-string>>
      */
     private static array $classMap = [
+        'companies' => [
+            2 => \Toddstoker\KeapSdk\Resources\V2\CompaniesResource::class,
+        ],
         'contacts' => [
             1 => \Toddstoker\KeapSdk\Resources\V1\ContactsResource::class,
             2 => \Toddstoker\KeapSdk\Resources\V2\ContactsResource::class,
