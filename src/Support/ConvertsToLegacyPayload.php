@@ -137,7 +137,7 @@ trait ConvertsToLegacyPayload
         }
 
         if (isset($payload['company']['id'])) {
-            $legacyPayload['CompanyID'] = $payload['company']['id'];
+            $legacyPayload['CompanyId'] = $payload['company']['id'];
         }
     }
 

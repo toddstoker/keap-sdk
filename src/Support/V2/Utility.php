@@ -48,12 +48,12 @@ class Utility
      * V2 uses: owner_id, leadsource_id (no underscore)
      *
      * @param  array{owner_id?: string|int, leadsource_id?: string|int}  $payload
-     * @param  array{OwnerID?: string|int, LeadSourceId?: string|int}  $legacyPayload
+     * @param  array{OwnerId?: string|int, LeadSourceId?: string|int}  $legacyPayload
      */
     protected static function mapIdFields(array $payload, array &$legacyPayload): void
     {
         if (isset($payload['owner_id'])) {
-            $legacyPayload['OwnerID'] = $payload['owner_id'];
+            $legacyPayload['OwnerId'] = $payload['owner_id'];
         }
 
         if (isset($payload['leadsource_id'])) {
@@ -97,13 +97,13 @@ class Utility
      *
      * V2 uses: owner_id, leadsource_id (no underscore)
      *
-     * @param  array{OwnerID?: string, LeadSourceId?: string}  $legacyPayload
+     * @param  array{OwnerId?: string, LeadSourceId?: string}  $legacyPayload
      * @param  array{owner_id?: string, leadsource_id?: string}  $apiPayload
      */
     protected static function mapLegacyIdFields(array $legacyPayload, array &$apiPayload): void
     {
-        if (isset($legacyPayload['OwnerID']) && $legacyPayload['OwnerID'] !== '') {
-            $apiPayload['owner_id'] = $legacyPayload['OwnerID'];
+        if (isset($legacyPayload['OwnerId']) && $legacyPayload['OwnerId'] !== '') {
+            $apiPayload['owner_id'] = $legacyPayload['OwnerId'];
         }
 
         if (isset($legacyPayload['LeadSourceId']) && $legacyPayload['LeadSourceId'] !== '') {
@@ -116,7 +116,7 @@ class Utility
      *
      * V2 uses nested structure: company: {company_name, id}
      *
-     * @param  array{Company?: string, CompanyID?: string}  $legacyPayload
+     * @param  array{Company?: string, CompanyId?: string}  $legacyPayload
      * @param  array{company?: array{company_name?: string, id?: string}}  $apiPayload
      */
     protected static function mapLegacyCompanyFields(array $legacyPayload, array &$apiPayload): void
@@ -127,8 +127,8 @@ class Utility
             $company['company_name'] = $legacyPayload['Company'];
         }
 
-        if (isset($legacyPayload['CompanyID']) && $legacyPayload['CompanyID'] !== '') {
-            $company['id'] = (string) $legacyPayload['CompanyID'];
+        if (isset($legacyPayload['CompanyId']) && $legacyPayload['CompanyId'] !== '') {
+            $company['id'] = (string) $legacyPayload['CompanyId'];
         }
 
         if (! empty($company)) {

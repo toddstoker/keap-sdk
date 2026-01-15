@@ -61,7 +61,7 @@ class Utility
     protected static function mapIdFields(array $payload, array &$legacyPayload): void
     {
         if (isset($payload['owner_id'])) {
-            $legacyPayload['OwnerID'] = $payload['owner_id'];
+            $legacyPayload['OwnerId'] = $payload['owner_id'];
         }
 
         if (isset($payload['lead_source_id'])) {
@@ -110,8 +110,8 @@ class Utility
      */
     protected static function mapLegacyIdFields(array $legacyPayload, array &$apiPayload): void
     {
-        if (isset($legacyPayload['OwnerID']) && $legacyPayload['OwnerID'] !== '') {
-            $apiPayload['owner_id'] = $legacyPayload['OwnerID'];
+        if (isset($legacyPayload['OwnerId']) && $legacyPayload['OwnerId'] !== '') {
+            $apiPayload['owner_id'] = $legacyPayload['OwnerId'];
         }
 
         if (isset($legacyPayload['LeadSourceId']) && $legacyPayload['LeadSourceId'] !== '') {
