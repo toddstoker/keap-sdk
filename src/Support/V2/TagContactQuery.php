@@ -89,7 +89,7 @@ class TagContactQuery extends Query
 
                 // If page_token exists in the query params, use it
                 if (isset($queryParams['page_token'])) {
-                    $token = $queryParams['page_token'];
+                    $token = is_string($queryParams['page_token']) ? $queryParams['page_token'] : $token;
                 }
             }
         }
