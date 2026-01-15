@@ -34,13 +34,16 @@ class UploadFile extends Request implements HasBody
         protected readonly ?int $contactId = null
     ) {}
 
+    /**
+     * @return array<int, MultipartValue>
+     */
     protected function defaultBody(): array
     {
         $body = [
             new MultipartValue('file', $this->fileContents, $this->fileName),
-            new MultipartValue('file_name', $this->fileName),
-            new MultipartValue('file_association', $this->fileAssociation),
-            new MultipartValue('is_public', $this->isPublic ? 'true' : 'false'),
+            new MultipartValue('file_name', $this->fileName, null, ['Content-Type' => 'application/json']),
+            new MultipartValue('file_association', '"'.$this->fileAssociation.'"', null, ['Content-Type' => 'application/json']), // API expects a JSON string
+            new MultipartValue('is_public', $this->isPublic ? 'true' : 'false', null, ['Content-Type' => 'application/json']),
         ];
 
         if ($this->contactId !== null) {
