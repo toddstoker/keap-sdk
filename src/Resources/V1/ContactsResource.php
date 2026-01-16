@@ -429,9 +429,11 @@ readonly class ContactsResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function updateOrCreate(array $data): array
+    public function updateOrCreate(array $data, string $duplicateOption = 'Email', ?string $optInReason = null): array
     {
-        return $this->connector->send(new UpdateOrCreateContact($data))->json();
+        return $this->connector->send(
+            new UpdateOrCreateContact($data, $duplicateOption, $optInReason)
+        )->json();
     }
 
     /**

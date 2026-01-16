@@ -26,7 +26,9 @@ class UpdateOrCreateContact extends Request implements HasBody
      * @param  array<string, mixed>  $data  Contact data
      */
     public function __construct(
-        protected readonly array $data
+        protected readonly array $data,
+        protected readonly string $duplicateOption = 'Email',
+        protected readonly ?string $optInReason = null,
     ) {}
 
     public function resolveEndpoint(): string
@@ -39,6 +41,13 @@ class UpdateOrCreateContact extends Request implements HasBody
      */
     protected function defaultBody(): array
     {
-        return $this->data;
+        $body = $this->data;
+        $body['duplicate_option'] = $this->duplicateOption;
+
+        if ($this->optInReason) {
+            $body['opt_in_reason'] = $this->optInReason;
+        }
+
+        return $body;
     }
 }
