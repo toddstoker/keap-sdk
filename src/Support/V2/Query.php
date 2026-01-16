@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Toddstoker\KeapSdk\Support\V2;
 
 use BadMethodCallException;
+use DateTimeInterface;
+use Toddstoker\KeapSdk\Support\DateFormatter;
 use Toddstoker\KeapSdk\Support\V2\FieldSelector\FieldSelector;
 
 /**
@@ -76,11 +78,15 @@ abstract class Query
      * Add a filter condition using equality operator
      *
      * @param  string  $field  Field name to filter on
-     * @param  int|string|array<int|string>  $value  Value to match
+     * @param  int|string|array<int|string>|DateTimeInterface  $value  Value to match
      * @return $this
      */
-    public function where(string $field, int|string|array $value): static
+    public function where(string $field, int|string|array|DateTimeInterface $value): static
     {
+        if ($value instanceof DateTimeInterface) {
+            $value = DateFormatter::format($value);
+        }
+
         if (is_array($value)) {
             $value = implode(',', $value);
         }

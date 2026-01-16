@@ -17,6 +17,7 @@ use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
 use Saloon\Traits\Plugins\AcceptsJson;
 use Toddstoker\KeapSdk\Credentials\BaseCredential;
 use Toddstoker\KeapSdk\Credentials\OAuth;
+use Toddstoker\KeapSdk\Middleware\DateFormatterMiddleware;
 use Toddstoker\KeapSdk\Middleware\RequestExceptionHandler;
 use Toddstoker\KeapSdk\Resources\ResourceFactory;
 
@@ -148,6 +149,7 @@ class Keap extends Connector
     public function boot(PendingRequest $pendingRequest): void
     {
         $pendingRequest->middleware()
+            ->onRequest(new DateFormatterMiddleware)
             ->onResponse(function (Response $response) {
                 assert($response instanceof KeapResponse);
 
