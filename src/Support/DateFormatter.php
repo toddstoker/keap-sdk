@@ -41,5 +41,4 @@ final class DateFormatter
 
         return $date->format($format);
     }
-
 }

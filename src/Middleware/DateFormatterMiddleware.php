@@ -19,7 +19,6 @@ use Toddstoker\KeapSdk\Support\DateFormatter;
  */
 readonly class DateFormatterMiddleware
 {
-
     public function __construct() {}
 
     public function __invoke(PendingRequest $pendingRequest): void
