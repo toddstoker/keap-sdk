@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Toddstoker\KeapSdk\Resources\V2;
 
 use Toddstoker\KeapSdk\Keap;
-use Toddstoker\KeapSdk\Requests\V2\Reporting\GetReport;
-use Toddstoker\KeapSdk\Requests\V2\Reporting\ListReports;
-use Toddstoker\KeapSdk\Requests\V2\Reporting\RunReport;
+use Toddstoker\KeapSdk\Requests\V2\Reports\GetReport;
+use Toddstoker\KeapSdk\Requests\V2\Reports\ListReports;
+use Toddstoker\KeapSdk\Requests\V2\Reports\RunReport;
 use Toddstoker\KeapSdk\Resources\Resource;
 use Toddstoker\KeapSdk\Support\V2\Paginator;
 use Toddstoker\KeapSdk\Support\V2\ReportQuery;
 use Toddstoker\KeapSdk\Support\V2\RunReportQuery;
 
 /**
- * Reporting Resource (v2)
+ * Reports Resource (v2)
  *
  * Provides methods for accessing and running reports (Saved Searches).
  *
@@ -22,7 +22,7 @@ use Toddstoker\KeapSdk\Support\V2\RunReportQuery;
  *
  * @see https://developer.keap.com/docs/restv2/
  */
-readonly class ReportingResource implements Resource
+readonly class ReportsResource implements Resource
 {
     public function __construct(
         protected Keap $connector

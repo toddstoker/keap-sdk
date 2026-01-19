@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Toddstoker\KeapSdk\Requests\V2\Reporting;
+namespace Toddstoker\KeapSdk\Requests\V2\Reports;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
