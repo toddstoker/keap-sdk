@@ -6,6 +6,7 @@ namespace Toddstoker\KeapSdk;
 
 use Saloon\Contracts\Authenticator;
 use Saloon\Contracts\OAuthAuthenticator;
+use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Auth\NullAuthenticator;
 use Saloon\Http\Auth\TokenAuthenticator;
@@ -150,6 +151,10 @@ class Keap extends Connector
     public function boot(PendingRequest $pendingRequest): void
     {
         $pendingRequest->middleware()
+            ->onFatalException(function (FatalRequestException $e) {
+                assert($e->getPrevious() !== null);
+                throw new \Toddstoker\KeapSdk\Exceptions\FatalRequestException($e->getPrevious(), $e->getPendingRequest());
+            })
             ->onRequest(new DateFormatterMiddleware)
             ->onResponse(function (Response $response) {
                 assert($response instanceof KeapResponse);
