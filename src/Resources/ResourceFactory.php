@@ -78,6 +78,9 @@ class ResourceFactory
         'users' => [
             2 => \Toddstoker\KeapSdk\Resources\V2\UsersResource::class,
         ],
+        'webforms' => [
+            2 => \Toddstoker\KeapSdk\Resources\V2\WebformsResource::class,
+        ],
     ];
 
     /**
