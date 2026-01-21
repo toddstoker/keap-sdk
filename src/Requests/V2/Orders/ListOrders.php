@@ -6,6 +6,7 @@ namespace Toddstoker\KeapSdk\Requests\V2\Orders;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\Traits\Plugins\HasTimeout;
 use Toddstoker\KeapSdk\Support\V2\OrderQuery;
 
 /**
@@ -20,6 +21,10 @@ use Toddstoker\KeapSdk\Support\V2\OrderQuery;
  */
 class ListOrders extends Request
 {
+    use HasTimeout;
+
+    protected int $requestTimeout = 60;
+
     protected Method $method = Method::GET;
 
     /**

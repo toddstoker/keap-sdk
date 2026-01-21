@@ -460,11 +460,11 @@ trait ConvertsFromLegacyPayload
     /**
      * Convert a date value to string format
      *
-     * @param  \DateTimeImmutable|string|null  $date  The date value (can be object or string)
+     * @param  \DateTimeInterface|string|null  $date  The date value (can be object or string)
      * @param  string  $format  PHP date format string
      * @return string|null The formatted date string or null
      */
-    protected static function dateToString(\DateTimeImmutable|string|null $date, string $format = 'Y-m-d\TH:i:s\Z'): ?string
+    protected static function dateToString(\DateTimeInterface|string|null $date, string $format = 'Y-m-d\TH:i:s\Z'): ?string
     {
         if ($date === null) {
             return null;
