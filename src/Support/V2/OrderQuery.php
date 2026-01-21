@@ -12,8 +12,8 @@ use Toddstoker\KeapSdk\Support\V2\FieldSelector\OrderFieldSelector;
  * Provides order-specific filter validation and helpers for the
  * List Orders endpoint via dynamic method calls.
  *
- * @method $this byProductId(string $id) Filter by product ID
- * @method $this byContactId(string $id) Filter by contact ID
+ * @method $this byProductId(int|string $id) Filter by product ID
+ * @method $this byContactId(int|string $id) Filter by contact ID
  * @method $this byPaid(bool $paid) Filter by paid status
  * @method $this byCreatedSinceTime(string $datetime) Filter by created since time
  * @method $this byCreatedUntilTime(string $datetime) Filter by created until time
