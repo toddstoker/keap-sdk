@@ -33,16 +33,22 @@ use Toddstoker\KeapSdk\Resources\ResourceFactory;
  *
  * Dynamic resource access methods (pass 1 or 2 for API version, defaults to $apiVersion):
  *
+ * @method \Toddstoker\KeapSdk\Resources\V1\AppointmentsResource appointments(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V2\CompaniesResource companies(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V1\ContactsResource|\Toddstoker\KeapSdk\Resources\V2\ContactsResource contacts(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\EmailAddressesResource emailAddresses(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V1\FilesResource|\Toddstoker\KeapSdk\Resources\V2\FilesResource files(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V1\HooksResource hooks(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V2\LeadSourcesResource leadSources(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V2\NotesResource notes(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V1\OpportunitiesResource opportunities(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\OrdersResource orders(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V2\PaymentMethodsResource paymentMethods(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\ReportsResource reports(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\SettingsResource settings(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V1\TagsResource|\Toddstoker\KeapSdk\Resources\V2\TagsResource tags(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\UsersResource users(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V2\WebformsResource webforms(?int $version = null)
  */
 class Keap extends Connector
 {
