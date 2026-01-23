@@ -415,6 +415,6 @@ trait ConvertsToLegacyPayload
             return null;
         }
 
-        return new \DateTimeImmutable($dateString);
+        return new \DateTimeImmutable($dateString)->setTimezone(new \DateTimeZone('America/New_York'));
     }
 }

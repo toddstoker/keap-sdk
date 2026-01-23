@@ -6,6 +6,7 @@ namespace Toddstoker\KeapSdk\Support\V1;
 
 use Toddstoker\KeapSdk\Support\ConvertsFromLegacyPayload;
 use Toddstoker\KeapSdk\Support\ConvertsToLegacyPayload;
+use Toddstoker\KeapSdk\Support\MapsCustomFields;
 
 /**
  * Utility class for V1 API contact payload conversions
@@ -14,6 +15,7 @@ class Utility
 {
     use ConvertsFromLegacyPayload;
     use ConvertsToLegacyPayload;
+    use MapsCustomFields;
 
     /**
      * Map V1-specific date fields

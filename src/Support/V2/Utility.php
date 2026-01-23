@@ -6,6 +6,7 @@ namespace Toddstoker\KeapSdk\Support\V2;
 
 use Toddstoker\KeapSdk\Support\ConvertsFromLegacyPayload;
 use Toddstoker\KeapSdk\Support\ConvertsToLegacyPayload;
+use Toddstoker\KeapSdk\Support\MapsCustomFields;
 
 /**
  * Utility class for V2 API contact payload conversions
@@ -14,6 +15,7 @@ class Utility
 {
     use ConvertsFromLegacyPayload;
     use ConvertsToLegacyPayload;
+    use MapsCustomFields;
 
     /**
      * Map V2-specific date fields
@@ -21,24 +23,24 @@ class Utility
      * V2 uses: birth_date, anniversary_date, create_time, update_time
      *
      * @param  array{birth_date?: string|null, anniversary_date?: string|null, create_time?: string|null, update_time?: string|null,}  $payload
-     * @param  array{Birthday?: string, Anniversary?: string, DateCreated?: string, LastUpdated?: string}  $legacyPayload
+     * @param  array{Birthday?: \DateTimeInterface|null, Anniversary?: \DateTimeInterface|null, DateCreated?: \DateTimeInterface|null, LastUpdated?: \DateTimeInterface|null}  $legacyPayload
      */
     protected static function mapDateFields(array $payload, array &$legacyPayload): void
     {
         if (isset($payload['birth_date'])) {
-            $legacyPayload['Birthday'] = $payload['birth_date'];
+            $legacyPayload['Birthday'] = self::dateFromString($payload['birth_date']);
         }
 
         if (isset($payload['anniversary_date'])) {
-            $legacyPayload['Anniversary'] = $payload['anniversary_date'];
+            $legacyPayload['Anniversary'] = self::dateFromString($payload['anniversary_date']);
         }
 
         if (isset($payload['create_time'])) {
-            $legacyPayload['DateCreated'] = $payload['create_time'];
+            $legacyPayload['DateCreated'] = self::dateFromString($payload['create_time']);
         }
 
         if (isset($payload['update_time'])) {
-            $legacyPayload['LastUpdated'] = $payload['update_time'];
+            $legacyPayload['LastUpdated'] = self::dateFromString($payload['update_time']);
         }
     }
 
