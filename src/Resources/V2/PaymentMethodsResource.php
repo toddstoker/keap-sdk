@@ -8,6 +8,7 @@ use Toddstoker\KeapSdk\Keap;
 use Toddstoker\KeapSdk\Requests\V2\PaymentMethods\DeactivatePaymentMethod;
 use Toddstoker\KeapSdk\Requests\V2\PaymentMethods\DeletePaymentMethod;
 use Toddstoker\KeapSdk\Requests\V2\PaymentMethods\ListPaymentMethods;
+use Toddstoker\KeapSdk\Requests\V2\PaymentMethods\NewSessionKey;
 use Toddstoker\KeapSdk\Resources\Resource;
 use Toddstoker\KeapSdk\Support\V2\Paginator;
 use Toddstoker\KeapSdk\Support\V2\PaymentMethodQuery;
@@ -57,7 +58,7 @@ readonly class PaymentMethodsResource implements Resource
      * }
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
-     * @throws \Saloon\Exceptions\Request\RequestException
+     * @throws \Saloon\Exceptions\Request\RequestException|\JsonException
      */
     public function list(int|string $contactId, ?PaymentMethodQuery $query = null): array
     {
@@ -125,5 +126,76 @@ readonly class PaymentMethodsResource implements Resource
         $response = $this->connector->send(new DeactivatePaymentMethod($contactId, $paymentMethodId));
 
         return $response->successful();
+    }
+
+    /**
+     * Create a new session key for adding payment methods
+     *
+     * Generates a session key to be used in the payment method embed component.
+     *
+     * @param  int  $contactId  Contact ID
+     * @return array{session_key: string}
+     *
+     * @phpstan-return array<string, mixed>
+     *
+     * @throws \Saloon\Exceptions\Request\FatalRequestException
+     * @throws \Saloon\Exceptions\Request\RequestException|\JsonException
+     */
+    public function newSessionKey(int $contactId): array
+    {
+        $response = $this->connector->send(new NewSessionKey($contactId));
+
+        return $response->json();
+    }
+
+    public static function getEmbedScript(): string
+    {
+        return '<script src="https://payments.keap.page/lib/payment-method-embed.js"></script>';
+    }
+
+    /**
+     * @param array{
+     *     backgroundColor?: string,
+     *     padding?: string,
+     *     height?: string,
+     *     fontSize?: string,
+     *     borderRadius?: string,
+     *     borderColor?: string,
+     *     borderWidth?: string,
+     *     borderStyle?: string,
+     *     iconColor?: string,
+     *     fontFamily?: string
+     * }|null $dataStyles
+     */
+    public static function getEmbedComponent(string $sessionKey, ?array $dataStyles = null): string
+    {
+        $stylesString = '';
+        if ($dataStyles !== null) {
+            $stylesString = ' data-styles=\''.json_encode($dataStyles).'\'';
+        }
+
+        return '<keap-payment-method data-key="'.$sessionKey.'"'.$stylesString.'></keap-payment-method>';
+    }
+
+    /**
+     * @param array{
+     *     backgroundColor?: string,
+     *     padding?: string,
+     *     height?: string,
+     *     fontSize?: string,
+     *     borderRadius?: string,
+     *     borderColor?: string,
+     *     borderWidth?: string,
+     *     borderStyle?: string,
+     *     iconColor?: string,
+     *     fontFamily?: string
+     * }|null $dataStyles
+     */
+    public static function getEmbed(string $sessionKey, ?array $dataStyles = null): string
+    {
+        $script = self::getEmbedScript();
+        $component = self::getEmbedComponent($sessionKey, $dataStyles);
+
+        return $script."\n".$component;
     }
 }
