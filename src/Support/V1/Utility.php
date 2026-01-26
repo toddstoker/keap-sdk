@@ -131,8 +131,14 @@ class Utility
      */
     protected static function mapLegacyCompanyFields(array $legacyPayload, array &$apiPayload): void
     {
-        if (isset($legacyPayload['Company']) && $legacyPayload['Company'] !== '') {
-            $apiPayload['company_name'] = $legacyPayload['Company'];
+        $company = [];
+
+        if (isset($legacyPayload['CompanyId']) && $legacyPayload['CompanyId'] !== '') {
+            $company['id'] = (string) $legacyPayload['CompanyId'];
+        }
+
+        if (! empty($company)) {
+            $apiPayload['company'] = $company;
         }
 
         // Note: V1 API doesn't appear to have a company ID field based on the existing conversion
