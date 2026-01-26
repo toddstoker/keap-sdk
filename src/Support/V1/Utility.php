@@ -134,7 +134,7 @@ class Utility
         $company = [];
 
         if (isset($legacyPayload['CompanyId']) && $legacyPayload['CompanyId'] !== '') {
-            $company['id'] = (string) $legacyPayload['CompanyId'];
+            $company['id'] = (int) $legacyPayload['CompanyId'];
         }
 
         if (! empty($company)) {
