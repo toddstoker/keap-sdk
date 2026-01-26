@@ -50,12 +50,12 @@ class Utility
      * V2 uses: owner_id, leadsource_id (no underscore)
      *
      * @param  array{owner_id?: string|int, leadsource_id?: string|int}  $payload
-     * @param  array{OwnerId?: string|int, LeadSourceId?: string|int}  $legacyPayload
+     * @param  array{OwnerID?: string|int, LeadSourceId?: string|int}  $legacyPayload
      */
     protected static function mapIdFields(array $payload, array &$legacyPayload): void
     {
         if (isset($payload['owner_id'])) {
-            $legacyPayload['OwnerId'] = $payload['owner_id'];
+            $legacyPayload['OwnerID'] = $payload['owner_id'];
         }
 
         if (isset($payload['leadsource_id'])) {
@@ -99,13 +99,13 @@ class Utility
      *
      * V2 uses: owner_id, leadsource_id (no underscore)
      *
-     * @param  array{OwnerId?: string, LeadSourceId?: string}  $legacyPayload
+     * @param  array{OwnerID?: string, LeadSourceId?: string}  $legacyPayload
      * @param  array{owner_id?: string, leadsource_id?: string}  $apiPayload
      */
     protected static function mapLegacyIdFields(array $legacyPayload, array &$apiPayload): void
     {
-        if (isset($legacyPayload['OwnerId']) && $legacyPayload['OwnerId'] !== '') {
-            $apiPayload['owner_id'] = $legacyPayload['OwnerId'];
+        if (isset($legacyPayload['OwnerID']) && $legacyPayload['OwnerID'] !== '') {
+            $apiPayload['owner_id'] = $legacyPayload['OwnerID'];
         }
 
         if (isset($legacyPayload['LeadSourceId']) && $legacyPayload['LeadSourceId'] !== '') {
