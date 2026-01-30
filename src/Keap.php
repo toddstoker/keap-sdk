@@ -40,6 +40,7 @@ use Toddstoker\KeapSdk\Resources\ResourceFactory;
  * @method \Toddstoker\KeapSdk\Resources\V1\FilesResource|\Toddstoker\KeapSdk\Resources\V2\FilesResource files(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V1\HooksResource hooks(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\LeadSourcesResource leadSources(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V1\LocaleResource locale(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\NotesResource notes(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V1\OpportunitiesResource opportunities(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\OrdersResource orders(?int $version = null)

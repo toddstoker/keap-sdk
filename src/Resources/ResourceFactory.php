@@ -56,6 +56,9 @@ class ResourceFactory
         'leadSources' => [
             2 => \Toddstoker\KeapSdk\Resources\V2\LeadSourcesResource::class,
         ],
+        'locale' => [
+            1 => \Toddstoker\KeapSdk\Resources\V1\LocaleResource::class,
+        ],
         'notes' => [
             2 => \Toddstoker\KeapSdk\Resources\V2\NotesResource::class,
         ],

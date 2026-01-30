@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "php": "^8.4",
-        "saloonphp/saloon": "^3.0"
+        "saloonphp/saloon": "^3.0",
+        "psr/simple-cache": "^3.0"
     },
     "require-dev": {
         "psy/psysh": "^v0.12.18",
