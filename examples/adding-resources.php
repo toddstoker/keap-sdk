@@ -85,16 +85,16 @@ $keap = new Keap(new PersonalAccessToken('your-token'));
 // The magic __call() method routes to ResourceFactory
 // which creates and caches the CompaniesResource instance
 try {
-    // Access v2 companies resource (default)
-    $companies = $keap->companies()->list(limit: 10);
+    // Access v2 contact resource (default)
+    $companies = $keap->contacts()->list();
 
-    // Access v1 companies resource
-    $companiesV1 = $keap->companies(1)->list(limit: 10);
+    // Access v1 contact resource
+    $companiesV1 = $keap->contacts(1)->list();
 
-    // Get specific company
-    $company = $keap->companies()->get(123);
+    // Get specific contact
+    $company = $keap->contacts()->get(123);
 
-    echo "Successfully accessed companies resource!\n";
+    echo "Successfully accessed contacts resource!\n";
 } catch (\InvalidArgumentException $e) {
     echo 'Error: '.$e->getMessage()."\n";
     // This will show available resources if the resource doesn't exist
