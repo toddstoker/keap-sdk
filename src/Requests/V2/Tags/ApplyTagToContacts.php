@@ -8,6 +8,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
+use Saloon\Traits\Plugins\HasTimeout;
 
 /**
  * Apply Tag to Contacts (v2)
@@ -18,7 +19,9 @@ use Saloon\Traits\Body\HasJsonBody;
  */
 class ApplyTagToContacts extends Request implements HasBody
 {
-    use HasJsonBody;
+    use HasJsonBody, HasTimeout;
+
+    protected int $requestTimeout = 60;
 
     protected Method $method = Method::POST;
 
