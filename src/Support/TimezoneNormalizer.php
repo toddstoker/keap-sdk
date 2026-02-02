@@ -6,7 +6,7 @@ namespace Toddstoker\KeapSdk\Support;
 
 use DateTimeZone;
 
-class TimezoneNormalizer
+final class TimezoneNormalizer
 {
     public const SUPPORTED_TIMEZONES = [
         'Pacific/Pago_Pago',
