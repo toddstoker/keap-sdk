@@ -89,7 +89,7 @@ trait ConvertsFromLegacyPayload
         }
 
         if (isset($legacyPayload['TimeZone']) && $legacyPayload['TimeZone'] !== '') {
-            $apiPayload['time_zone'] = $legacyPayload['TimeZone'];
+            $apiPayload['time_zone'] = TimezoneNormalizer::normalize($legacyPayload['TimeZone']);
         }
 
         if (isset($legacyPayload['Language']) && $legacyPayload['Language'] !== '') {
