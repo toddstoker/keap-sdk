@@ -750,16 +750,16 @@
     "packages-dev": [
         {
             "name": "brick/math",
-            "version": "0.14.1",
+            "version": "0.14.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "f05858549e5f9d7bb45875a75583240a38a281d0"
+                "reference": "618a8077b3c326045e10d5788ed713b341fcfe40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/f05858549e5f9d7bb45875a75583240a38a281d0",
-                "reference": "f05858549e5f9d7bb45875a75583240a38a281d0",
+                "url": "https://api.github.com/repos/brick/math/zipball/618a8077b3c326045e10d5788ed713b341fcfe40",
+                "reference": "618a8077b3c326045e10d5788ed713b341fcfe40",
                 "shasum": ""
             },
             "require": {
@@ -798,7 +798,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/0.14.1"
+                "source": "https://github.com/brick/math/tree/0.14.5"
             },
             "funding": [
                 {
@@ -806,7 +806,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-24T14:40:29+00:00"
+            "time": "2026-02-03T18:06:51+00:00"
         },
         {
             "name": "laravel/pint",
@@ -939,8 +939,8 @@
             "version": "2.1.x-dev",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/06c6da1e95d52584d665aa9ac8cc98f57c35699c",
-                "reference": "06c6da1e95d52584d665aa9ac8cc98f57c35699c",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7fdf1994239f30583dfc07eac0ddafc2fe67a4d3",
+                "reference": "7fdf1994239f30583dfc07eac0ddafc2fe67a4d3",
                 "shasum": ""
             },
             "require": {
@@ -986,7 +986,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-21T16:55:48+00:00"
+            "time": "2026-02-04T14:31:43+00:00"
         },
         {
             "name": "psr/container",
@@ -1048,12 +1048,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "6bd1bfd66c5d84774e5bb7a8ceda4289aac93169"
+                "reference": "a4f766e5c5b6773d8399711019bb7d90875a50ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/6bd1bfd66c5d84774e5bb7a8ceda4289aac93169",
-                "reference": "6bd1bfd66c5d84774e5bb7a8ceda4289aac93169",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/a4f766e5c5b6773d8399711019bb7d90875a50ee",
+                "reference": "a4f766e5c5b6773d8399711019bb7d90875a50ee",
                 "shasum": ""
             },
             "require": {
@@ -1118,9 +1118,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/main"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.19"
             },
-            "time": "2026-01-07T23:02:52+00:00"
+            "time": "2026-01-30T17:33:13+00:00"
         },
         {
             "name": "ramsey/collection",
@@ -1343,23 +1343,24 @@
         },
         {
             "name": "spatie/macroable",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/macroable.git",
-                "reference": "ec2c320f932e730607aff8052c44183cf3ecb072"
+                "reference": "2967f69810ba4df158391665c0850010b9d1507c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/macroable/zipball/ec2c320f932e730607aff8052c44183cf3ecb072",
-                "reference": "ec2c320f932e730607aff8052c44183cf3ecb072",
+                "url": "https://api.github.com/repos/spatie/macroable/zipball/2967f69810ba4df158391665c0850010b9d1507c",
+                "reference": "2967f69810ba4df158391665c0850010b9d1507c",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.0"
+                "php": "^8.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.0|^9.3"
+                "pestphp/pest": "^4",
+                "phpunit/phpunit": "^12"
             },
             "type": "library",
             "autoload": {
@@ -1387,9 +1388,9 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/macroable/issues",
-                "source": "https://github.com/spatie/macroable/tree/2.0.0"
+                "source": "https://github.com/spatie/macroable/tree/2.1.0"
             },
-            "time": "2021-03-26T22:39:02+00:00"
+            "time": "2026-01-30T17:13:34+00:00"
         },
         {
             "name": "spatie/ray",
@@ -1397,12 +1398,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ray.git",
-                "reference": "a787073dfc0cc35949053b383b5d8c6f413926dd"
+                "reference": "aea9df3a15b097b65ab735448b62d7c98dcc8357"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ray/zipball/a787073dfc0cc35949053b383b5d8c6f413926dd",
-                "reference": "a787073dfc0cc35949053b383b5d8c6f413926dd",
+                "url": "https://api.github.com/repos/spatie/ray/zipball/aea9df3a15b097b65ab735448b62d7c98dcc8357",
+                "reference": "aea9df3a15b097b65ab735448b62d7c98dcc8357",
                 "shasum": ""
             },
             "require": {
@@ -1475,7 +1476,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-01-13T07:55:27+00:00"
+            "time": "2026-01-28T14:26:39+00:00"
         },
         {
             "name": "symfony/console",
@@ -1483,12 +1484,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "5893761db63026b849fdb799a10e05ce165e2640"
+                "reference": "9a7c2767b23c80ba0fd14b47082eb2f9e3624666"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/5893761db63026b849fdb799a10e05ce165e2640",
-                "reference": "5893761db63026b849fdb799a10e05ce165e2640",
+                "url": "https://api.github.com/repos/symfony/console/zipball/9a7c2767b23c80ba0fd14b47082eb2f9e3624666",
+                "reference": "9a7c2767b23c80ba0fd14b47082eb2f9e3624666",
                 "shasum": ""
             },
             "require": {
@@ -1567,7 +1568,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-19T07:36:49+00:00"
+            "time": "2026-01-30T08:25:42+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -2014,6 +2015,7 @@
                 "php": ">=8.4",
                 "symfony/service-contracts": "^2.5|^3"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -2159,12 +2161,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "0b0d49373b0da07ec7404beff6332078250de577"
+                "reference": "116d6c3026545435429f44189d433974e2431b6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/0b0d49373b0da07ec7404beff6332078250de577",
-                "reference": "0b0d49373b0da07ec7404beff6332078250de577",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/116d6c3026545435429f44189d433974e2431b6b",
+                "reference": "116d6c3026545435429f44189d433974e2431b6b",
                 "shasum": ""
             },
             "require": {
@@ -2182,6 +2184,7 @@
                 "symfony/uid": "^7.4|^8.0",
                 "twig/twig": "^3.12"
             },
+            "default-branch": true,
             "bin": [
                 "Resources/bin/var-dump-server"
             ],
@@ -2238,7 +2241,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-01T23:09:20+00:00"
+            "time": "2026-01-29T09:42:44+00:00"
         }
     ],
     "aliases": [],
