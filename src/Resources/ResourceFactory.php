@@ -70,6 +70,7 @@ class ResourceFactory
         ],
         'opportunities' => [
             1 => \Toddstoker\KeapSdk\Resources\V1\OpportunitiesResource::class,
+            2 => \Toddstoker\KeapSdk\Resources\V2\OpportunitiesResource::class,
         ],
         'orders' => [
             2 => \Toddstoker\KeapSdk\Resources\V2\OrdersResource::class,
