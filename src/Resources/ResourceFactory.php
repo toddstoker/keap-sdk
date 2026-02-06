@@ -49,6 +49,9 @@ class ResourceFactory
         'emailAddresses' => [
             2 => \Toddstoker\KeapSdk\Resources\V2\EmailAddressesResource::class,
         ],
+        'goals' => [
+            2 => \Toddstoker\KeapSdk\Resources\V2\GoalsResource::class,
+        ],
         'files' => [
             1 => \Toddstoker\KeapSdk\Resources\V1\FilesResource::class,
             2 => \Toddstoker\KeapSdk\Resources\V2\FilesResource::class,
