@@ -45,6 +45,7 @@ use Toddstoker\KeapSdk\Resources\ResourceFactory;
  * @method \Toddstoker\KeapSdk\Resources\V1\OpportunitiesResource opportunities(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\OrdersResource orders(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\PaymentMethodsResource paymentMethods(?int $version = null)
+ * @method \Toddstoker\KeapSdk\Resources\V2\ProductsResource products(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\ReportsResource reports(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V2\SettingsResource settings(?int $version = null)
  * @method \Toddstoker\KeapSdk\Resources\V1\TagsResource|\Toddstoker\KeapSdk\Resources\V2\TagsResource tags(?int $version = null)

@@ -77,6 +77,9 @@ class ResourceFactory
         'paymentMethods' => [
             2 => \Toddstoker\KeapSdk\Resources\V2\PaymentMethodsResource::class,
         ],
+        'products' => [
+            2 => \Toddstoker\KeapSdk\Resources\V2\ProductsResource::class,
+        ],
         'reports' => [
             2 => \Toddstoker\KeapSdk\Resources\V2\ReportsResource::class,
         ],
