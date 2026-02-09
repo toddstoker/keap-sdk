@@ -75,7 +75,9 @@ readonly class ContactsResource implements Resource
     {
         $query = $query ?? ContactQuery::make();
 
-        $response = $this->connector->send(new ListContacts($query));
+        $response = $this->connector->send(
+            new ListContacts($query)
+        );
         $data = $response->json();
 
         return [
@@ -174,7 +176,9 @@ readonly class ContactsResource implements Resource
     {
         $fieldSelector = ContactFieldSelector::for($fields);
 
-        $response = $this->connector->send(new GetContact($contactId, $fieldSelector));
+        $response = $this->connector->send(
+            new GetContact($contactId, $fieldSelector)
+        );
 
         return $response->json();
     }
@@ -212,7 +216,9 @@ readonly class ContactsResource implements Resource
      */
     public function create(array $data): array
     {
-        $response = $this->connector->send(new CreateContact($data));
+        $response = $this->connector->send(
+            new CreateContact($data)
+        );
 
         return $response->json();
     }
@@ -268,7 +274,9 @@ readonly class ContactsResource implements Resource
      */
     public function delete(int $contactId): bool
     {
-        $response = $this->connector->send(new DeleteContact($contactId));
+        $response = $this->connector->send(
+            new DeleteContact($contactId)
+        );
 
         return $response->successful();
     }
@@ -289,7 +297,9 @@ readonly class ContactsResource implements Resource
      */
     public function getLeadScore(int $contactId): array
     {
-        $response = $this->connector->send(new GetLeadScore($contactId));
+        $response = $this->connector->send(
+            new GetLeadScore($contactId)
+        );
 
         return $response->json();
     }
@@ -317,7 +327,9 @@ readonly class ContactsResource implements Resource
      */
     public function listLinks(int $contactId): array
     {
-        $response = $this->connector->send(new ListContactLinks($contactId));
+        $response = $this->connector->send(
+            new ListContactLinks($contactId)
+        );
 
         return $response->json();
     }
@@ -421,7 +433,9 @@ readonly class ContactsResource implements Resource
      */
     public function getModel(): array
     {
-        $response = $this->connector->send(new GetContactModel);
+        $response = $this->connector->send(
+            new GetContactModel
+        );
 
         return $response->json();
     }
