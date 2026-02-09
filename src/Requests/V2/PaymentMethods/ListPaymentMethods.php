@@ -23,11 +23,11 @@ class ListPaymentMethods extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param  int|string  $contactId  Contact ID or '-' to filter across all contacts
+     * @param  int  $contactId  Contact ID or '-' to filter across all contacts
      * @param  PaymentMethodQuery  $queryBuilder  The query builder with filters, sorting, and pagination
      */
     public function __construct(
-        protected readonly int|string $contactId,
+        protected readonly int $contactId,
         protected readonly PaymentMethodQuery $queryBuilder
     ) {}
 

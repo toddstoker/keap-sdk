@@ -25,7 +25,7 @@ class GetOrder extends Request
     protected Method $method = Method::GET;
 
     public function __construct(
-        protected readonly string|int $orderId,
+        protected readonly int $orderId,
         protected readonly ?OrderFieldSelector $fieldSelector = null
     ) {}
 

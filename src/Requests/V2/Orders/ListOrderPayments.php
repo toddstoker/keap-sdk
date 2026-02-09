@@ -28,7 +28,7 @@ class ListOrderPayments extends Request
      * @param  OrderPaymentQuery  $queryBuilder  The query builder with filters, sorting, and pagination
      */
     public function __construct(
-        protected readonly string|int $orderId,
+        protected readonly int $orderId,
         protected readonly OrderPaymentQuery $queryBuilder
     ) {}
 

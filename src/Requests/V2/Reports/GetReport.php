@@ -21,7 +21,7 @@ class GetReport extends Request
     protected Method $method = Method::GET;
 
     public function __construct(
-        protected readonly string $reportId
+        protected readonly int $reportId
     ) {}
 
     public function resolveEndpoint(): string

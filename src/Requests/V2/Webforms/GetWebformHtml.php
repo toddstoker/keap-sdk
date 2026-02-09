@@ -21,10 +21,10 @@ class GetWebformHtml extends Request
     protected Method $method = Method::GET;
 
     /**
-     * @param  string  $webformId  The webform ID
+     * @param  int  $webformId  The webform ID
      */
     public function __construct(
-        protected readonly string $webformId
+        protected readonly int $webformId
     ) {}
 
     public function resolveEndpoint(): string

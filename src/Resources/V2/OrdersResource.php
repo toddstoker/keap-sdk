@@ -194,7 +194,7 @@ readonly class OrdersResource implements Resource
      * Note: The Orders API does not currently support field selection,
      * but the parameter exists for consistency and future compatibility.
      *
-     * @param  string|int  $orderId  The order ID
+     * @param  int  $orderId  The order ID
      * @param  OrderFieldSelector|array<string>|null  $fields  Fields to include in response (not currently supported)
      * @return array{
      *     id: string,
@@ -313,7 +313,7 @@ readonly class OrdersResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function get(string|int $orderId, OrderFieldSelector|array|null $fields = null): array
+    public function get(int $orderId, OrderFieldSelector|array|null $fields = null): array
     {
         // Convert array to OrderFieldSelector if needed
         if (is_array($fields)) {
@@ -336,7 +336,7 @@ readonly class OrdersResource implements Resource
      * Returns a single page of results. Use newListPaymentsPaginator() to
      * automatically iterate through all pages.
      *
-     * @param  string|int  $orderId  Order ID
+     * @param  int  $orderId  Order ID
      * @param  OrderPaymentQuery|null  $query  Query builder with filters and pagination options
      * @return array{
      *     invoice_order_payments: array<int, array{
@@ -357,7 +357,7 @@ readonly class OrdersResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function listPayments(string|int $orderId, ?OrderPaymentQuery $query = null): array
+    public function listPayments(int $orderId, ?OrderPaymentQuery $query = null): array
     {
         $query = $query ?? OrderPaymentQuery::make();
 
@@ -375,10 +375,10 @@ readonly class OrdersResource implements Resource
      *
      * Automatically fetches subsequent pages using cursor-based pagination.
      *
-     * @param  string|int  $orderId  Order ID
+     * @param  int  $orderId  Order ID
      * @param  OrderPaymentQuery|null  $query  Query builder with filters and pagination options
      */
-    public function newListPaymentsPaginator(string|int $orderId, ?OrderPaymentQuery $query = null): Paginator
+    public function newListPaymentsPaginator(int $orderId, ?OrderPaymentQuery $query = null): Paginator
     {
         $query = $query ?? OrderPaymentQuery::make();
 

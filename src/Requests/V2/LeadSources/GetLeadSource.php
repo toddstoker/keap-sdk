@@ -12,7 +12,7 @@ class GetLeadSource extends Request
     protected Method $method = Method::GET;
 
     public function __construct(
-        protected readonly string $leadSourceId
+        protected readonly int $leadSourceId
     ) {}
 
     public function resolveEndpoint(): string

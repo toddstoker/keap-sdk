@@ -124,7 +124,7 @@ readonly class UsersResource implements Resource
      *
      * Retrieves information about a User.
      *
-     * @param  string  $userId  The user ID
+     * @param  int  $userId  The user ID
      * @return array{
      *     id: string,
      *     given_name?: string,
@@ -163,7 +163,7 @@ readonly class UsersResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function get(string $userId): array
+    public function get(int $userId): array
     {
         $response = $this->connector->send(new GetUser($userId));
 
@@ -176,7 +176,7 @@ readonly class UsersResource implements Resource
      * Updates information on a specific user. Supports partial updates via
      * the update_mask parameter to specify which fields to update.
      *
-     * @param  string  $userId  The user ID to update
+     * @param  int  $userId  The user ID to update
      * @param  array{
      *     given_name?: string,
      *     family_name?: string,
@@ -224,7 +224,7 @@ readonly class UsersResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function update(string $userId, array $data, ?array $updateMask = null): array
+    public function update(int $userId, array $data, ?array $updateMask = null): array
     {
         $response = $this->connector->send(
             new UpdateUser($userId, $data, $updateMask)
@@ -266,15 +266,15 @@ readonly class UsersResource implements Resource
     /**
      * Get user email signature
      *
-     * Retrieves a HTML snippet that contains the user's email signature.
+     * Retrieves an HTML snippet that contains the user's email signature.
      *
-     * @param  string  $userId  The user ID
+     * @param  int  $userId  The user ID
      * @return array{signature?: string} Response containing the user's email signature
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function getSignature(string $userId): array
+    public function getSignature(int $userId): array
     {
         $response = $this->connector->send(new GetUserSignature($userId));
 

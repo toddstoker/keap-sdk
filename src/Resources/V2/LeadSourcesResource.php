@@ -63,7 +63,9 @@ readonly class LeadSourcesResource implements Resource
     {
         $query = $query ?? LeadSourceQuery::make();
 
-        $response = $this->connector->send(new ListLeadSources($query));
+        $response = $this->connector->send(
+            new ListLeadSources($query)
+        );
 
         return $response->json();
     }
@@ -91,7 +93,7 @@ readonly class LeadSourcesResource implements Resource
      *
      * Retrieves a single lead source by ID.
      *
-     * @param  string  $leadSourceId  The lead source ID
+     * @param  int  $leadSourceId  The lead source ID
      * @return array{
      *     id: string,
      *     name: string,
@@ -112,9 +114,11 @@ readonly class LeadSourcesResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function get(string $leadSourceId): array
+    public function get(int $leadSourceId): array
     {
-        $response = $this->connector->send(new GetLeadSource($leadSourceId));
+        $response = $this->connector->send(
+            new GetLeadSource($leadSourceId)
+        );
 
         return $response->json();
     }
@@ -157,7 +161,9 @@ readonly class LeadSourcesResource implements Resource
      */
     public function create(array $data): array
     {
-        $response = $this->connector->send(new CreateLeadSource($data));
+        $response = $this->connector->send(
+            new CreateLeadSource($data)
+        );
 
         return $response->json();
     }
@@ -167,7 +173,7 @@ readonly class LeadSourcesResource implements Resource
      *
      * Updates an existing lead source. Only provided fields will be updated.
      *
-     * @param  string  $leadSourceId  The lead source ID
+     * @param  int  $leadSourceId  The lead source ID
      * @param  array{
      *     name?: string,
      *     description?: string,
@@ -199,9 +205,11 @@ readonly class LeadSourcesResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function update(string $leadSourceId, array $data): array
+    public function update(int $leadSourceId, array $data): array
     {
-        $response = $this->connector->send(new UpdateLeadSource($leadSourceId, $data));
+        $response = $this->connector->send(
+            new UpdateLeadSource($leadSourceId, $data)
+        );
 
         return $response->json();
     }
@@ -211,13 +219,15 @@ readonly class LeadSourcesResource implements Resource
      *
      * Deletes a lead source permanently.
      *
-     * @param  string  $leadSourceId  The lead source ID
+     * @param  int  $leadSourceId  The lead source ID
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function delete(string $leadSourceId): void
+    public function delete(int $leadSourceId): void
     {
-        $this->connector->send(new DeleteLeadSource($leadSourceId));
+        $this->connector->send(
+            new DeleteLeadSource($leadSourceId)
+        );
     }
 }

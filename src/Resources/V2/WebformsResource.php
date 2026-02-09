@@ -87,13 +87,13 @@ readonly class WebformsResource implements Resource
      *
      * Retrieves the HTML content for a specific webform.
      *
-     * @param  string  $webformId  The webform ID
+     * @param  int  $webformId  The webform ID
      * @return string The HTML content of the webform
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function getHtml(string $webformId): string
+    public function getHtml(int $webformId): string
     {
         $response = $this->connector->send(new GetWebformHtml($webformId));
 

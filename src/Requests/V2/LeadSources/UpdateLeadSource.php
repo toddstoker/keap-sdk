@@ -29,7 +29,7 @@ class UpdateLeadSource extends Request implements HasBody
      * }  $data
      */
     public function __construct(
-        protected readonly string $leadSourceId,
+        protected readonly int $leadSourceId,
         protected readonly array $data
     ) {}
 

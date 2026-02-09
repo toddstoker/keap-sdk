@@ -35,7 +35,7 @@ readonly class PaymentMethodsResource implements Resource
      * Returns a single page of results. Use newListPaginator() to automatically
      * iterate through all pages.
      *
-     * @param  int|string  $contactId  Contact ID or '-' to filter across all contacts
+     * @param  int  $contactId  Contact ID or '-' to filter across all contacts
      * @param  PaymentMethodQuery|null  $query  Query builder with filters and pagination options
      * @return array{
      *     records: array<int, array{
@@ -60,7 +60,7 @@ readonly class PaymentMethodsResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException|\JsonException
      */
-    public function list(int|string $contactId, ?PaymentMethodQuery $query = null): array
+    public function list(int $contactId, ?PaymentMethodQuery $query = null): array
     {
         $query = $query ?? PaymentMethodQuery::make();
 
@@ -78,10 +78,10 @@ readonly class PaymentMethodsResource implements Resource
      *
      * Automatically fetches subsequent pages using cursor-based pagination.
      *
-     * @param  int|string  $contactId  Contact ID or '-' to filter across all contacts
+     * @param  int  $contactId  Contact ID or '-' to filter across all contacts
      * @param  PaymentMethodQuery|null  $query  Query builder with filters and pagination options
      */
-    public function newListPaginator(int|string $contactId, ?PaymentMethodQuery $query = null): Paginator
+    public function newListPaginator(int $contactId, ?PaymentMethodQuery $query = null): Paginator
     {
         $query = $query ?? PaymentMethodQuery::make();
 

@@ -26,12 +26,12 @@ class UpdateUser extends Request implements HasBody
     protected Method $method = Method::PATCH;
 
     /**
-     * @param  string  $userId  The user ID to update
+     * @param  int  $userId  The user ID to update
      * @param  array<string, mixed>  $data  User data to update
      * @param  array<string>|null  $updateMask  Optional list of properties to update
      */
     public function __construct(
-        protected readonly string $userId,
+        protected readonly int $userId,
         protected readonly array $data,
         protected readonly ?array $updateMask = null
     ) {}

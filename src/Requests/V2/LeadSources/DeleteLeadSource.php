@@ -12,7 +12,7 @@ class DeleteLeadSource extends Request
     protected Method $method = Method::DELETE;
 
     public function __construct(
-        protected readonly string $leadSourceId
+        protected readonly int $leadSourceId
     ) {}
 
     public function resolveEndpoint(): string

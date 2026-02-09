@@ -19,7 +19,7 @@ class GetUser extends Request
     protected Method $method = Method::GET;
 
     public function __construct(
-        protected readonly string $userId
+        protected readonly int $userId
     ) {}
 
     public function resolveEndpoint(): string

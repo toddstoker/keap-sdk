@@ -74,13 +74,13 @@ readonly class ReportsResource implements Resource
      *
      * Retrieves information about a Report as defined in the application (identified as Saved Search).
      *
-     * @param  string  $reportId  The report ID
+     * @param  int  $reportId  The report ID
      * @return array<string, mixed>
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function get(string $reportId): array
+    public function get(int $reportId): array
     {
         $response = $this->connector->send(new GetReport($reportId));
 
@@ -93,7 +93,7 @@ readonly class ReportsResource implements Resource
      * Returns a single page of results. Use newRunPaginator() to automatically
      * iterate through all pages.
      *
-     * @param  string  $reportId  The report ID
+     * @param  int  $reportId  The report ID
      * @param  RunReportQuery|null  $query  Query builder with field selection, sorting, and pagination
      * @return array{results: array<array<string, mixed>>, page_token: ?string}
      *
@@ -102,7 +102,7 @@ readonly class ReportsResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function run(string $reportId, ?RunReportQuery $query = null): array
+    public function run(int $reportId, ?RunReportQuery $query = null): array
     {
         $query = $query ?? RunReportQuery::make();
 
@@ -116,10 +116,10 @@ readonly class ReportsResource implements Resource
      *
      * Automatically fetches subsequent pages using cursor-based pagination.
      *
-     * @param  string  $reportId  The report ID
+     * @param  int  $reportId  The report ID
      * @param  RunReportQuery|null  $query  Query builder with field selection, sorting, and pagination
      */
-    public function newRunPaginator(string $reportId, ?RunReportQuery $query = null): Paginator
+    public function newRunPaginator(int $reportId, ?RunReportQuery $query = null): Paginator
     {
         $query = $query ?? RunReportQuery::make();
 
