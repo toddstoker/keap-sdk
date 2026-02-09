@@ -60,7 +60,9 @@ readonly class CompaniesResource implements Resource
     {
         $query = $query ?? CompanyQuery::make();
 
-        $response = $this->connector->send(new ListCompanies($query));
+        $response = $this->connector->send(
+            new ListCompanies($query)
+        );
         $data = $response->json();
 
         return [
@@ -93,7 +95,7 @@ readonly class CompaniesResource implements Resource
      * Supports optional field selection. Pass an array of field names,
      * a CompanyFieldSelector instance, '*' for all fields, or null for default fields.
      *
-     * @param  string  $companyId  The company ID
+     * @param  int  $companyId  The company ID
      * @param  CompanyFieldSelector|array<string>|string|null  $fields  Fields to include in response ('*' for all)
      * @return array{
      *     id: string,
@@ -131,7 +133,7 @@ readonly class CompaniesResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function get(string $companyId, CompanyFieldSelector|array|string|null $fields = null): array
+    public function get(int $companyId, CompanyFieldSelector|array|string|null $fields = null): array
     {
         $fieldSelector = CompanyFieldSelector::for($fields);
 
@@ -187,7 +189,9 @@ readonly class CompaniesResource implements Resource
      */
     public function create(array $data): array
     {
-        $response = $this->connector->send(new CreateCompany($data));
+        $response = $this->connector->send(
+            new CreateCompany($data)
+        );
 
         return $response->json();
     }
@@ -198,7 +202,7 @@ readonly class CompaniesResource implements Resource
      * Supports partial updates via the update_mask parameter to specify
      * which fields to update.
      *
-     * @param  string  $companyId  The company ID to update
+     * @param  int  $companyId  The company ID to update
      * @param  array{
      *     company_name?: string,
      *     address?: array{
@@ -238,7 +242,7 @@ readonly class CompaniesResource implements Resource
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function update(string $companyId, array $data, ?array $updateMask = null): array
+    public function update(int $companyId, array $data, ?array $updateMask = null): array
     {
         $response = $this->connector->send(
             new UpdateCompany($companyId, $data, $updateMask)
@@ -252,15 +256,17 @@ readonly class CompaniesResource implements Resource
      *
      * Permanently deletes a company.
      *
-     * @param  string  $companyId  The company ID to delete
+     * @param  int  $companyId  The company ID to delete
      * @return bool True if deletion was successful
      *
      * @throws \Saloon\Exceptions\Request\FatalRequestException
      * @throws \Saloon\Exceptions\Request\RequestException
      */
-    public function delete(string $companyId): bool
+    public function delete(int $companyId): bool
     {
-        $response = $this->connector->send(new DeleteCompany($companyId));
+        $response = $this->connector->send(
+            new DeleteCompany($companyId)
+        );
 
         return $response->successful();
     }

@@ -19,7 +19,7 @@ class DeleteCompany extends Request
     protected Method $method = Method::DELETE;
 
     public function __construct(
-        protected readonly string $companyId
+        protected readonly int $companyId
     ) {}
 
     public function resolveEndpoint(): string

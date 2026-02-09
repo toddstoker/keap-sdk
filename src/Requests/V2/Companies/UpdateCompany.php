@@ -26,12 +26,12 @@ class UpdateCompany extends Request implements HasBody
     protected Method $method = Method::PATCH;
 
     /**
-     * @param  string  $companyId  The company ID to update
+     * @param  int  $companyId  The company ID to update
      * @param  array<string, mixed>  $data  Company data to update
      * @param  array<string>|null  $updateMask  Optional list of properties to update
      */
     public function __construct(
-        protected readonly string $companyId,
+        protected readonly int $companyId,
         protected readonly array $data,
         protected readonly ?array $updateMask = null
     ) {}

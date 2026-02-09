@@ -28,7 +28,7 @@ class GetCompany extends Request
     protected Method $method = Method::GET;
 
     public function __construct(
-        protected readonly string $companyId,
+        protected readonly int $companyId,
         protected readonly ?CompanyFieldSelector $fieldSelector = null
     ) {}
 
