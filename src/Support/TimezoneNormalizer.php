@@ -104,16 +104,16 @@ final class TimezoneNormalizer
     /** @return array<string, int> */
     protected static function supportedMap(): array
     {
-        if (static::$supportedMap === null) {
-            static::$supportedMap = array_flip(static::SUPPORTED_TIMEZONES);
+        if (self::$supportedMap === null) {
+            self::$supportedMap = array_flip(self::SUPPORTED_TIMEZONES);
         }
 
-        return static::$supportedMap;
+        return self::$supportedMap;
     }
 
     public static function normalize(string $timezone): ?string
     {
-        $supported = static::supportedMap();
+        $supported = self::supportedMap();
 
         if (isset($supported[$timezone])) {
             return $timezone;
@@ -130,7 +130,7 @@ final class TimezoneNormalizer
             return $canonical;
         }
 
-        return static::matchByTransitions($canonical);
+        return self::matchByTransitions($canonical);
     }
 
     protected static function matchByTransitions(string $timezone): ?string
@@ -144,7 +144,7 @@ final class TimezoneNormalizer
         $transitions = $tz->getTransitions(time(), time() + 86400 * 365);
 
         // Try exact transition match first
-        foreach (static::SUPPORTED_TIMEZONES as $candidate) {
+        foreach (self::SUPPORTED_TIMEZONES as $candidate) {
             $candidateTz = new DateTimeZone($candidate);
 
             if ($candidateTz->getTransitions(time(), time() + 86400 * 365) == $transitions) {
@@ -153,7 +153,7 @@ final class TimezoneNormalizer
         }
 
         // Fall back to closest UTC offset match
-        return static::closestByOffset($tz);
+        return self::closestByOffset($tz);
     }
 
     protected static function closestByOffset(DateTimeZone $tz): ?string
@@ -164,7 +164,7 @@ final class TimezoneNormalizer
         $bestMatch = null;
         $bestDiff = PHP_INT_MAX;
 
-        foreach (static::SUPPORTED_TIMEZONES as $candidate) {
+        foreach (self::SUPPORTED_TIMEZONES as $candidate) {
             $candidateTz = new DateTimeZone($candidate);
             $candidateOffset = $candidateTz->getOffset($now);
             $diff = abs($offset - $candidateOffset);

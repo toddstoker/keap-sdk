@@ -20,7 +20,7 @@ class GetContactModel extends Request
     use HasTimeout;
 
     protected int $requestTimeout = 60;
-    
+
     protected Method $method = Method::GET;
 
     public function resolveEndpoint(): string
