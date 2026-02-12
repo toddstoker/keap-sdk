@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Toddstoker\KeapSdk\Resources\V2;
 
 use Toddstoker\KeapSdk\Keap;
+use Toddstoker\KeapSdk\Requests\V2\Products\GetProduct;
 use Toddstoker\KeapSdk\Requests\V2\Products\ListProducts;
 use Toddstoker\KeapSdk\Resources\Resource;
 use Toddstoker\KeapSdk\Support\V2\Paginator;
@@ -95,5 +96,16 @@ readonly class ProductsResource implements Resource
             $query,
             'products'
         );
+    }
+
+    /**
+     * @param int $productId
+     * @return array<string, mixed>
+     */
+    public function get(int $productId): array
+    {
+        $response = $this->connector->send(new GetProduct($productId));
+
+        return $response->json();
     }
 }
