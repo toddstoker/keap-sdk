@@ -33,7 +33,7 @@ class GetApplicationConfiguration extends Request
         }
 
         return [
-            'fields' => $this->fields,
+            'fields' => implode(',', $this->fields),
         ];
     }
 }
